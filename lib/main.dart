@@ -1,3 +1,4 @@
+import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/features/onboard/view/onboard_page.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(title: 'Blood Bank', home: OnboardPage());
+    return MaterialApp(
+      title: 'Blood Bank',
+      debugShowCheckedModeBanner: false,
+      theme: Appthemes.lightTheme,
+      home: const OnboardPage(),
+    );
   }
 }

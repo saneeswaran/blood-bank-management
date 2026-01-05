@@ -1,28 +1,11 @@
+import 'package:blood_bank/features/onboard/widget/onboard_page_template.dart';
 import 'package:flutter/material.dart';
 
-class OnboardPage extends StatefulWidget {
+class OnboardPage extends StatelessWidget {
   const OnboardPage({super.key});
 
   @override
-  State<OnboardPage> createState() => _OnboardPageState();
-}
-
-class _OnboardPageState extends State<OnboardPage> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 200,
-              width: double.infinity,
-              child: Image.asset(""),
-            ),
-          ],
-        ),
-      ),
-    );
+    return const Scaffold(body: OnboardPageTemplate());
   }
 }
