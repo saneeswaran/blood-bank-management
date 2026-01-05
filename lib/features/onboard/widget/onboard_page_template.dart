@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/features/bottom%20nav/view/bottom_navi.dart';
@@ -118,28 +119,34 @@ class _OnboardPageTemplateState extends State<OnboardPageTemplate> {
                         const SizedBox(height: 48),
 
                         // Title
-                        Text(
-                          onboard.title,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.black,
-                            height: 1.2,
+                        FadeInUp(
+                          duration: const Duration(milliseconds: 500),
+                          child: Text(
+                            onboard.title,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.black,
+                              height: 1.2,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
 
                         // Description
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(
-                            onboard.description,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey.shade600,
-                              height: 1.5,
+                        FadeInUp(
+                          duration: const Duration(milliseconds: 550),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
+                              onboard.description,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey.shade600,
+                                height: 1.5,
+                              ),
                             ),
                           ),
                         ),
