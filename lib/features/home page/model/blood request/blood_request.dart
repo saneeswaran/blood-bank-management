@@ -33,6 +33,10 @@ abstract class BloodRequest with _$BloodRequest {
 
     /// Firestore timestamps
     required String createdAt,
+
+    //foods and services
+    @Default(false) bool? food,
+    @Default(false) bool? services,
   }) = _BloodRequest;
 
   factory BloodRequest.fromJson(Map<String, dynamic> json) =>

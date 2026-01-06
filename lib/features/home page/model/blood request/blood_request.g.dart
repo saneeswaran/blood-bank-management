@@ -22,6 +22,8 @@ _BloodRequest _$BloodRequestFromJson(Map<String, dynamic> json) =>
       urgency: json['urgency'] as String,
       status: json['status'] as String,
       createdAt: json['createdAt'] as String,
+      food: json['food'] as bool? ?? false,
+      services: json['services'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$BloodRequestToJson(_BloodRequest instance) =>
@@ -40,4 +42,6 @@ Map<String, dynamic> _$BloodRequestToJson(_BloodRequest instance) =>
       'urgency': instance.urgency,
       'status': instance.status,
       'createdAt': instance.createdAt,
+      'food': instance.food,
+      'services': instance.services,
     };
