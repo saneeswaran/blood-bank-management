@@ -1,4 +1,6 @@
+import 'package:animations/animations.dart';
 import 'package:blood_bank/features/bottom%20nav/model/bottom_model.dart';
+import 'package:blood_bank/features/home%20page/compoments/request_donor.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
@@ -15,11 +17,15 @@ class _BottomNaviState extends State<BottomNavi> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        shape: const CircleBorder(),
-        backgroundColor: Colors.white,
-        onPressed: () {},
-        child: const Icon(Icons.add, color: Colors.black),
+      floatingActionButton: OpenContainer(
+        openBuilder: (context, action) => const RequestDonor(),
+        closedBuilder: (context, onPressed) => FloatingActionButton(
+          shape: const CircleBorder(),
+          backgroundColor: Colors.white,
+          onPressed: onPressed,
+          child: const Icon(Icons.add, color: Colors.black),
+        ),
+        closedShape: const CircleBorder(),
       ),
       bottomNavigationBar: StylishBottomBar(
         option: AnimatedBarOptions(iconStyle: IconStyle.animated),

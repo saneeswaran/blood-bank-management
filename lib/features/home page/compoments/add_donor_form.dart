@@ -93,8 +93,6 @@ class _AddDonorFormState extends State<AddDonorForm> {
                 CustomTextFormField(
                   labelText: "+91 Phone Number",
                   controller: phoneNumberController,
-                  keyboardType: TextInputType.phone,
-                  maxLength: 10,
                 ),
                 //    donorUI.bloodType(),
                 //  donorUI.cronicDisease(),
@@ -103,7 +101,6 @@ class _AddDonorFormState extends State<AddDonorForm> {
                 CustomTextFormField(
                   labelText: "Address",
                   controller: addressController,
-                  maxLine: 5,
                 ),
                 Row(
                   children: [

@@ -6,30 +6,14 @@ class CustomTextFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final String labelText;
   final Widget? prefixIcon;
-  final TextInputType keyboardType;
-  final int? maxLength;
-  final Widget? suffixIcon;
-  final bool obscureText;
-  final bool isShowBorder;
-  final int maxLine;
-  final EdgeInsetsGeometry? contentPadding;
-  final String? hintText;
-  final Iterable<String>? autofillHints;
+  final TextInputType? textInputType;
   const CustomTextFormField({
     super.key,
     required this.controller,
     this.validator,
     required this.labelText,
     this.prefixIcon,
-    this.keyboardType = TextInputType.text,
-    this.maxLength,
-    this.suffixIcon,
-    this.obscureText = false,
-    this.isShowBorder = false,
-    this.maxLine = 1,
-    this.contentPadding = const EdgeInsets.all(0),
-    this.hintText,
-    this.autofillHints,
+    this.textInputType,
   });
 
   @override
@@ -37,47 +21,28 @@ class CustomTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       validator: validator,
-      keyboardType: keyboardType,
-      maxLength: maxLength,
-      maxLines: maxLine,
-      obscureText: obscureText,
-      autofillHints: autofillHints,
+      keyboardType: textInputType,
       decoration: InputDecoration(
-        alignLabelWithHint: true,
-        contentPadding: contentPadding,
-        counterText: "",
-        prefixIcon: prefixIcon,
         labelText: labelText,
-        hintText: hintText,
-        suffixIcon: suffixIcon,
-        labelStyle: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.w400,
+        prefixIcon: prefixIcon,
+        filled: true,
+        fillColor: Appthemes.lightGrey,
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide.none,
         ),
-        border: isShowBorder
-            ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Appthemes.lightGrey),
-              )
-            : const UnderlineInputBorder(
-                borderSide: BorderSide(color: Appthemes.lightGrey),
-              ),
-        focusedBorder: isShowBorder
-            ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Appthemes.lightGrey),
-              )
-            : const UnderlineInputBorder(
-                borderSide: BorderSide(color: Appthemes.lightGrey),
-              ),
-        enabledBorder: isShowBorder
-            ? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Appthemes.lightGrey),
-              )
-            : const UnderlineInputBorder(
-                borderSide: BorderSide(color: Appthemes.lightGrey),
-              ),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide.none,
+        ),
+        errorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide.none,
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          borderSide: BorderSide.none,
+        ),
       ),
     );
   }

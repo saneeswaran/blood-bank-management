@@ -12,5 +12,16 @@ class Appthemes {
     brightness: Brightness.light,
     primaryColor: primaryColor,
     iconTheme: const IconThemeData(color: Colors.black),
+    appBarTheme: const AppBarTheme(
+      // backgroundColor: primaryColor,
+      backgroundColor: scaffoldBackgroundColor,
+      centerTitle: true,
+      titleTextStyle: TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+      iconTheme: IconThemeData(color: Colors.white),
+    ),
   );
 }
