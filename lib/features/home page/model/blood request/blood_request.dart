@@ -7,14 +7,32 @@ part 'blood_request.g.dart';
 @freezed
 abstract class BloodRequest with _$BloodRequest {
   const factory BloodRequest({
-    String? reqId,
-    required String name,
+    String? requestId,
+
+    required String requestedBy,
+    String? patientName,
+
     required String bloodGroup,
-    required String phone,
-    required String email,
+
+    required int units,
+
+    required String hospitalName,
+    required String city,
+    required String area,
+
     required Location location,
-    required String bloodType,
-    required String date,
+
+    required String contactName,
+    required String contactPhone,
+
+    /// high / medium / low
+    required String urgency,
+
+    /// active / fulfilled / expired / cancelled
+    required String status,
+
+    /// Firestore timestamps
+    required String createdAt,
   }) = _BloodRequest;
 
   factory BloodRequest.fromJson(Map<String, dynamic> json) =>

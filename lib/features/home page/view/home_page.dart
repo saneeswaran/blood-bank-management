@@ -40,7 +40,12 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(width: 10),
                   CustomIconButton(
                     icon: const Icon(Icons.filter, color: Colors.white),
-                    onPressed: () {},
+                    onPressed: () {
+                      navigateTo(
+                        context: context,
+                        route: const SearchPage(isFilter: true),
+                      );
+                    },
                   ),
                 ],
               ),
