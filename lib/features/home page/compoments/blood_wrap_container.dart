@@ -1,3 +1,4 @@
+import 'package:blood_bank/core/animations/highlightable.dart';
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/enum/blood_groud_enum.dart';
 import 'package:blood_bank/features/home%20page/controller/request_controller.dart';
@@ -6,14 +7,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BloodWrapContainer extends ConsumerWidget {
   final GlobalKey globalKey;
-  const BloodWrapContainer({super.key, required this.globalKey});
+  final bool highlight;
+  const BloodWrapContainer({
+    super.key,
+    required this.globalKey,
+    required this.highlight,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedBlood = ref.watch(RequestController.selectedBloodGroup);
     return RepaintBoundary(
-      child: Container(
+      child: Highlightable(
         key: globalKey,
+        highlight: highlight,
         child: Wrap(
           children: List.generate(BloodGroudEnum.values.length, (index) {
             final bloods = BloodGroudEnum.values[index].title;

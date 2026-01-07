@@ -1,3 +1,4 @@
+import 'package:blood_bank/core/animations/highlightable.dart';
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/enum/priority_enum.dart';
 import 'package:blood_bank/features/home%20page/controller/request_controller.dart';
@@ -6,13 +7,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PriorityContainer extends ConsumerWidget {
   final GlobalKey globalKey;
-  const PriorityContainer({super.key, required this.globalKey});
+  final bool highlight;
+  const PriorityContainer({
+    super.key,
+    required this.globalKey,
+    required this.highlight,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return RepaintBoundary(
-      child: Container(
+      child: Highlightable(
         key: globalKey,
+        highlight: highlight,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(PriorityEnum.values.length, (index) {

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:blood_bank/core/animations/highlightable.dart';
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/constants/navigation.dart';
 import 'package:blood_bank/core/util/custom_snack.dart';
@@ -39,6 +40,13 @@ class _RequestDonorState extends State<RequestDonor> {
   final _priorityKey = GlobalKey();
   final _mobileNumberKey = GlobalKey();
   final _hospitalNameKey = GlobalKey();
+
+  bool _unitHighlight = false;
+  bool _bloodHighlight = false;
+  bool _locationHighlight = false;
+  bool _genderHighlight = false;
+  bool _dateHighlight = false;
+  bool _priorityHighlight = false;
 
   void scrollTo(GlobalKey key) {
     final context = key.currentContext;
@@ -83,16 +91,19 @@ class _RequestDonorState extends State<RequestDonor> {
                   ),
                 ),
                 const Text("Hospital Name ", style: Styles.requestDonorTitle),
-                CustomTextFormField(
+                Highlightable(
                   key: _hospitalNameKey,
-                  controller: hospitalNameController,
-                  labelText: "Hospital Name",
-                  prefixIcon: const Icon(
-                    Icons.person,
-                    color: Appthemes.mediaiuGrey,
-                  ),
-                  validator: FormValidator.validateTextField(
-                    text: "Hospital Name",
+                  highlight: _hospitalNameKey.currentContext != null,
+                  child: CustomTextFormField(
+                    controller: hospitalNameController,
+                    labelText: "Hospital Name",
+                    prefixIcon: const Icon(
+                      Icons.person,
+                      color: Appthemes.mediaiuGrey,
+                    ),
+                    validator: FormValidator.validateTextField(
+                      text: "Hospital Name",
+                    ),
                   ),
                 ),
 
@@ -101,15 +112,20 @@ class _RequestDonorState extends State<RequestDonor> {
                   "Select Blood Group",
                   style: Styles.requestDonorTitle,
                 ),
-                BloodWrapContainer(globalKey: _bloodKey),
+                BloodWrapContainer(
+                  globalKey: _bloodKey,
+                  highlight: _bloodHighlight,
+                ),
                 const Text("Select Unit", style: Styles.requestDonorTitle),
-                UnitSlider(globalKey: _unitKey),
+                UnitSlider(globalKey: _unitKey, highlight: _unitHighlight),
                 const Text("Mobile Number", style: Styles.requestDonorTitle),
-                CustomTextFormField(
+                Highlightable(
                   key: _mobileNumberKey,
-                  controller: mobileNumberController,
-                  labelText: "Mobile Number",
-                  validator: FormValidator.validateMobileNumber(number: 10),
+                  child: CustomTextFormField(
+                    controller: mobileNumberController,
+                    labelText: "Mobile Number",
+                    validator: FormValidator.validateMobileNumber(number: 10),
+                  ),
                 ),
                 const Text("Select Location", style: Styles.requestDonorTitle),
                 Consumer(
@@ -122,8 +138,9 @@ class _RequestDonorState extends State<RequestDonor> {
                               await fetchCurrentLocation(ref, context);
                             },
                       child: RepaintBoundary(
-                        child: Container(
+                        child: Highlightable(
                           key: _locationKey,
+                          highlight: _locationHighlight,
                           child: AbsorbPointer(
                             absorbing: true,
                             child: CustomTextFormField(
@@ -223,10 +240,18 @@ class _RequestDonorState extends State<RequestDonor> {
                   },
                 ),
 
-                GenderAndDate(globalKey: _genderKey, dateKey: _dateKey),
+                GenderAndDate(
+                  globalKey: _genderKey,
+                  dateKey: _dateKey,
+                  genderHighlight: _genderHighlight,
+                  dateHighlight: _dateHighlight,
+                ),
 
                 const Text("Select Priority", style: Styles.requestDonorTitle),
-                PriorityContainer(globalKey: _priorityKey),
+                PriorityContainer(
+                  globalKey: _priorityKey,
+                  highlight: _priorityHighlight,
+                ),
                 Consumer(
                   builder: (context, ref, child) {
                     final loader = ref.watch(
@@ -351,45 +376,86 @@ class _RequestDonorState extends State<RequestDonor> {
 
   Future<void> submit(BuildContext context, WidgetRef ref) async {
     final loader = ref.read(RequestController.submitFormLoader.notifier);
-    //validate the fields
-    final isValid = formKey.currentState!.validate();
-    if (!isValid) {
-      return;
-    }
 
-    //loader and other fields
+    // Validate Form
+    final isValid = formKey.currentState!.validate();
+    if (!isValid) return;
+
+    // Get values
     final unit = ref.watch(RequestController.selectedUnit);
     final blood = ref.watch(RequestController.selectedBloodGroup);
     final location = ref.watch(RequestController.selectedLocation);
     final gender = ref.watch(RequestController.selectedGender);
     final date = ref.watch(RequestController.selectDate);
     final priority = ref.watch(RequestController.selectedPriority);
+
+    // Validations list with keys & highlight setters
     final validations = [
-      (unit == 0.0, "Please Select Unit", _unitKey),
-      (blood == null, "Please Select Blood Group", _bloodKey),
-      (location == null, "Please Select Location", _locationKey),
-      (gender == null, "Please Select Gender", _genderKey),
-      (date == null, "Please Select Date", _dateKey),
-      (priority == null, "Please Select Priority", _priorityKey),
+      (
+        unit == 0.0,
+        "Please Select Unit",
+        _unitKey,
+        () => setState(() => _unitHighlight = true),
+      ),
+      (
+        blood == null,
+        "Please Select Blood Group",
+        _bloodKey,
+        () => setState(() => _bloodHighlight = true),
+      ),
+      (
+        location == null,
+        "Please Select Location",
+        _locationKey,
+        () => setState(() => _locationHighlight = true),
+      ),
+      (
+        gender == null,
+        "Please Select Gender",
+        _genderKey,
+        () => setState(() => _genderHighlight = true),
+      ),
+      (
+        date == null,
+        "Please Select Date",
+        _dateKey,
+        () => setState(() => _dateHighlight = true),
+      ),
+      (
+        priority == null,
+        "Please Select Priority",
+        _priorityKey,
+        () => setState(() => _priorityHighlight = true),
+      ),
     ];
 
-    for (final (isInvalid, message, key) in validations) {
+    // Iterate and handle first invalid field
+    for (final (isInvalid, message, key, highlight) in validations) {
       if (isInvalid) {
         customSnackBar(
           context: context,
           content: message,
           type: SnackType.info,
         );
+
+        // Scroll to the widget
         scrollTo(key);
+
+        // Flash the widget
+        highlight();
         return;
       }
     }
 
+    //  All valid -> submit
     loader.state = true;
     MaterialUtil.showFullScreenLoader(context);
+
+    // Simulate API call
     Future.delayed(const Duration(seconds: 5), () {
       loader.state = false;
       if (!context.mounted) return;
+
       navigateBack(context);
       customSnackBar(
         context: context,

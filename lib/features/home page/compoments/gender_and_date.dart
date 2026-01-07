@@ -1,3 +1,4 @@
+import 'package:blood_bank/core/animations/highlightable.dart';
 import 'package:blood_bank/core/widgets/custom_drop_down.dart';
 import 'package:blood_bank/core/widgets/custom_text_form_field.dart';
 import 'package:blood_bank/features/home%20page/controller/request_controller.dart';
@@ -8,10 +9,14 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 class GenderAndDate extends ConsumerWidget {
   final GlobalKey globalKey;
   final GlobalKey dateKey;
+  final bool genderHighlight;
+  final bool dateHighlight;
   const GenderAndDate({
     super.key,
     required this.globalKey,
     required this.dateKey,
+    required this.genderHighlight,
+    required this.dateHighlight,
   });
 
   @override
@@ -34,22 +39,25 @@ class GenderAndDate extends ConsumerWidget {
       children: [
         /// GENDER
         Expanded(
-          child: ColumnDivider(
+          child: Highlightable(
             key: globalKey,
-            title: 'Gender',
-            widget: CustomDropDown<String>(
-              value: gender,
-              labelText: 'Gender',
-              hintText: 'Select Gender',
-              items: genders
-                  .map(
-                    (e) => DropdownMenuItem<String>(value: e, child: Text(e)),
-                  )
-                  .toList(),
-              onChanged: (newValue) {
-                ref.read(RequestController.selectedGender.notifier).state =
-                    newValue;
-              },
+            highlight: genderHighlight,
+            child: ColumnDivider(
+              title: 'Gender',
+              widget: CustomDropDown<String>(
+                value: gender,
+                labelText: 'Gender',
+                hintText: 'Select Gender',
+                items: genders
+                    .map(
+                      (e) => DropdownMenuItem<String>(value: e, child: Text(e)),
+                    )
+                    .toList(),
+                onChanged: (newValue) {
+                  ref.read(RequestController.selectedGender.notifier).state =
+                      newValue;
+                },
+              ),
             ),
           ),
         ),
@@ -59,47 +67,52 @@ class GenderAndDate extends ConsumerWidget {
         /// DATE
         /// DATE
         Expanded(
-          child: ColumnDivider(
+          child: Highlightable(
             key: dateKey,
-            title: "Date of Birth",
-            widget: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      contentPadding: EdgeInsets.zero,
-                      content: SizedBox(
-                        height: 350,
-                        width: 300,
-                        child: SfDateRangePicker(
-                          selectionMode: DateRangePickerSelectionMode.single,
-                          initialSelectedDate: selectedDate ?? DateTime(2000),
-                          minDate: DateTime(1900),
-                          maxDate: DateTime.now(),
-                          onSelectionChanged:
-                              (DateRangePickerSelectionChangedArgs args) {
-                                final pickedDate = args.value as DateTime;
+            highlight: dateHighlight,
+            child: ColumnDivider(
+              title: "Date of Birth",
+              widget: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        contentPadding: EdgeInsets.zero,
+                        content: SizedBox(
+                          height: 350,
+                          width: 300,
+                          child: SfDateRangePicker(
+                            selectionMode: DateRangePickerSelectionMode.single,
+                            initialSelectedDate: selectedDate ?? DateTime(2000),
+                            minDate: DateTime(1900),
+                            maxDate: DateTime.now(),
+                            onSelectionChanged:
+                                (DateRangePickerSelectionChangedArgs args) {
+                                  final pickedDate = args.value as DateTime;
 
-                                ref
-                                        .read(
-                                          RequestController.selectDate.notifier,
-                                        )
-                                        .state =
-                                    pickedDate;
+                                  ref
+                                          .read(
+                                            RequestController
+                                                .selectDate
+                                                .notifier,
+                                          )
+                                          .state =
+                                      pickedDate;
 
-                                Navigator.pop(context);
-                              },
+                                  Navigator.pop(context);
+                                },
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                );
-              },
-              child: AbsorbPointer(
-                child: CustomTextFormField(
-                  labelText: "Select Date",
-                  controller: dateController,
+                      );
+                    },
+                  );
+                },
+                child: AbsorbPointer(
+                  child: CustomTextFormField(
+                    labelText: "Select Date",
+                    controller: dateController,
+                  ),
                 ),
               ),
             ),
