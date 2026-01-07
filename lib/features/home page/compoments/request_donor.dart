@@ -7,6 +7,7 @@ import 'package:blood_bank/core/util/material_util.dart';
 import 'package:blood_bank/core/util/styles.dart';
 import 'package:blood_bank/core/widgets/custom_text_form_field.dart';
 import 'package:blood_bank/features/home%20page/compoments/blood_wrap_container.dart';
+import 'package:blood_bank/features/home%20page/compoments/gender_and_date.dart';
 import 'package:blood_bank/features/home%20page/compoments/unit_slider.dart';
 import 'package:blood_bank/features/home%20page/controller/request_controller.dart';
 import 'package:blood_bank/features/home%20page/util/location_util.dart';
@@ -130,32 +131,38 @@ class _RequestDonorState extends State<RequestDonor> {
                           const SizedBox(height: 12),
                           const Divider(),
 
-                          _locationRow(
-                            icon: Icons.home,
-                            label: "Street",
-                            value: selectedLoc.streetName,
-                          ),
-                          _locationRow(
-                            icon: Icons.location_city,
-                            label: "City",
-                            value: selectedLoc.city,
-                          ),
-                          _locationRow(
-                            icon: Icons.map,
-                            label: "State",
-                            value: selectedLoc.state,
-                          ),
-                          _locationRow(
-                            icon: Icons.markunread_mailbox,
-                            label: "Pincode",
-                            value: selectedLoc.pincode.toString(),
-                          ),
+                          if (selectedLoc.streetName.isNotEmpty)
+                            _locationRow(
+                              icon: Icons.home,
+                              label: "Street",
+                              value: selectedLoc.streetName,
+                            ),
+                          if (selectedLoc.streetName.isNotEmpty)
+                            _locationRow(
+                              icon: Icons.location_city,
+                              label: "City",
+                              value: selectedLoc.city,
+                            ),
+                          if (selectedLoc.streetName.isNotEmpty)
+                            _locationRow(
+                              icon: Icons.map,
+                              label: "State",
+                              value: selectedLoc.state,
+                            ),
+                          if (selectedLoc.streetName.isNotEmpty)
+                            _locationRow(
+                              icon: Icons.markunread_mailbox,
+                              label: "Pincode",
+                              value: selectedLoc.pincode.toString(),
+                            ),
                         ],
                       ),
                     ),
                   );
                 },
               ),
+
+              const GenderAndDate(),
             ],
           ),
         ),
@@ -196,8 +203,8 @@ class _RequestDonorState extends State<RequestDonor> {
     );
     await LocationUtil.askLocationPermission();
     try {
-      notifier.state = true;
       statusNotifier.state = "Fetching Current Location";
+      notifier.state = true;
 
       //show the loader
       if (!context.mounted) return;
@@ -231,6 +238,7 @@ class _RequestDonorState extends State<RequestDonor> {
               );
             },
             (location) {
+              log(location.toString());
               ref.read(RequestController.selectedLocation.notifier).state =
                   location;
               notifier.state = false;
