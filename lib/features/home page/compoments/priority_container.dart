@@ -5,44 +5,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PriorityContainer extends ConsumerWidget {
-  const PriorityContainer({super.key});
+  final GlobalKey globalKey;
+  const PriorityContainer({super.key, required this.globalKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: List.generate(PriorityEnum.values.length, (index) {
-        final priorities = PriorityEnum.values[index].title;
-        final selected =
-            ref.watch(RequestController.selectedPriority) == priorities;
-        return GestureDetector(
-          onTap: () {
-            ref.read(RequestController.selectedPriority.notifier).state =
-                priorities;
-          },
-          child: Container(
-            height: 50,
-            width: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: selected ? Appthemes.primaryColor : Colors.transparent,
-                width: 1.2,
-              ),
-              color: selected ? Appthemes.primaryColor : Appthemes.lightGrey,
-            ),
-            child: Center(
-              child: Text(
-                priorities,
-                style: TextStyle(
-                  color: selected ? Colors.white : Colors.black,
-                  fontWeight: FontWeight.bold,
+    return RepaintBoundary(
+      child: Container(
+        key: globalKey,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(PriorityEnum.values.length, (index) {
+            final priorities = PriorityEnum.values[index].title;
+            final selected =
+                ref.watch(RequestController.selectedPriority) == priorities;
+            return GestureDetector(
+              onTap: () {
+                ref.read(RequestController.selectedPriority.notifier).state =
+                    priorities;
+              },
+              child: Container(
+                height: 50,
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: selected
+                        ? Appthemes.primaryColor
+                        : Colors.transparent,
+                    width: 1.2,
+                  ),
+                  color: selected
+                      ? Appthemes.primaryColor
+                      : Appthemes.lightGrey,
+                ),
+                child: Center(
+                  child: Text(
+                    priorities,
+                    style: TextStyle(
+                      color: selected ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        );
-      }),
+            );
+          }),
+        ),
+      ),
     );
   }
 }

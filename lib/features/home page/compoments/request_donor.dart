@@ -30,6 +30,27 @@ class _RequestDonorState extends State<RequestDonor> {
   final hospitalNameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
+  //scroll global keys
+  final _unitKey = GlobalKey();
+  final _bloodKey = GlobalKey();
+  final _locationKey = GlobalKey();
+  final _genderKey = GlobalKey();
+  final _dateKey = GlobalKey();
+  final _priorityKey = GlobalKey();
+  final _mobileNumberKey = GlobalKey();
+  final _hospitalNameKey = GlobalKey();
+
+  void scrollTo(GlobalKey key) {
+    final context = key.currentContext;
+    if (context != null) {
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
   @override
   void dispose() {
     patientNameController.dispose();
@@ -63,6 +84,7 @@ class _RequestDonorState extends State<RequestDonor> {
                 ),
                 const Text("Hospital Name ", style: Styles.requestDonorTitle),
                 CustomTextFormField(
+                  key: _hospitalNameKey,
                   controller: hospitalNameController,
                   labelText: "Hospital Name",
                   prefixIcon: const Icon(
@@ -79,11 +101,12 @@ class _RequestDonorState extends State<RequestDonor> {
                   "Select Blood Group",
                   style: Styles.requestDonorTitle,
                 ),
-                const BloodWrapContainer(),
+                BloodWrapContainer(globalKey: _bloodKey),
                 const Text("Select Unit", style: Styles.requestDonorTitle),
-                const UnitSlider(),
+                UnitSlider(globalKey: _unitKey),
                 const Text("Mobile Number", style: Styles.requestDonorTitle),
                 CustomTextFormField(
+                  key: _mobileNumberKey,
                   controller: mobileNumberController,
                   labelText: "Mobile Number",
                   validator: FormValidator.validateMobileNumber(number: 10),
@@ -98,18 +121,23 @@ class _RequestDonorState extends State<RequestDonor> {
                           : () async {
                               await fetchCurrentLocation(ref, context);
                             },
-                      child: AbsorbPointer(
-                        absorbing: true,
-                        child: CustomTextFormField(
-                          controller: TextEditingController(),
-                          prefixIcon: const Icon(
-                            Icons.location_on,
-                            color: Appthemes.mediaiuGrey,
-                          ),
-                          labelText: "Use Current Location",
-                          suffixIcon: const Icon(
-                            Icons.arrow_drop_down,
-                            color: Appthemes.mediaiuGrey,
+                      child: RepaintBoundary(
+                        child: Container(
+                          key: _locationKey,
+                          child: AbsorbPointer(
+                            absorbing: true,
+                            child: CustomTextFormField(
+                              controller: TextEditingController(),
+                              prefixIcon: const Icon(
+                                Icons.location_on,
+                                color: Appthemes.mediaiuGrey,
+                              ),
+                              labelText: "Use Current Location",
+                              suffixIcon: const Icon(
+                                Icons.arrow_drop_down,
+                                color: Appthemes.mediaiuGrey,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -195,10 +223,10 @@ class _RequestDonorState extends State<RequestDonor> {
                   },
                 ),
 
-                const GenderAndDate(),
+                GenderAndDate(globalKey: _genderKey, dateKey: _dateKey),
 
                 const Text("Select Priority", style: Styles.requestDonorTitle),
-                const PriorityContainer(),
+                PriorityContainer(globalKey: _priorityKey),
                 Consumer(
                   builder: (context, ref, child) {
                     final loader = ref.watch(
@@ -325,7 +353,9 @@ class _RequestDonorState extends State<RequestDonor> {
     final loader = ref.read(RequestController.submitFormLoader.notifier);
     //validate the fields
     final isValid = formKey.currentState!.validate();
-    if (!isValid) return;
+    if (!isValid) {
+      return;
+    }
 
     //loader and other fields
     final unit = ref.watch(RequestController.selectedUnit);
@@ -334,26 +364,27 @@ class _RequestDonorState extends State<RequestDonor> {
     final gender = ref.watch(RequestController.selectedGender);
     final date = ref.watch(RequestController.selectDate);
     final priority = ref.watch(RequestController.selectedPriority);
+    final validations = [
+      (unit == 0.0, "Please Select Unit", _unitKey),
+      (blood == null, "Please Select Blood Group", _bloodKey),
+      (location == null, "Please Select Location", _locationKey),
+      (gender == null, "Please Select Gender", _genderKey),
+      (date == null, "Please Select Date", _dateKey),
+      (priority == null, "Please Select Priority", _priorityKey),
+    ];
 
-    final validations = <bool, String>{
-      unit == 0.0: "Please Select Unit",
-      blood == null: "Please Select Blood Group",
-      location == null: "Please Select Location",
-      gender == null: "Please Select Gender",
-      date == null: "Please Select Date",
-      priority == null: "Please Select Priority",
-    };
-
-    for (final entry in validations.entries) {
-      if (entry.key) {
+    for (final (isInvalid, message, key) in validations) {
+      if (isInvalid) {
         customSnackBar(
           context: context,
-          content: entry.value,
+          content: message,
           type: SnackType.info,
         );
+        scrollTo(key);
         return;
       }
     }
+
     loader.state = true;
     MaterialUtil.showFullScreenLoader(context);
     Future.delayed(const Duration(seconds: 5), () {

@@ -6,7 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class GenderAndDate extends ConsumerWidget {
-  const GenderAndDate({super.key});
+  final GlobalKey globalKey;
+  final GlobalKey dateKey;
+  const GenderAndDate({
+    super.key,
+    required this.globalKey,
+    required this.dateKey,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,6 +35,7 @@ class GenderAndDate extends ConsumerWidget {
         /// GENDER
         Expanded(
           child: ColumnDivider(
+            key: globalKey,
             title: 'Gender',
             widget: CustomDropDown<String>(
               value: gender,
@@ -53,6 +60,7 @@ class GenderAndDate extends ConsumerWidget {
         /// DATE
         Expanded(
           child: ColumnDivider(
+            key: dateKey,
             title: "Date of Birth",
             widget: GestureDetector(
               onTap: () {
