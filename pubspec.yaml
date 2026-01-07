@@ -63,6 +63,7 @@ dependencies:
   skeletonizer: ^2.1.2
   smooth_page_indicator: ^2.0.1
   stylish_bottom_bar: ^1.1.1
+  syncfusion_flutter_datepicker: ^32.1.22
   url_launcher: ^6.3.2
 
 dev_dependencies:

@@ -9,14 +9,14 @@ class BloodWrapContainer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedBlood = ref.watch(RequestController.selectedBloodGround);
+    final selectedBlood = ref.watch(RequestController.selectedBloodGroup);
     return Wrap(
       children: List.generate(BloodGroudEnum.values.length, (index) {
         final bloods = BloodGroudEnum.values[index].title;
         final isSelected = selectedBlood == bloods;
         return GestureDetector(
           onTap: () =>
-              ref.read(RequestController.selectedBloodGround.notifier).state =
+              ref.read(RequestController.selectedBloodGroup.notifier).state =
                   bloods,
           child: Container(
             margin: const EdgeInsets.all(5),

@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 class RequestController {
-  static final selectedBloodGround = StateProvider<String?>((ref) => null);
+  static final selectedBloodGroup = StateProvider<String?>((ref) => null);
 
-  static final selectedUnit = StateProvider<double>((ref) => 0.0);
+  static final selectedUnit = StateProvider<double>((ref) => 1.0);
 
   static final locationLoader = StateProvider.autoDispose<bool>((ref) => false);
 
@@ -30,4 +30,12 @@ class RequestController {
         ref.onDispose(controller.dispose);
         return controller;
       });
+
+  //priority
+  static final selectedPriority = StateProvider<String?>((ref) => null);
+
+  //submit form
+  static final submitFormLoader = StateProvider.autoDispose<bool>(
+    (ref) => false,
+  );
 }

@@ -3,11 +3,14 @@ import 'dart:developer';
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/constants/navigation.dart';
 import 'package:blood_bank/core/util/custom_snack.dart';
+import 'package:blood_bank/core/util/form_validator.dart';
 import 'package:blood_bank/core/util/material_util.dart';
 import 'package:blood_bank/core/util/styles.dart';
+import 'package:blood_bank/core/widgets/custom_elevated_button.dart';
 import 'package:blood_bank/core/widgets/custom_text_form_field.dart';
 import 'package:blood_bank/features/home%20page/compoments/blood_wrap_container.dart';
 import 'package:blood_bank/features/home%20page/compoments/gender_and_date.dart';
+import 'package:blood_bank/features/home%20page/compoments/priority_container.dart';
 import 'package:blood_bank/features/home%20page/compoments/unit_slider.dart';
 import 'package:blood_bank/features/home%20page/controller/request_controller.dart';
 import 'package:blood_bank/features/home%20page/util/location_util.dart';
@@ -24,6 +27,18 @@ class RequestDonor extends StatefulWidget {
 class _RequestDonorState extends State<RequestDonor> {
   final patientNameController = TextEditingController();
   final mobileNumberController = TextEditingController();
+  final hospitalNameController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    patientNameController.dispose();
+    mobileNumberController.dispose();
+    hospitalNameController.dispose();
+    formKey.currentState?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,139 +46,180 @@ class _RequestDonorState extends State<RequestDonor> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 20,
-            children: [
-              const Text("Patient Name ", style: Styles.requestDonorTitle),
-              CustomTextFormField(
-                controller: patientNameController,
-                labelText: "Patient Name",
-                prefixIcon: const Icon(
-                  Icons.person,
-                  color: Appthemes.mediaiuGrey,
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 20,
+              children: [
+                const Text("Patient Name ", style: Styles.requestDonorTitle),
+                CustomTextFormField(
+                  controller: patientNameController,
+                  labelText: "Patient Name",
+                  prefixIcon: const Icon(
+                    Icons.person,
+                    color: Appthemes.mediaiuGrey,
+                  ),
                 ),
-              ),
+                const Text("Hospital Name ", style: Styles.requestDonorTitle),
+                CustomTextFormField(
+                  controller: hospitalNameController,
+                  labelText: "Hospital Name",
+                  prefixIcon: const Icon(
+                    Icons.person,
+                    color: Appthemes.mediaiuGrey,
+                  ),
+                  validator: FormValidator.validateTextField(
+                    text: "Hospital Name",
+                  ),
+                ),
 
-              //blood group
-              const Text("Select Blood Group", style: Styles.requestDonorTitle),
-              const BloodWrapContainer(),
-              const Text("Select Unit", style: Styles.requestDonorTitle),
-              const UnitSlider(),
-              const Text("Mobile Number", style: Styles.requestDonorTitle),
-              CustomTextFormField(
-                controller: mobileNumberController,
-                labelText: "Mobile Number",
-              ),
-              const Text("Select Location", style: Styles.requestDonorTitle),
-              Consumer(
-                builder: (context, ref, child) {
-                  final loader = ref.watch(RequestController.locationLoader);
-                  return GestureDetector(
-                    onTap: loader
-                        ? null
-                        : () async {
-                            await fetchCurrentLocation(ref, context);
-                          },
-                    child: AbsorbPointer(
-                      absorbing: true,
-                      child: CustomTextFormField(
-                        controller: TextEditingController(),
-                        prefixIcon: const Icon(
-                          Icons.location_on,
-                          color: Appthemes.mediaiuGrey,
-                        ),
-                        labelText: "Use Current Location",
-                        suffixIcon: const Icon(
-                          Icons.arrow_drop_down,
-                          color: Appthemes.mediaiuGrey,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              Consumer(
-                builder: (context, ref, child) {
-                  final selectedLoc = ref.watch(
-                    RequestController.selectedLocation,
-                  );
-
-                  if (selectedLoc == null) {
-                    return const SizedBox.shrink();
-                  }
-
-                  return Center(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.08),
-                            blurRadius: 12,
-                            offset: const Offset(0, 6),
+                //blood group
+                const Text(
+                  "Select Blood Group",
+                  style: Styles.requestDonorTitle,
+                ),
+                const BloodWrapContainer(),
+                const Text("Select Unit", style: Styles.requestDonorTitle),
+                const UnitSlider(),
+                const Text("Mobile Number", style: Styles.requestDonorTitle),
+                CustomTextFormField(
+                  controller: mobileNumberController,
+                  labelText: "Mobile Number",
+                  validator: FormValidator.validateMobileNumber(number: 10),
+                ),
+                const Text("Select Location", style: Styles.requestDonorTitle),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final loader = ref.watch(RequestController.locationLoader);
+                    return GestureDetector(
+                      onTap: loader
+                          ? null
+                          : () async {
+                              await fetchCurrentLocation(ref, context);
+                            },
+                      child: AbsorbPointer(
+                        absorbing: true,
+                        child: CustomTextFormField(
+                          controller: TextEditingController(),
+                          prefixIcon: const Icon(
+                            Icons.location_on,
+                            color: Appthemes.mediaiuGrey,
                           ),
-                        ],
-                        border: Border.all(color: Colors.green, width: 1.5),
+                          labelText: "Use Current Location",
+                          suffixIcon: const Icon(
+                            Icons.arrow_drop_down,
+                            color: Appthemes.mediaiuGrey,
+                          ),
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // Header
-                          const Row(
-                            children: [
-                              Icon(Icons.location_on, color: Colors.green),
-                              SizedBox(width: 8),
-                              Text(
-                                "Selected Location",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                    );
+                  },
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final selectedLoc = ref.watch(
+                      RequestController.selectedLocation,
+                    );
+
+                    if (selectedLoc == null) {
+                      return const SizedBox.shrink();
+                    }
+
+                    return Center(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.08),
+                              blurRadius: 12,
+                              offset: const Offset(0, 6),
+                            ),
+                          ],
+                          border: Border.all(color: Colors.green, width: 1.5),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Header
+                            const Row(
+                              children: [
+                                Icon(Icons.location_on, color: Colors.green),
+                                SizedBox(width: 8),
+                                Text(
+                                  "Selected Location",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 12),
+                            const Divider(),
+
+                            if (selectedLoc.streetName.isNotEmpty)
+                              _locationRow(
+                                icon: Icons.home,
+                                label: "Street",
+                                value: selectedLoc.streetName,
                               ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 12),
-                          const Divider(),
-
-                          if (selectedLoc.streetName.isNotEmpty)
-                            _locationRow(
-                              icon: Icons.home,
-                              label: "Street",
-                              value: selectedLoc.streetName,
-                            ),
-                          if (selectedLoc.streetName.isNotEmpty)
-                            _locationRow(
-                              icon: Icons.location_city,
-                              label: "City",
-                              value: selectedLoc.city,
-                            ),
-                          if (selectedLoc.streetName.isNotEmpty)
-                            _locationRow(
-                              icon: Icons.map,
-                              label: "State",
-                              value: selectedLoc.state,
-                            ),
-                          if (selectedLoc.streetName.isNotEmpty)
-                            _locationRow(
-                              icon: Icons.markunread_mailbox,
-                              label: "Pincode",
-                              value: selectedLoc.pincode.toString(),
-                            ),
-                        ],
+                            if (selectedLoc.streetName.isNotEmpty)
+                              _locationRow(
+                                icon: Icons.location_city,
+                                label: "City",
+                                value: selectedLoc.city,
+                              ),
+                            if (selectedLoc.streetName.isNotEmpty)
+                              _locationRow(
+                                icon: Icons.map,
+                                label: "State",
+                                value: selectedLoc.state,
+                              ),
+                            if (selectedLoc.streetName.isNotEmpty)
+                              _locationRow(
+                                icon: Icons.markunread_mailbox,
+                                label: "Pincode",
+                                value: selectedLoc.pincode.toString(),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                ),
 
-              const GenderAndDate(),
-            ],
+                const GenderAndDate(),
+
+                const Text("Select Priority", style: Styles.requestDonorTitle),
+                const PriorityContainer(),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final loader = ref.watch(
+                      RequestController.submitFormLoader,
+                    );
+                    return Center(
+                      child: CustomElevatedButton(
+                        onPressed: loader
+                            ? null
+                            : () async {
+                                await submit(context, ref);
+                              },
+                        text: "Submit",
+                        isLoading: loader,
+                        minSize: true,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -263,5 +319,52 @@ class _RequestDonorState extends State<RequestDonor> {
         type: SnackType.error,
       );
     }
+  }
+
+  Future<void> submit(BuildContext context, WidgetRef ref) async {
+    final loader = ref.read(RequestController.submitFormLoader.notifier);
+    //validate the fields
+    final isValid = formKey.currentState!.validate();
+    if (!isValid) return;
+
+    //loader and other fields
+    final unit = ref.watch(RequestController.selectedUnit);
+    final blood = ref.watch(RequestController.selectedBloodGroup);
+    final location = ref.watch(RequestController.selectedLocation);
+    final gender = ref.watch(RequestController.selectedGender);
+    final date = ref.watch(RequestController.selectDate);
+    final priority = ref.watch(RequestController.selectedPriority);
+
+    final validations = <bool, String>{
+      unit == 0.0: "Please Select Unit",
+      blood == null: "Please Select Blood Group",
+      location == null: "Please Select Location",
+      gender == null: "Please Select Gender",
+      date == null: "Please Select Date",
+      priority == null: "Please Select Priority",
+    };
+
+    for (final entry in validations.entries) {
+      if (entry.key) {
+        customSnackBar(
+          context: context,
+          content: entry.value,
+          type: SnackType.info,
+        );
+        return;
+      }
+    }
+    loader.state = true;
+    MaterialUtil.showFullScreenLoader(context);
+    Future.delayed(const Duration(seconds: 5), () {
+      loader.state = false;
+      if (!context.mounted) return;
+      navigateBack(context);
+      customSnackBar(
+        context: context,
+        content: "Request Submitted Successfully",
+        type: SnackType.success,
+      );
+    });
   }
 }

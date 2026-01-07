@@ -3,6 +3,7 @@ import 'package:blood_bank/core/widgets/custom_text_form_field.dart';
 import 'package:blood_bank/features/home%20page/controller/request_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class GenderAndDate extends ConsumerWidget {
   const GenderAndDate({super.key});
@@ -49,22 +50,43 @@ class GenderAndDate extends ConsumerWidget {
         const SizedBox(width: 10),
 
         /// DATE
+        /// DATE
         Expanded(
           child: ColumnDivider(
             title: "Date of Birth",
             widget: GestureDetector(
-              onTap: () async {
-                final pickedDate = await showDatePicker(
+              onTap: () {
+                showDialog(
                   context: context,
-                  initialDate: selectedDate ?? DateTime(2000),
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime.now(),
-                );
+                  builder: (context) {
+                    return AlertDialog(
+                      contentPadding: EdgeInsets.zero,
+                      content: SizedBox(
+                        height: 350,
+                        width: 300,
+                        child: SfDateRangePicker(
+                          selectionMode: DateRangePickerSelectionMode.single,
+                          initialSelectedDate: selectedDate ?? DateTime(2000),
+                          minDate: DateTime(1900),
+                          maxDate: DateTime.now(),
+                          onSelectionChanged:
+                              (DateRangePickerSelectionChangedArgs args) {
+                                final pickedDate = args.value as DateTime;
 
-                if (pickedDate != null) {
-                  ref.read(RequestController.selectDate.notifier).state =
-                      pickedDate;
-                }
+                                ref
+                                        .read(
+                                          RequestController.selectDate.notifier,
+                                        )
+                                        .state =
+                                    pickedDate;
+
+                                Navigator.pop(context);
+                              },
+                        ),
+                      ),
+                    );
+                  },
+                );
               },
               child: AbsorbPointer(
                 child: CustomTextFormField(

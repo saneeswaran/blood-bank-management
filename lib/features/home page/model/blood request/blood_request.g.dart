@@ -14,16 +14,11 @@ _BloodRequest _$BloodRequestFromJson(Map<String, dynamic> json) =>
       bloodGroup: json['bloodGroup'] as String,
       units: (json['units'] as num).toInt(),
       hospitalName: json['hospitalName'] as String,
-      city: json['city'] as String,
-      area: json['area'] as String,
       location: Location.fromJson(json['location'] as Map<String, dynamic>),
-      contactName: json['contactName'] as String,
       contactPhone: json['contactPhone'] as String,
       urgency: json['urgency'] as String,
       status: json['status'] as String,
       createdAt: json['createdAt'] as String,
-      food: json['food'] as bool? ?? false,
-      services: json['services'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$BloodRequestToJson(_BloodRequest instance) =>
@@ -34,14 +29,9 @@ Map<String, dynamic> _$BloodRequestToJson(_BloodRequest instance) =>
       'bloodGroup': instance.bloodGroup,
       'units': instance.units,
       'hospitalName': instance.hospitalName,
-      'city': instance.city,
-      'area': instance.area,
       'location': instance.location,
-      'contactName': instance.contactName,
       'contactPhone': instance.contactPhone,
       'urgency': instance.urgency,
       'status': instance.status,
       'createdAt': instance.createdAt,
-      'food': instance.food,
-      'services': instance.services,
     };

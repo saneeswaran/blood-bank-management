@@ -15,7 +15,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.isLoading = false,
     this.minSize = false,
     this.maxSize = false,
-    this.backgroundColor = const Color(0xff6C9674),
+    this.backgroundColor = const Color(0xffe60449),
   });
 
   @override
@@ -29,8 +29,8 @@ class CustomElevatedButton extends StatelessWidget {
           borderRadius: BorderRadiusGeometry.circular(30),
         ),
         side: const BorderSide(color: Colors.white),
-        minimumSize: minSize ? Size(size.width * 0.4, 40) : const Size(0, 0),
-        maximumSize: minSize ? Size(size.width * 0.8, 40) : const Size(0, 0),
+        minimumSize: minSize ? Size(size.width * 0.8, 60) : const Size(0, 0),
+        maximumSize: minSize ? Size(size.width * 0.8, 60) : const Size(0, 0),
       ),
       onPressed: isLoading ? null : onPressed,
       child: isLoading
