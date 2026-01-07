@@ -52,11 +52,16 @@ class LocationUtil {
         latitude: latlng.latitude,
         longitude: latlng.longitude,
         fullAddress:
-            "${place.street}, ${place.postalCode}, ${place.locality}, ${place.administrativeArea}, ${place.country}",
-        streetName: place.street ?? "",
+            "${place.name}, ${place.subLocality}, ${place.locality}, "
+            "${place.administrativeArea}, ${place.postalCode}, ${place.country}",
+
+        streetName:
+            "${place.subThoroughfare ?? ""} ${place.thoroughfare ?? place.name ?? ""}"
+                .trim(),
+
         city: place.locality ?? "",
         state: place.administrativeArea ?? "",
-        pincode: int.parse(place.postalCode ?? "0"),
+        pincode: int.tryParse(place.postalCode ?? "") ?? 0,
       );
 
       return Right(location);

@@ -37,11 +37,19 @@ class FullScreenLoaderContent extends StatelessWidget {
           width: MediaQuery.of(context).size.width * 0.8,
           child: Center(
             child: DefaultTextStyle(
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
               child: AnimatedTextKit(
                 key: ValueKey(title),
                 animatedTexts: [
-                  TyperAnimatedText(title, textAlign: TextAlign.center),
+                  TyperAnimatedText(
+                    title,
+                    textAlign: TextAlign.center,
+                    speed: const Duration(milliseconds: 50),
+                  ),
                 ],
                 isRepeatingAnimation: true,
               ),

@@ -82,9 +82,108 @@ class _RequestDonorState extends State<RequestDonor> {
                   );
                 },
               ),
+              Consumer(
+                builder: (context, ref, child) {
+                  final selectedLoc = ref.watch(
+                    RequestController.selectedLocation,
+                  );
+
+                  if (selectedLoc == null) {
+                    return const SizedBox.shrink();
+                  }
+
+                  return Center(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
+                        border: Border.all(color: Colors.green, width: 1.5),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Header
+                          const Row(
+                            children: [
+                              Icon(Icons.location_on, color: Colors.green),
+                              SizedBox(width: 8),
+                              Text(
+                                "Selected Location",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 12),
+                          const Divider(),
+
+                          _locationRow(
+                            icon: Icons.home,
+                            label: "Street",
+                            value: selectedLoc.streetName,
+                          ),
+                          _locationRow(
+                            icon: Icons.location_city,
+                            label: "City",
+                            value: selectedLoc.city,
+                          ),
+                          _locationRow(
+                            icon: Icons.map,
+                            label: "State",
+                            value: selectedLoc.state,
+                          ),
+                          _locationRow(
+                            icon: Icons.markunread_mailbox,
+                            label: "Pincode",
+                            value: selectedLoc.pincode.toString(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _locationRow({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: Colors.grey[700]),
+          const SizedBox(width: 10),
+          Text("$label:", style: const TextStyle(fontWeight: FontWeight.w500)),
+          const SizedBox(width: 6),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(color: Colors.grey[800]),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -132,11 +231,15 @@ class _RequestDonorState extends State<RequestDonor> {
               );
             },
             (location) {
-              log(location.toString());
               ref.read(RequestController.selectedLocation.notifier).state =
                   location;
               notifier.state = false;
               navigateBack(context);
+              customSnackBar(
+                context: context,
+                content: "Location Fetched Successfully",
+                type: SnackType.success,
+              );
             },
           );
         },
