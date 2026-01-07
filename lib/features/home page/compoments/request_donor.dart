@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/constants/navigation.dart';
 import 'package:blood_bank/core/util/custom_snack.dart';
@@ -89,16 +91,24 @@ class _RequestDonorState extends State<RequestDonor> {
 
   Future<void> fetchCurrentLocation(WidgetRef ref, BuildContext context) async {
     final notifier = ref.read(RequestController.locationLoader.notifier);
+    final status = ref.watch(RequestController.locationStatusMessage);
+    final statusNotifier = ref.read(
+      RequestController.locationStatusMessage.notifier,
+    );
+    await LocationUtil.askLocationPermission();
     try {
       notifier.state = true;
+      statusNotifier.state = "Fetching Current Location";
 
       //show the loader
-      MaterialUtil.showFullScreenLoader(context);
+      if (!context.mounted) return;
+      MaterialUtil.showFullScreenLoader(context, message: status);
 
       final latlngResult = await LocationUtil.getCurrentLatLong();
 
       latlngResult.fold(
         (error) {
+          log(error.toString());
           navigateBack(context);
           customSnackBar(
             context: context,
@@ -107,10 +117,13 @@ class _RequestDonorState extends State<RequestDonor> {
           );
         },
         (latlng) async {
+          statusNotifier.state = "Converting to Address";
+          log(latlng.toString());
           final locationResult = await LocationUtil.getCurrentLocation(latlng);
 
           locationResult.fold(
             (error) {
+              log(error.toString());
               navigateBack(context);
               customSnackBar(
                 context: context,
@@ -119,6 +132,7 @@ class _RequestDonorState extends State<RequestDonor> {
               );
             },
             (location) {
+              log(location.toString());
               ref.read(RequestController.selectedLocation.notifier).state =
                   location;
               notifier.state = false;
@@ -128,6 +142,7 @@ class _RequestDonorState extends State<RequestDonor> {
         },
       );
     } catch (e) {
+      log(e.toString());
       notifier.state = true;
       if (!context.mounted) return;
       navigateBack(context);

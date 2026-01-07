@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/widgets/loader.dart';
 import 'package:flutter/material.dart';
@@ -11,21 +12,43 @@ class MaterialUtil {
       builder: (_) {
         return WillPopScope(
           onWillPop: () async => false,
-          child: const Center(child: _FullScreenLoaderContent()),
+          child: Center(
+            child: FullScreenLoaderContent(title: message ?? "Loading"),
+          ),
         );
       },
     );
   }
 }
 
-class _FullScreenLoaderContent extends StatelessWidget {
-  const _FullScreenLoaderContent();
+class FullScreenLoaderContent extends StatelessWidget {
+  final String title;
+  const FullScreenLoaderContent({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       mainAxisSize: MainAxisSize.min,
-      children: [Loader(color: Appthemes.primaryColor)],
+      children: [
+        const Loader(color: Appthemes.primaryColor),
+        const SizedBox(height: 20),
+        SizedBox(
+          height: 80,
+          width: MediaQuery.of(context).size.width * 0.8,
+          child: Center(
+            child: DefaultTextStyle(
+              style: const TextStyle(color: Colors.white, fontSize: 18),
+              child: AnimatedTextKit(
+                key: ValueKey(title),
+                animatedTexts: [
+                  TyperAnimatedText(title, textAlign: TextAlign.center),
+                ],
+                isRepeatingAnimation: true,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

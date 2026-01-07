@@ -4,8 +4,24 @@ import 'package:fpdart/fpdart.dart';
 import 'package:geocoding/geocoding.dart' hide Location;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LocationUtil {
+  static Future<Either<Failure, void>> askLocationPermission() async {
+    try {
+      final status = await Permission.location.request();
+      if (status.isGranted) {
+        return const Right(null);
+      } else {
+        Geolocator.openAppSettings();
+        await Geolocator.checkPermission();
+        return const Left("Location permission not granted");
+      }
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
   static Future<Either<Failure, LatLng>> getCurrentLatLong() async {
     try {
       final position = await Geolocator.getCurrentPosition(

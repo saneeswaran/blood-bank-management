@@ -13,4 +13,6 @@ class RequestController {
   );
 
   static final requestLoader = StateProvider.autoDispose<bool>((ref) => false);
+
+  static final locationStatusMessage = StateProvider<String>((ref) => "");
 }
