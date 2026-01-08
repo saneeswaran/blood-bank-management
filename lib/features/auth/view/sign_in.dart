@@ -110,12 +110,12 @@ class _SignInState extends State<SignIn> {
                   mainAxisAlignment: .center,
                   children: [
                     const Text(
-                      "Already have an account? ",
+                      "Don't have an account? ",
                       style: TextStyle(color: Appthemes.mediaiuGrey),
                     ),
                     TextButton(
                       onPressed: () {
-                        navigateTo(context: context, route: const SignIn());
+                        navigateBack(context);
                       },
                       child: const Text(
                         "Sign In",

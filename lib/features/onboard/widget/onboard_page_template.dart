@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:blood_bank/features/auth/view/sign_up.dart';
+import 'package:blood_bank/features/onboard/service/onboard_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/features/onboard/model/onboard_model.dart';
@@ -245,11 +246,14 @@ class _OnboardPageTemplateState extends State<OnboardPageTemplate> {
     }
   }
 
-  void _skipOnboard() {
+  void _skipOnboard() async {
+    await OnboardManager.setOnboardVisited();
     _navigateToHome();
   }
 
-  void _navigateToHome() {
+  void _navigateToHome() async {
+    await OnboardManager.setOnboardVisited();
+    if (!mounted) return;
     Navigator.of(
       context,
     ).pushReplacement(MaterialPageRoute(builder: (context) => const SignUp()));
