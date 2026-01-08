@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:blood_bank/features/auth/view/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:blood_bank/core/constants/appthemes.dart';
-import 'package:blood_bank/features/bottom%20nav/view/bottom_navi.dart';
 import 'package:blood_bank/features/onboard/model/onboard_model.dart';
 
 class OnboardPageTemplate extends StatefulWidget {
@@ -250,8 +250,8 @@ class _OnboardPageTemplateState extends State<OnboardPageTemplate> {
   }
 
   void _navigateToHome() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const BottomNavi()),
-    );
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (context) => const SignUp()));
   }
 }

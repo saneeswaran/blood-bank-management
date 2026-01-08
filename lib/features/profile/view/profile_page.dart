@@ -1,5 +1,4 @@
 import 'package:blood_bank/core/constants/app_images.dart';
-import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/features/profile/components/donate_switch.dart';
 import 'package:blood_bank/features/profile/components/profile_tile.dart';
 import 'package:blood_bank/features/profile/model/profile_tile_model.dart';
@@ -26,10 +25,9 @@ class _ProfilePageState extends State<ProfilePage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                /// PROFILE IMAGE
+                // Profile image
                 const CircleAvatar(
                   radius: 65,
-                  backgroundColor: Appthemes.primaryColor,
                   child: CircleAvatar(
                     radius: 60,
                     backgroundImage: CachedNetworkImageProvider(AppImages.logo),
@@ -38,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 const SizedBox(height: 15),
 
-                /// USER NAME
+                // User name
                 const Text(
                   "Sundalman",
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -46,18 +44,18 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 const SizedBox(height: 30),
 
-                /// LIST TILES
+                // Tiles
                 ListView.builder(
                   itemCount: ProfileTileModel.profileTiles.length + 1,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    /// DONATE SWITCH TILE
+                    // Donate switch
                     if (index == 0) {
                       return const DonateSwitch();
                     }
 
-                    /// NORMAL PROFILE TILE
+                    // Normal profile tile
                     final tile = ProfileTileModel.profileTiles[index - 1];
                     return ProfileTile(
                       icon: tile.icon,
