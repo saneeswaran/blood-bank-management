@@ -8,6 +8,7 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? prefixIcon;
   final TextInputType? textInputType;
   final Widget? suffixIcon;
+  final Iterable<String>? autofillHints;
   const CustomTextFormField({
     super.key,
     required this.controller,
@@ -16,6 +17,7 @@ class CustomTextFormField extends StatelessWidget {
     this.prefixIcon,
     this.textInputType,
     this.suffixIcon,
+    this.autofillHints,
   });
 
   @override
@@ -24,6 +26,7 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       validator: validator,
       keyboardType: textInputType,
+      autofillHints: autofillHints,
       decoration: InputDecoration(
         labelText: labelText,
         prefixIcon: prefixIcon,

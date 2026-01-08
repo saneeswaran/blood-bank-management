@@ -13,11 +13,14 @@ import 'package:blood_bank/core/widgets/custom_elevated_button.dart';
 import 'package:blood_bank/core/widgets/custom_rounded_button.dart';
 import 'package:blood_bank/core/widgets/custom_text_form_field.dart';
 import 'package:blood_bank/features/auth/service/auth_service.dart';
+import 'package:blood_bank/features/auth/view/sign_in.dart';
+import 'package:blood_bank/features/bottom%20nav/view/bottom_navi.dart';
 import 'package:blood_bank/features/home%20page/compoments/blood_wrap_container.dart';
 import 'package:blood_bank/features/home%20page/controller/request_controller.dart';
 import 'package:blood_bank/features/home%20page/model/location/location.dart';
 import 'package:blood_bank/features/home%20page/util/location_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SignUp extends StatefulWidget {
@@ -41,6 +44,15 @@ class _SignUpState extends State<SignUp> {
   final _locationKey = GlobalKey();
   final _bloodHighlight = false;
   final _locationHighlight = false;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    userNameController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +62,7 @@ class _SignUpState extends State<SignUp> {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
-              spacing: 20,
+              spacing: 15,
               crossAxisAlignment: .start,
               children: [
                 const Text(
@@ -214,7 +226,7 @@ class _SignUpState extends State<SignUp> {
                       },
                     ),
                     const Text(
-                      "Be a Donor",
+                      "I want to Donate",
                       style: TextStyle(
                         fontSize: 16,
                         color: Appthemes.mediaiuGrey,
@@ -227,11 +239,10 @@ class _SignUpState extends State<SignUp> {
                     final loader = ref.watch(authSignUpLoader);
                     return Center(
                       child: CustomElevatedButton(
-                        onPressed: loader
-                            ? null
-                            : () async {
-                                await submitSignUp(context, ref);
-                              },
+                        isLoading: loader,
+                        onPressed: () async {
+                          await submitSignUp(context, ref);
+                        },
                         text: "Sign Up",
                         minSize: true,
                       ),
@@ -267,7 +278,9 @@ class _SignUpState extends State<SignUp> {
                       style: TextStyle(color: Appthemes.mediaiuGrey),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        navigateTo(context: context, route: const SignIn());
+                      },
                       child: const Text(
                         "Sign In",
                         style: TextStyle(
@@ -422,12 +435,18 @@ class _SignUpState extends State<SignUp> {
       if (result != null) {
         notifier.state = false;
         if (!context.mounted) return;
-        navigateBack(context);
         customSnackBar(
           context: context,
           content: "Account Created Successfully",
           type: SnackType.success,
         );
+        TextInput.finishAutofillContext(shouldSave: true);
+        Future.delayed(const Duration(milliseconds: 500), () {
+          emailController.dispose();
+          passwordController.dispose();
+          userNameController.dispose();
+        });
+        navigateWithReplacement(context: context, route: const BottomNavi());
       }
     } catch (e) {
       notifier.state = false;
