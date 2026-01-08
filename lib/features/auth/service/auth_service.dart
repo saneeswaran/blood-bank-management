@@ -1,4 +1,8 @@
+import 'package:blood_bank/features/profile/service/profile_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/legacy.dart';
+
+final authSignUpLoader = StateProvider.autoDispose<bool>((ref) => false);
 
 class AuthService {
   static final _auth = FirebaseAuth.instance;
@@ -6,6 +10,8 @@ class AuthService {
   static Future<User?> registerWithEmail({
     required String email,
     required String password,
+    required String userName,
+    required bool isDonor,
   }) async {
     try {
       final userCredential = await _auth.createUserWithEmailAndPassword(
@@ -16,7 +22,11 @@ class AuthService {
       final user = userCredential.user;
 
       if (user != null) {
-        await ProfileRepo.createUser(email: email, userName: userName);
+        await ProfileService.createUser(
+          email: email,
+          userName: userName,
+          isDonor: isDonor,
+        );
       }
 
       return user;

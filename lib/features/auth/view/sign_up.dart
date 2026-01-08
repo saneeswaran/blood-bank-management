@@ -1,13 +1,18 @@
 import 'dart:developer' show log;
 
 import 'package:blood_bank/core/animations/highlightable.dart';
+import 'package:blood_bank/core/constants/app_images.dart';
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/constants/navigation.dart';
 import 'package:blood_bank/core/util/custom_snack.dart';
 import 'package:blood_bank/core/util/form_validator.dart';
 import 'package:blood_bank/core/util/material_util.dart';
 import 'package:blood_bank/core/util/styles.dart';
+import 'package:blood_bank/core/widgets/custom_check_box.dart';
+import 'package:blood_bank/core/widgets/custom_elevated_button.dart';
+import 'package:blood_bank/core/widgets/custom_rounded_button.dart';
 import 'package:blood_bank/core/widgets/custom_text_form_field.dart';
+import 'package:blood_bank/features/auth/service/auth_service.dart';
 import 'package:blood_bank/features/home%20page/compoments/blood_wrap_container.dart';
 import 'package:blood_bank/features/home%20page/controller/request_controller.dart';
 import 'package:blood_bank/features/home%20page/model/location/location.dart';
@@ -28,6 +33,7 @@ class _SignUpState extends State<SignUp> {
   final userNameController = TextEditingController();
   Location? location;
   String? bloodGroup;
+  bool isDonor = false;
   final formKey = GlobalKey<FormState>();
 
   //keys
@@ -196,6 +202,82 @@ class _SignUpState extends State<SignUp> {
                     );
                   },
                 ),
+
+                Row(
+                  children: [
+                    CustomCheckBox(
+                      value: isDonor,
+                      onChanged: (newValue) {
+                        setState(() {
+                          isDonor = newValue!;
+                        });
+                      },
+                    ),
+                    const Text(
+                      "Be a Donor",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Appthemes.mediaiuGrey,
+                      ),
+                    ),
+                  ],
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final loader = ref.watch(authSignUpLoader);
+                    return Center(
+                      child: CustomElevatedButton(
+                        onPressed: loader
+                            ? null
+                            : () async {
+                                await submitSignUp(context, ref);
+                              },
+                        text: "Sign Up",
+                        minSize: true,
+                      ),
+                    );
+                  },
+                ),
+                Row(
+                  children: [
+                    const Expanded(
+                      child: Divider(color: Appthemes.mediaiuGrey),
+                    ),
+
+                    Text(" OR ", style: TextStyle(color: Colors.grey[700])),
+
+                    const Expanded(
+                      child: Divider(color: Appthemes.mediaiuGrey),
+                    ),
+                  ],
+                ),
+
+                Center(
+                  child: CustomRoundedButton(
+                    imagePath: AppImages.onboard1,
+                    onTap: () {},
+                  ),
+                ),
+
+                Row(
+                  mainAxisAlignment: .center,
+                  children: [
+                    const Text(
+                      "Already have an account? ",
+                      style: TextStyle(color: Appthemes.mediaiuGrey),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        "Sign In",
+                        style: TextStyle(
+                          color: Appthemes.primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -304,5 +386,57 @@ class _SignUpState extends State<SignUp> {
   Future<void> submitSignUp(BuildContext context, WidgetRef ref) async {
     final isValid = formKey.currentState!.validate();
     if (!isValid) return;
+    final notifier = ref.read(authSignUpLoader.notifier);
+
+    //values
+    final location = ref.watch(RequestController.selectedLocation);
+    final bloodGroup = ref.watch(RequestController.selectedBloodGroup);
+
+    if (location == null) {
+      customSnackBar(
+        context: context,
+        content: "Please select a location",
+        type: SnackType.error,
+      );
+      return;
+    }
+
+    if (bloodGroup == null) {
+      customSnackBar(
+        context: context,
+        content: "Please select a blood group",
+        type: SnackType.error,
+      );
+      return;
+    }
+
+    notifier.state = true;
+    try {
+      final result = await AuthService.registerWithEmail(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+        isDonor: isDonor,
+        userName: userNameController.text,
+      );
+
+      if (result != null) {
+        notifier.state = false;
+        if (!context.mounted) return;
+        navigateBack(context);
+        customSnackBar(
+          context: context,
+          content: "Account Created Successfully",
+          type: SnackType.success,
+        );
+      }
+    } catch (e) {
+      notifier.state = false;
+      if (!context.mounted) return;
+      customSnackBar(
+        context: context,
+        content: e.toString(),
+        type: SnackType.error,
+      );
+    }
   }
 }
