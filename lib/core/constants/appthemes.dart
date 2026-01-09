@@ -13,11 +13,11 @@ class Appthemes {
     primaryColor: primaryColor,
     iconTheme: const IconThemeData(color: Colors.black),
     appBarTheme: const AppBarTheme(
-      // backgroundColor: primaryColor,
-      backgroundColor: scaffoldBackgroundColor,
+      backgroundColor: primaryColor,
+      //  backgroundColor: scaffoldBackgroundColor,
       centerTitle: true,
       titleTextStyle: TextStyle(
-        color: Colors.black,
+        color: Colors.white,
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),

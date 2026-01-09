@@ -34,12 +34,12 @@ class MyApp extends StatelessWidget {
 
           final bool isVisitedOnboard = OnboardManager.isOnboardVisited();
           log(isVisitedOnboard.toString());
-          if (!snap.hasData) {
-            return const SignUp();
-          }
 
           if (!isVisitedOnboard) return const OnboardPage();
 
+          if (!snap.hasData) {
+            return const SignUp();
+          }
           return const BottomNavi();
         },
       ),
