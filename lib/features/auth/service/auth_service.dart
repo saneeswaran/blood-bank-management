@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/legacy.dart';
 
 final authSignUpLoader = StateProvider.autoDispose<bool>((ref) => false);
 
+final authSignInLoader = StateProvider.autoDispose<bool>((ref) => false);
+
 class AuthService {
   static final _auth = FirebaseAuth.instance;
 

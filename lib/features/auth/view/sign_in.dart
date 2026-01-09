@@ -10,6 +10,7 @@ import 'package:blood_bank/features/auth/service/auth_service.dart';
 import 'package:blood_bank/features/auth/view/forgot_password.dart';
 import 'package:blood_bank/features/bottom%20nav/view/bottom_navi.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -27,13 +28,14 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
           child: Form(
             key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 15,
               children: [
+                const SizedBox(height: 30),
                 const Text(
                   "Sign in to continue",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -79,10 +81,18 @@ class _SignInState extends State<SignIn> {
                 ),
 
                 Center(
-                  child: CustomElevatedButton(
-                    onPressed: () {},
-                    text: "Login",
-                    minSize: true,
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final loader = ref.watch(authSignInLoader);
+                      return CustomElevatedButton(
+                        onPressed: () async {
+                          await signInSubmit(context, ref);
+                        },
+                        isLoading: loader,
+                        text: "Login",
+                        minSize: true,
+                      );
+                    },
                   ),
                 ),
                 Row(
@@ -135,20 +145,24 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  Future<void> signInSubmit(BuildContext context) async {
+  Future<void> signInSubmit(BuildContext context, WidgetRef ref) async {
     final isValid = formKey.currentState!.validate();
+    final notifier = ref.read(authSignInLoader.notifier);
     if (!isValid) return;
 
     try {
+      notifier.state = true;
       final result = await AuthService.loginWithEmail(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
       if (!context.mounted) return;
       if (result != null) {
+        notifier.state = true;
         navigateTo(context: context, route: const BottomNavi());
       }
     } catch (e) {
+      notifier.state = true;
       customSnackBar(
         context: context,
         content: e.toString(),

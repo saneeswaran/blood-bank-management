@@ -56,18 +56,18 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Sign Up")),
       body: SingleChildScrollView(
         child: Form(
           key: formKey,
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
             child: Column(
               spacing: 15,
               crossAxisAlignment: .start,
               children: [
+                const SizedBox(height: 30),
                 const Text(
-                  "Sign Up",
+                  "Sign Up your account",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
 
