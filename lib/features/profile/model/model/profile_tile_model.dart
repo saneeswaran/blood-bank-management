@@ -1,3 +1,4 @@
+import 'package:blood_bank/features/auth/service/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class ProfileTileModel {
@@ -41,6 +42,12 @@ class ProfileTileModel {
       onTap: (context) {},
     ),
     ProfileTileModel(title: "About Us", icon: Icons.info, onTap: (context) {}),
-    ProfileTileModel(title: "Logout", icon: Icons.logout, onTap: (context) {}),
+    ProfileTileModel(
+      title: "Logout",
+      icon: Icons.logout,
+      onTap: (context) async {
+        await AuthService.signOut();
+      },
+    ),
   ];
 }

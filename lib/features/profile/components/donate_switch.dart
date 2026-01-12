@@ -1,7 +1,6 @@
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/util/custom_snack.dart';
 import 'package:blood_bank/core/util/material_util.dart';
-import 'package:blood_bank/core/widgets/loader.dart';
 import 'package:blood_bank/features/profile/model/state/user_state.dart';
 import 'package:blood_bank/features/profile/view%20model/profile_notifier.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +37,7 @@ class _DonateSwitchState extends ConsumerState<DonateSwitch> {
           const Spacer(),
           donorState.when(
             initial: () => const Switch(value: false, onChanged: null),
-            loading: () => const Loader(),
+            loading: () => const Switch(value: false, onChanged: null),
             loaded: (userData) {
               return Switch(
                 value: userData?.isDonor ?? false,

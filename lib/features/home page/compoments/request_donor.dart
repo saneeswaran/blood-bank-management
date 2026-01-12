@@ -71,16 +71,16 @@ class _RequestDonorState extends State<RequestDonor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Request Donor")),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(20.0),
           child: Form(
             key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 20,
               children: [
+                const SizedBox(height: 30),
                 const Text("Patient Name ", style: Styles.requestDonorTitle),
                 CustomTextFormField(
                   controller: patientNameController,
