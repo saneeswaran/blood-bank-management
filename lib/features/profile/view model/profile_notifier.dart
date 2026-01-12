@@ -7,10 +7,16 @@ import 'package:blood_bank/features/search/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
+final profileNotifier = StateNotifierProvider<ProfileNotifier, UserState>((
+  ref,
+) {
+  return ProfileNotifier()..fetchUserData();
+});
+
 class ProfileNotifier extends StateNotifier<UserState> {
   ProfileNotifier() : super(const UserState.initial());
 
-  Future<void> fetchUserData(BuildContext context) async {
+  Future<void> fetchUserData() async {
     try {
       state = const UserState.loading();
       final result = await ProfileRepo.fetchCurrentUserData();
@@ -18,11 +24,6 @@ class ProfileNotifier extends StateNotifier<UserState> {
       result?.fold(
         (error) {
           log(error);
-          customSnackBar(
-            context: context,
-            content: error,
-            type: SnackType.error,
-          );
         },
         (userData) {
           state = UserState.loaded(userData);
@@ -43,6 +44,8 @@ class ProfileNotifier extends StateNotifier<UserState> {
     );
 
     try {
+      state = const UserState.loading();
+
       final result = await ProfileRepo.changeDonorStatus(isDonor: isDonor);
 
       result.fold(
