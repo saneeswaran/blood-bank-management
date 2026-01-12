@@ -8,10 +8,10 @@ abstract class UserModel with _$UserModel {
   const factory UserModel({
     String? id,
     required String name,
-    required bool? isDonor,
     required String email,
     required String? fcmToken,
     @Default(0) int? donationCount,
+    @Default(false) bool? isDonor,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

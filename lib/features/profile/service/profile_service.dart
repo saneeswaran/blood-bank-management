@@ -22,7 +22,6 @@ class ProfileService {
       final UserModel userModel = UserModel(
         id: doc.id,
         name: userName,
-        isDonor: isDonor,
         email: email,
         fcmToken: await FirebaseMessaging.instance.getToken(),
       );

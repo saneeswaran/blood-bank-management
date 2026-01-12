@@ -1,27 +1,33 @@
 import 'dart:developer';
 
+import 'package:blood_bank/core/constants/constats.dart';
 import 'package:blood_bank/features/search/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fpdart/fpdart.dart';
 
 class ProfileRepo {
   static final userCollection = FirebaseFirestore.instance.collection("users");
   static final userId = FirebaseAuth.instance.currentUser!.uid;
-  static Future<UserModel?> fetchCurrentUserData() async {
+  static Future<Either<Failure, UserModel>?> fetchCurrentUserData() async {
     try {
       final userData = await userCollection.doc(userId).get();
-      return UserModel.fromJson(userData.data()!);
+      return Right(UserModel.fromJson(userData.data()!));
     } catch (e) {
       log("profile repo $e");
-      return null;
+      return Left(e.toString());
     }
   }
 
-  static Future<void> changeDonorStatus({required bool isDonor}) async {
+  static Future<Either<Failure, bool>> changeDonorStatus({
+    required bool isDonor,
+  }) async {
     try {
       await userCollection.doc(userId).update({"isDonor": isDonor});
+      return const Right(true);
     } catch (e) {
       log("profile repo $e");
+      return Left(e.toString());
     }
   }
 }

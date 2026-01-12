@@ -1,14 +1,66 @@
+import 'dart:developer';
+
+import 'package:blood_bank/core/util/custom_snack.dart';
+import 'package:blood_bank/features/profile/model/state/user_state.dart';
 import 'package:blood_bank/features/profile/view%20model/profile_repo.dart';
 import 'package:blood_bank/features/search/model/user_model.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
-final profileData = FutureProvider<UserModel?>((ref) async {
-  return ProfileRepo.fetchCurrentUserData();
-});
+class ProfileNotifier extends StateNotifier<UserState> {
+  ProfileNotifier() : super(const UserState.initial());
 
-final changeDonorStatus = FutureProvider.family.autoDispose<void, bool>((
-  ref,
-  isDonor,
-) async {
-  return ProfileRepo.changeDonorStatus(isDonor: isDonor);
-});
+  Future<void> fetchUserData(BuildContext context) async {
+    try {
+      state = const UserState.loading();
+      final result = await ProfileRepo.fetchCurrentUserData();
+
+      result?.fold(
+        (error) {
+          log(error);
+          customSnackBar(
+            context: context,
+            content: error,
+            type: SnackType.error,
+          );
+        },
+        (userData) {
+          state = UserState.loaded(userData);
+        },
+      );
+    } catch (e) {
+      state = UserState.error(e.toString());
+    }
+  }
+
+  Future<void> changeDonorStatus({
+    required BuildContext context,
+    required bool isDonor,
+  }) async {
+    final UserModel? user = state.maybeWhen(
+      loaded: (user) => user,
+      orElse: () => null,
+    );
+
+    try {
+      final result = await ProfileRepo.changeDonorStatus(isDonor: isDonor);
+
+      result.fold(
+        (error) {
+          log(error);
+          customSnackBar(
+            context: context,
+            content: error,
+            type: SnackType.error,
+          );
+        },
+        (success) {
+          final updatedData = user?.copyWith(isDonor: isDonor);
+          state = UserState.loaded(updatedData);
+        },
+      );
+    } catch (e) {
+      state = UserState.error(e.toString());
+    }
+  }
+}

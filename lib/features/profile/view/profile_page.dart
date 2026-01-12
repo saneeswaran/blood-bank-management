@@ -1,5 +1,4 @@
 import 'package:blood_bank/core/constants/app_images.dart';
-import 'package:blood_bank/features/profile/components/donate_switch.dart';
 import 'package:blood_bank/features/profile/components/profile_tile.dart';
 import 'package:blood_bank/features/profile/model/profile_tile_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -46,17 +45,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 // Tiles
                 ListView.builder(
-                  itemCount: ProfileTileModel.profileTiles.length + 1,
+                  itemCount: ProfileTileModel.profileTiles.length,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    // Donate switch
-                    if (index == 0) {
-                      return const DonateSwitch();
-                    }
-
                     // Normal profile tile
-                    final tile = ProfileTileModel.profileTiles[index - 1];
+                    final tile = ProfileTileModel.profileTiles[index];
                     return ProfileTile(
                       icon: tile.icon,
                       title: tile.title,
