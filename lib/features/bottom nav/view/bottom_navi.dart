@@ -1,7 +1,11 @@
-import 'package:animations/animations.dart';
+import 'package:blood_bank/core/constants/navigation.dart';
+import 'package:blood_bank/core/widgets/drag_sheet.dart';
+import 'package:blood_bank/features/bottom%20nav/components/local_requests.dart';
 import 'package:blood_bank/features/bottom%20nav/model/bottom_model.dart';
 import 'package:blood_bank/features/home%20page/compoments/request_donor.dart';
+import 'package:blood_bank/features/home%20page/service/blood_request_hive_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
 class BottomNavi extends StatefulWidget {
@@ -17,15 +21,22 @@ class _BottomNaviState extends State<BottomNavi> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: OpenContainer(
-        openBuilder: (context, action) => const RequestDonor(),
-        closedBuilder: (context, onPressed) => FloatingActionButton(
-          shape: const CircleBorder(),
-          backgroundColor: Colors.white,
-          onPressed: onPressed,
-          child: const Icon(Icons.add, color: Colors.black),
-        ),
-        closedShape: const CircleBorder(),
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        backgroundColor: Colors.white,
+        onPressed: () async {
+          final existsRequests = BloodRequestHiveManager.getAllRequests();
+          if (existsRequests.isNotEmpty) {
+            showCupertinoModalBottomSheet(
+              context: context,
+              builder: (context) => DragSheet(
+                builder: (controller) => LocalRequests(controller: controller),
+              ),
+            );
+          }
+          navigateTo(context: context, route: const RequestDonor());
+        },
+        child: const Icon(Icons.add, color: Colors.black),
       ),
       bottomNavigationBar: StylishBottomBar(
         option: AnimatedBarOptions(iconStyle: IconStyle.animated),
