@@ -4,32 +4,35 @@ import 'package:hive_ce_flutter/adapters.dart';
 
 class BloodRequestHiveManager {
   static const String boxName = "blood_request_box";
-  static final box = Hive.box<RequestBloodHive>(boxName);
   static Future<void> init() async {
     Hive.registerAdapter<RequestBloodHive>(RequestBloodHiveAdapter());
-    await Hive.initFlutter();
-    await Hive.openBox(boxName);
+    await Hive.openBox<RequestBloodHive>(boxName);
   }
 
   static Future<void> addRequest(BloodRequest bloodRequest) async {
+    final box = Hive.box<RequestBloodHive>(boxName);
     final requestHiveModel = converToHiveModel(bloodRequest);
     await box.put(requestHiveModel.requestId, requestHiveModel);
   }
 
   static Future<void> deleteRequest(int key) async {
+    final box = Hive.box<RequestBloodHive>(boxName);
     await box.delete(key);
   }
 
   static Future<void> updateRequest(BloodRequest bloodRequest) async {
+    final box = Hive.box<RequestBloodHive>(boxName);
     final requestHiveModel = converToHiveModel(bloodRequest);
     await box.put(requestHiveModel.requestId, requestHiveModel);
   }
 
   static Future<void> clearAll() async {
+    final box = Hive.box<RequestBloodHive>(boxName);
     await box.clear();
   }
 
   static List<BloodRequest> getAllRequests() {
+    final box = Hive.box<RequestBloodHive>(boxName);
     return box.values
         .map(
           (e) => BloodRequest(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:blood_bank/core/constants/navigation.dart';
 import 'package:blood_bank/core/widgets/drag_sheet.dart';
 import 'package:blood_bank/features/bottom%20nav/components/local_requests.dart';
@@ -24,18 +26,26 @@ class _BottomNaviState extends State<BottomNavi> {
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         backgroundColor: Colors.white,
-        onPressed: () async {
+        onPressed: () {
           final existsRequests = BloodRequestHiveManager.getAllRequests();
+          log(existsRequests.toString());
+
           if (existsRequests.isNotEmpty) {
             showCupertinoModalBottomSheet(
               context: context,
-              builder: (context) => DragSheet(
-                builder: (controller) => LocalRequests(controller: controller),
+              builder: (context) => Material(
+                color: Colors.white,
+                child: DragSheet(
+                  builder: (controller) =>
+                      LocalRequests(controller: controller),
+                ),
               ),
             );
+          } else {
+            navigateTo(context: context, route: const RequestDonor());
           }
-          navigateTo(context: context, route: const RequestDonor());
         },
+
         child: const Icon(Icons.add, color: Colors.black),
       ),
       bottomNavigationBar: StylishBottomBar(

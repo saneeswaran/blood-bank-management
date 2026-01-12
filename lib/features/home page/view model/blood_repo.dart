@@ -8,15 +8,15 @@ class BloodRepo {
     'blood_requests',
   );
 
-  static Future<Either<Failure, bool>> giveBloodRequst({
+  static Future<Either<Failure, String>> giveBloodRequst({
     required BloodRequest bloodRequest,
   }) async {
     try {
       final docRef = requestRef.doc();
-
-      final requst = bloodRequest.copyWith(requestId: docRef.id);
+      final id = docRef.id;
+      final requst = bloodRequest.copyWith(requestId: id);
       await docRef.set(requst.toJson());
-      return const Right(true);
+      return Right(id);
     } catch (e) {
       return Left(e.toString());
     }

@@ -481,7 +481,9 @@ class _RequestDonorState extends State<RequestDonor> {
         customSnackBar(context: context, content: error, type: SnackType.error);
       },
       (success) async {
-        await BloodRequestHiveManager.addRequest(bloodData);
+        final localData = bloodData.copyWith(requestId: success);
+        log(localData.toString());
+        await BloodRequestHiveManager.addRequest(localData);
         loader.state = false;
         if (!context.mounted) return;
         log(success.toString());
@@ -493,5 +495,7 @@ class _RequestDonorState extends State<RequestDonor> {
         Navigator.pop(context);
       },
     );
+    if (!context.mounted) return;
+    Navigator.pop(context);
   }
 }
