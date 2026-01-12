@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? textInputType;
   final Widget? suffixIcon;
   final Iterable<String>? autofillHints;
+  final int? maxLength;
   const CustomTextFormField({
     super.key,
     required this.controller,
@@ -18,6 +19,7 @@ class CustomTextFormField extends StatelessWidget {
     this.textInputType,
     this.suffixIcon,
     this.autofillHints,
+    this.maxLength,
   });
 
   @override
@@ -27,7 +29,9 @@ class CustomTextFormField extends StatelessWidget {
       validator: validator,
       keyboardType: textInputType,
       autofillHints: autofillHints,
+      maxLength: maxLength,
       decoration: InputDecoration(
+        counterText: "",
         labelText: labelText,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,

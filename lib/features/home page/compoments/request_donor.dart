@@ -4,6 +4,7 @@ import 'package:blood_bank/core/animations/highlightable.dart';
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/constants/navigation.dart';
 import 'package:blood_bank/core/util/custom_snack.dart';
+import 'package:blood_bank/core/util/date_util.dart';
 import 'package:blood_bank/core/util/form_validator.dart';
 import 'package:blood_bank/core/util/material_util.dart';
 import 'package:blood_bank/core/util/styles.dart';
@@ -14,7 +15,10 @@ import 'package:blood_bank/features/home%20page/compoments/gender_and_date.dart'
 import 'package:blood_bank/features/home%20page/compoments/priority_container.dart';
 import 'package:blood_bank/features/home%20page/compoments/unit_slider.dart';
 import 'package:blood_bank/features/home%20page/controller/request_controller.dart';
+import 'package:blood_bank/features/home%20page/model/blood%20request/blood_request.dart';
 import 'package:blood_bank/features/home%20page/util/location_util.dart';
+import 'package:blood_bank/features/home%20page/view%20model/blood_repo.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -125,6 +129,8 @@ class _RequestDonorState extends State<RequestDonor> {
                     controller: mobileNumberController,
                     labelText: "Mobile Number",
                     validator: FormValidator.validateMobileNumber(number: 10),
+                    textInputType: TextInputType.number,
+                    maxLength: 10,
                   ),
                 ),
                 const Text("Select Location", style: Styles.requestDonorTitle),
@@ -447,21 +453,42 @@ class _RequestDonorState extends State<RequestDonor> {
       }
     }
 
+    final currentDate = DateUtil.currentDate();
+
+    final bloodData = BloodRequest(
+      requestedBy: FirebaseAuth.instance.currentUser!.uid,
+      bloodGroup: blood!,
+      units: unit.toInt(),
+      hospitalName: hospitalNameController.text,
+      location: location!.toJson(),
+      contactPhone: mobileNumberController.text,
+      urgency: priority!,
+      status: "Pending",
+      createdAt: currentDate,
+    );
+
     //  All valid -> submit
     loader.state = true;
     MaterialUtil.showFullScreenLoader(context);
 
-    // Simulate API call
-    Future.delayed(const Duration(seconds: 5), () {
-      loader.state = false;
-      if (!context.mounted) return;
+    final result = await BloodRepo.giveBloodRequst(bloodRequest: bloodData);
 
-      navigateBack(context);
-      customSnackBar(
-        context: context,
-        content: "Request Submitted Successfully",
-        type: SnackType.success,
-      );
-    });
+    result.fold(
+      (error) {
+        loader.state = false;
+        log(error);
+        customSnackBar(context: context, content: error, type: SnackType.error);
+      },
+      (success) {
+        loader.state = false;
+        log(success.toString());
+        customSnackBar(
+          context: context,
+          content: "Request Submitted Successfully",
+          type: SnackType.success,
+        );
+        Navigator.pop(context);
+      },
+    );
   }
 }

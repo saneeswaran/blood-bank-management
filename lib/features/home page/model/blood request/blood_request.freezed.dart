@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BloodRequest {
 
- String? get requestId; String get requestedBy; String? get patientName; String get bloodGroup; int get units; String get hospitalName; Location get location; String get contactPhone;/// high / medium / low
+ String? get requestId; String get requestedBy; String? get patientName; String get bloodGroup; int get units; String get hospitalName; Map<String, dynamic> get location; String get contactPhone;/// high / medium / low
  String get urgency;/// active / fulfilled / expired / cancelled
  String get status;/// Firestore timestamps
  String get createdAt;
@@ -31,12 +31,12 @@ $BloodRequestCopyWith<BloodRequest> get copyWith => _$BloodRequestCopyWithImpl<B
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BloodRequest&&(identical(other.requestId, requestId) || other.requestId == requestId)&&(identical(other.requestedBy, requestedBy) || other.requestedBy == requestedBy)&&(identical(other.patientName, patientName) || other.patientName == patientName)&&(identical(other.bloodGroup, bloodGroup) || other.bloodGroup == bloodGroup)&&(identical(other.units, units) || other.units == units)&&(identical(other.hospitalName, hospitalName) || other.hospitalName == hospitalName)&&(identical(other.location, location) || other.location == location)&&(identical(other.contactPhone, contactPhone) || other.contactPhone == contactPhone)&&(identical(other.urgency, urgency) || other.urgency == urgency)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BloodRequest&&(identical(other.requestId, requestId) || other.requestId == requestId)&&(identical(other.requestedBy, requestedBy) || other.requestedBy == requestedBy)&&(identical(other.patientName, patientName) || other.patientName == patientName)&&(identical(other.bloodGroup, bloodGroup) || other.bloodGroup == bloodGroup)&&(identical(other.units, units) || other.units == units)&&(identical(other.hospitalName, hospitalName) || other.hospitalName == hospitalName)&&const DeepCollectionEquality().equals(other.location, location)&&(identical(other.contactPhone, contactPhone) || other.contactPhone == contactPhone)&&(identical(other.urgency, urgency) || other.urgency == urgency)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,requestId,requestedBy,patientName,bloodGroup,units,hospitalName,location,contactPhone,urgency,status,createdAt);
+int get hashCode => Object.hash(runtimeType,requestId,requestedBy,patientName,bloodGroup,units,hospitalName,const DeepCollectionEquality().hash(location),contactPhone,urgency,status,createdAt);
 
 @override
 String toString() {
@@ -51,11 +51,11 @@ abstract mixin class $BloodRequestCopyWith<$Res>  {
   factory $BloodRequestCopyWith(BloodRequest value, $Res Function(BloodRequest) _then) = _$BloodRequestCopyWithImpl;
 @useResult
 $Res call({
- String? requestId, String requestedBy, String? patientName, String bloodGroup, int units, String hospitalName, Location location, String contactPhone, String urgency, String status, String createdAt
+ String? requestId, String requestedBy, String? patientName, String bloodGroup, int units, String hospitalName, Map<String, dynamic> location, String contactPhone, String urgency, String status, String createdAt
 });
 
 
-$LocationCopyWith<$Res> get location;
+
 
 }
 /// @nodoc
@@ -77,23 +77,14 @@ as String?,bloodGroup: null == bloodGroup ? _self.bloodGroup : bloodGroup // ign
 as String,units: null == units ? _self.units : units // ignore: cast_nullable_to_non_nullable
 as int,hospitalName: null == hospitalName ? _self.hospitalName : hospitalName // ignore: cast_nullable_to_non_nullable
 as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
-as Location,contactPhone: null == contactPhone ? _self.contactPhone : contactPhone // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>,contactPhone: null == contactPhone ? _self.contactPhone : contactPhone // ignore: cast_nullable_to_non_nullable
 as String,urgency: null == urgency ? _self.urgency : urgency // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
-/// Create a copy of BloodRequest
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$LocationCopyWith<$Res> get location {
-  
-  return $LocationCopyWith<$Res>(_self.location, (value) {
-    return _then(_self.copyWith(location: value));
-  });
-}
+
 }
 
 
@@ -175,7 +166,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Location location,  String contactPhone,  String urgency,  String status,  String createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  String contactPhone,  String urgency,  String status,  String createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BloodRequest() when $default != null:
 return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodGroup,_that.units,_that.hospitalName,_that.location,_that.contactPhone,_that.urgency,_that.status,_that.createdAt);case _:
@@ -196,7 +187,7 @@ return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodG
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Location location,  String contactPhone,  String urgency,  String status,  String createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  String contactPhone,  String urgency,  String status,  String createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _BloodRequest():
 return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodGroup,_that.units,_that.hospitalName,_that.location,_that.contactPhone,_that.urgency,_that.status,_that.createdAt);case _:
@@ -216,7 +207,7 @@ return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodG
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Location location,  String contactPhone,  String urgency,  String status,  String createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  String contactPhone,  String urgency,  String status,  String createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _BloodRequest() when $default != null:
 return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodGroup,_that.units,_that.hospitalName,_that.location,_that.contactPhone,_that.urgency,_that.status,_that.createdAt);case _:
@@ -231,7 +222,7 @@ return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodG
 @JsonSerializable()
 
 class _BloodRequest implements BloodRequest {
-  const _BloodRequest({this.requestId, required this.requestedBy, this.patientName, required this.bloodGroup, required this.units, required this.hospitalName, required this.location, required this.contactPhone, required this.urgency, required this.status, required this.createdAt});
+  const _BloodRequest({this.requestId, required this.requestedBy, this.patientName, required this.bloodGroup, required this.units, required this.hospitalName, required final  Map<String, dynamic> location, required this.contactPhone, required this.urgency, required this.status, required this.createdAt}): _location = location;
   factory _BloodRequest.fromJson(Map<String, dynamic> json) => _$BloodRequestFromJson(json);
 
 @override final  String? requestId;
@@ -240,7 +231,13 @@ class _BloodRequest implements BloodRequest {
 @override final  String bloodGroup;
 @override final  int units;
 @override final  String hospitalName;
-@override final  Location location;
+ final  Map<String, dynamic> _location;
+@override Map<String, dynamic> get location {
+  if (_location is EqualUnmodifiableMapView) return _location;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_location);
+}
+
 @override final  String contactPhone;
 /// high / medium / low
 @override final  String urgency;
@@ -262,12 +259,12 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BloodRequest&&(identical(other.requestId, requestId) || other.requestId == requestId)&&(identical(other.requestedBy, requestedBy) || other.requestedBy == requestedBy)&&(identical(other.patientName, patientName) || other.patientName == patientName)&&(identical(other.bloodGroup, bloodGroup) || other.bloodGroup == bloodGroup)&&(identical(other.units, units) || other.units == units)&&(identical(other.hospitalName, hospitalName) || other.hospitalName == hospitalName)&&(identical(other.location, location) || other.location == location)&&(identical(other.contactPhone, contactPhone) || other.contactPhone == contactPhone)&&(identical(other.urgency, urgency) || other.urgency == urgency)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BloodRequest&&(identical(other.requestId, requestId) || other.requestId == requestId)&&(identical(other.requestedBy, requestedBy) || other.requestedBy == requestedBy)&&(identical(other.patientName, patientName) || other.patientName == patientName)&&(identical(other.bloodGroup, bloodGroup) || other.bloodGroup == bloodGroup)&&(identical(other.units, units) || other.units == units)&&(identical(other.hospitalName, hospitalName) || other.hospitalName == hospitalName)&&const DeepCollectionEquality().equals(other._location, _location)&&(identical(other.contactPhone, contactPhone) || other.contactPhone == contactPhone)&&(identical(other.urgency, urgency) || other.urgency == urgency)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,requestId,requestedBy,patientName,bloodGroup,units,hospitalName,location,contactPhone,urgency,status,createdAt);
+int get hashCode => Object.hash(runtimeType,requestId,requestedBy,patientName,bloodGroup,units,hospitalName,const DeepCollectionEquality().hash(_location),contactPhone,urgency,status,createdAt);
 
 @override
 String toString() {
@@ -282,11 +279,11 @@ abstract mixin class _$BloodRequestCopyWith<$Res> implements $BloodRequestCopyWi
   factory _$BloodRequestCopyWith(_BloodRequest value, $Res Function(_BloodRequest) _then) = __$BloodRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String? requestId, String requestedBy, String? patientName, String bloodGroup, int units, String hospitalName, Location location, String contactPhone, String urgency, String status, String createdAt
+ String? requestId, String requestedBy, String? patientName, String bloodGroup, int units, String hospitalName, Map<String, dynamic> location, String contactPhone, String urgency, String status, String createdAt
 });
 
 
-@override $LocationCopyWith<$Res> get location;
+
 
 }
 /// @nodoc
@@ -307,8 +304,8 @@ as String,patientName: freezed == patientName ? _self.patientName : patientName 
 as String?,bloodGroup: null == bloodGroup ? _self.bloodGroup : bloodGroup // ignore: cast_nullable_to_non_nullable
 as String,units: null == units ? _self.units : units // ignore: cast_nullable_to_non_nullable
 as int,hospitalName: null == hospitalName ? _self.hospitalName : hospitalName // ignore: cast_nullable_to_non_nullable
-as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
-as Location,contactPhone: null == contactPhone ? _self.contactPhone : contactPhone // ignore: cast_nullable_to_non_nullable
+as String,location: null == location ? _self._location : location // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>,contactPhone: null == contactPhone ? _self.contactPhone : contactPhone // ignore: cast_nullable_to_non_nullable
 as String,urgency: null == urgency ? _self.urgency : urgency // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -316,16 +313,7 @@ as String,
   ));
 }
 
-/// Create a copy of BloodRequest
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$LocationCopyWith<$Res> get location {
-  
-  return $LocationCopyWith<$Res>(_self.location, (value) {
-    return _then(_self.copyWith(location: value));
-  });
-}
+
 }
 
 // dart format on

@@ -1,4 +1,3 @@
-import 'package:blood_bank/features/home%20page/model/location/location.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'blood_request.freezed.dart';
@@ -18,7 +17,7 @@ abstract class BloodRequest with _$BloodRequest {
 
     required String hospitalName,
 
-    required Location location,
+    required Map<String, dynamic> location,
 
     required String contactPhone,
 

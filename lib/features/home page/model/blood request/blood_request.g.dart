@@ -14,7 +14,7 @@ _BloodRequest _$BloodRequestFromJson(Map<String, dynamic> json) =>
       bloodGroup: json['bloodGroup'] as String,
       units: (json['units'] as num).toInt(),
       hospitalName: json['hospitalName'] as String,
-      location: Location.fromJson(json['location'] as Map<String, dynamic>),
+      location: json['location'] as Map<String, dynamic>,
       contactPhone: json['contactPhone'] as String,
       urgency: json['urgency'] as String,
       status: json['status'] as String,
