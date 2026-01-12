@@ -2,8 +2,11 @@ import 'package:blood_bank/core/constants/app_images.dart';
 import 'package:blood_bank/features/profile/components/donate_switch.dart';
 import 'package:blood_bank/features/profile/components/profile_tile.dart';
 import 'package:blood_bank/features/profile/model/model/profile_tile_model.dart';
+import 'package:blood_bank/features/profile/model/state/user_state.dart';
+import 'package:blood_bank/features/profile/view%20model/profile_notifier.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,8 +16,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  bool isDonor = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,12 +27,24 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               children: [
                 // Profile image
-                const CircleAvatar(
-                  radius: 65,
-                  child: CircleAvatar(
-                    radius: 60,
-                    backgroundImage: CachedNetworkImageProvider(AppImages.logo),
-                  ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final image = ref.watch(
+                      profileNotifier.select(
+                        (value) => value.maybeWhen(
+                          orElse: () => null,
+                          loaded: (user) => user?.image,
+                          error: (error) => null,
+                        ),
+                      ),
+                    );
+                    return CircleAvatar(
+                      radius: 60,
+                      backgroundImage: image != null && image.isNotEmpty
+                          ? CachedNetworkImageProvider(image)
+                          : const AssetImage(AppImages.noProfileImage),
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 15),
@@ -50,12 +63,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    // Normal profile tile
-                    final tile = ProfileTileModel.profileTiles[index - 1];
-
                     if (index == 0) {
                       return const DonateSwitch();
                     }
+
+                    final tile = ProfileTileModel.profileTiles[index - 1];
+
                     return ProfileTile(
                       icon: tile.icon,
                       title: tile.title,

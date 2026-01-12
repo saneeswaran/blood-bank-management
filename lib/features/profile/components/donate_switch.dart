@@ -1,4 +1,6 @@
 import 'package:blood_bank/core/constants/appthemes.dart';
+import 'package:blood_bank/core/util/custom_snack.dart';
+import 'package:blood_bank/core/util/material_util.dart';
 import 'package:blood_bank/core/widgets/loader.dart';
 import 'package:blood_bank/features/profile/model/state/user_state.dart';
 import 'package:blood_bank/features/profile/view%20model/profile_notifier.dart';
@@ -15,6 +17,8 @@ class DonateSwitch extends ConsumerStatefulWidget {
 class _DonateSwitchState extends ConsumerState<DonateSwitch> {
   @override
   Widget build(BuildContext context) {
+    final notifier = ref.read(profileNotifier.notifier);
+    final donorState = ref.watch(profileNotifier);
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -32,37 +36,35 @@ class _DonateSwitchState extends ConsumerState<DonateSwitch> {
           const SizedBox(width: 15),
           const Text("I want to Donate"),
           const Spacer(),
-          Consumer(
-            builder: (context, ref, child) {
-              final notifier = ref.read(profileNotifier.notifier);
-              final donorState = ref.watch(profileNotifier);
-              return donorState.when(
-                initial: () {
-                  return Switch(
-                    value: false,
-                    activeColor: Colors.white,
-                    activeTrackColor: Appthemes.primaryColor,
-                    onChanged: (value) {},
-                  );
+          donorState.when(
+            initial: () => const Switch(value: false, onChanged: null),
+            loading: () => const Loader(),
+            loaded: (userData) {
+              return Switch(
+                value: userData?.isDonor ?? false,
+                activeColor: Colors.white,
+                activeTrackColor: Appthemes.primaryColor,
+                onChanged: (value) async {
+                  try {
+                    MaterialUtil.showFullScreenLoader(
+                      context,
+                      message: "Updating...",
+                    );
+                    await notifier.changeDonorStatus(isDonor: value);
+                    if (!context.mounted) return;
+                    Navigator.pop(context);
+                  } catch (e) {
+                    Navigator.pop(context);
+                    customSnackBar(
+                      context: context,
+                      content: e.toString(),
+                      type: SnackType.error,
+                    );
+                  }
                 },
-                loading: () => const Loader(),
-                loaded: (userData) {
-                  final status = userData?.isDonor;
-                  return Switch(
-                    value: status ?? false,
-                    activeColor: Colors.white,
-                    activeTrackColor: Appthemes.primaryColor,
-                    onChanged: (value) async {
-                      await notifier.changeDonorStatus(
-                        context: context,
-                        isDonor: value,
-                      );
-                    },
-                  );
-                },
-                error: (error) => Text(error),
               );
             },
+            error: (error) => Text(error),
           ),
         ],
       ),

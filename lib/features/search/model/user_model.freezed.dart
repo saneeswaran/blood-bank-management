@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserModel {
 
- String? get id; String get name; String get email; String? get fcmToken; int? get donationCount; bool? get isDonor;
+ String? get id; String? get image; String get name; String get email; String? get fcmToken; int? get donationCount; bool? get isDonor;
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserModelCopyWith<UserModel> get copyWith => _$UserModelCopyWithImpl<UserModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.fcmToken, fcmToken) || other.fcmToken == fcmToken)&&(identical(other.donationCount, donationCount) || other.donationCount == donationCount)&&(identical(other.isDonor, isDonor) || other.isDonor == isDonor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.image, image) || other.image == image)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.fcmToken, fcmToken) || other.fcmToken == fcmToken)&&(identical(other.donationCount, donationCount) || other.donationCount == donationCount)&&(identical(other.isDonor, isDonor) || other.isDonor == isDonor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,email,fcmToken,donationCount,isDonor);
+int get hashCode => Object.hash(runtimeType,id,image,name,email,fcmToken,donationCount,isDonor);
 
 @override
 String toString() {
-  return 'UserModel(id: $id, name: $name, email: $email, fcmToken: $fcmToken, donationCount: $donationCount, isDonor: $isDonor)';
+  return 'UserModel(id: $id, image: $image, name: $name, email: $email, fcmToken: $fcmToken, donationCount: $donationCount, isDonor: $isDonor)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserModelCopyWith<$Res>  {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
- String? id, String name, String email, String? fcmToken, int? donationCount, bool? isDonor
+ String? id, String? image, String name, String email, String? fcmToken, int? donationCount, bool? isDonor
 });
 
 
@@ -65,9 +65,10 @@ class _$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? email = null,Object? fcmToken = freezed,Object? donationCount = freezed,Object? isDonor = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? image = freezed,Object? name = null,Object? email = null,Object? fcmToken = freezed,Object? donationCount = freezed,Object? isDonor = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,fcmToken: freezed == fcmToken ? _self.fcmToken : fcmToken // ignore: cast_nullable_to_non_nullable
@@ -158,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String name,  String email,  String? fcmToken,  int? donationCount,  bool? isDonor)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? image,  String name,  String email,  String? fcmToken,  int? donationCount,  bool? isDonor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.id,_that.name,_that.email,_that.fcmToken,_that.donationCount,_that.isDonor);case _:
+return $default(_that.id,_that.image,_that.name,_that.email,_that.fcmToken,_that.donationCount,_that.isDonor);case _:
   return orElse();
 
 }
@@ -179,10 +180,10 @@ return $default(_that.id,_that.name,_that.email,_that.fcmToken,_that.donationCou
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String name,  String email,  String? fcmToken,  int? donationCount,  bool? isDonor)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? image,  String name,  String email,  String? fcmToken,  int? donationCount,  bool? isDonor)  $default,) {final _that = this;
 switch (_that) {
 case _UserModel():
-return $default(_that.id,_that.name,_that.email,_that.fcmToken,_that.donationCount,_that.isDonor);case _:
+return $default(_that.id,_that.image,_that.name,_that.email,_that.fcmToken,_that.donationCount,_that.isDonor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +200,10 @@ return $default(_that.id,_that.name,_that.email,_that.fcmToken,_that.donationCou
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String name,  String email,  String? fcmToken,  int? donationCount,  bool? isDonor)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? image,  String name,  String email,  String? fcmToken,  int? donationCount,  bool? isDonor)?  $default,) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.id,_that.name,_that.email,_that.fcmToken,_that.donationCount,_that.isDonor);case _:
+return $default(_that.id,_that.image,_that.name,_that.email,_that.fcmToken,_that.donationCount,_that.isDonor);case _:
   return null;
 
 }
@@ -214,10 +215,11 @@ return $default(_that.id,_that.name,_that.email,_that.fcmToken,_that.donationCou
 @JsonSerializable()
 
 class _UserModel implements UserModel {
-  const _UserModel({this.id, required this.name, required this.email, required this.fcmToken, this.donationCount = 0, this.isDonor = false});
+  const _UserModel({this.id, this.image, required this.name, required this.email, required this.fcmToken, this.donationCount = 0, this.isDonor = false});
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 @override final  String? id;
+@override final  String? image;
 @override final  String name;
 @override final  String email;
 @override final  String? fcmToken;
@@ -237,16 +239,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.fcmToken, fcmToken) || other.fcmToken == fcmToken)&&(identical(other.donationCount, donationCount) || other.donationCount == donationCount)&&(identical(other.isDonor, isDonor) || other.isDonor == isDonor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.image, image) || other.image == image)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.fcmToken, fcmToken) || other.fcmToken == fcmToken)&&(identical(other.donationCount, donationCount) || other.donationCount == donationCount)&&(identical(other.isDonor, isDonor) || other.isDonor == isDonor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,email,fcmToken,donationCount,isDonor);
+int get hashCode => Object.hash(runtimeType,id,image,name,email,fcmToken,donationCount,isDonor);
 
 @override
 String toString() {
-  return 'UserModel(id: $id, name: $name, email: $email, fcmToken: $fcmToken, donationCount: $donationCount, isDonor: $isDonor)';
+  return 'UserModel(id: $id, image: $image, name: $name, email: $email, fcmToken: $fcmToken, donationCount: $donationCount, isDonor: $isDonor)';
 }
 
 
@@ -257,7 +259,7 @@ abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Re
   factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String name, String email, String? fcmToken, int? donationCount, bool? isDonor
+ String? id, String? image, String name, String email, String? fcmToken, int? donationCount, bool? isDonor
 });
 
 
@@ -274,9 +276,10 @@ class __$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? email = null,Object? fcmToken = freezed,Object? donationCount = freezed,Object? isDonor = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? image = freezed,Object? name = null,Object? email = null,Object? fcmToken = freezed,Object? donationCount = freezed,Object? isDonor = freezed,}) {
   return _then(_UserModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,fcmToken: freezed == fcmToken ? _self.fcmToken : fcmToken // ignore: cast_nullable_to_non_nullable
