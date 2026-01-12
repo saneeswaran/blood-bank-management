@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:blood_bank/features/profile/model/state/user_state.dart';
-import 'package:blood_bank/features/profile/view%20model/profile_repo.dart';
+import 'package:blood_bank/features/profile/view%20model/repo/profile_repo.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 final profileNotifier = StateNotifierProvider<ProfileNotifier, UserState>((

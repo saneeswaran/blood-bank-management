@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:blood_bank/features/home%20page/model/blood%20request/blood_request.dart';
 import 'package:blood_bank/features/profile/view%20model/repo/blood_request_repo.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
@@ -28,6 +29,47 @@ class BloodRequestsNotifier extends StateNotifier<AsyncValue> {
       );
     } catch (e, st) {
       state = AsyncValue.error(e.toString(), st);
+    }
+  }
+
+  Future<void> changeRequestStatus({
+    required String requestId,
+    required String status,
+  }) async {
+    final List<BloodRequest> oldData = state.maybeWhen(
+      orElse: () => [],
+      data: (data) => data,
+    );
+    final selectedRequest = oldData.firstWhere(
+      (element) => element.requestId == requestId,
+    );
+    try {
+      state = const AsyncLoading();
+      final result = await BloodRequestRepo.changeRequestStatus(
+        requestId: requestId,
+        status: status,
+      );
+
+      result.fold(
+        (error) {
+          log(error);
+          state = AsyncError(error, StackTrace.current);
+        },
+        (success) {
+          if (success) {
+            final newData = oldData.map((e) {
+              if (e.requestId == selectedRequest.requestId) {
+                return selectedRequest.copyWith(status: status);
+              } else {
+                return e;
+              }
+            }).toList();
+            return newData;
+          }
+        },
+      );
+    } catch (e) {
+      state = AsyncError(e.toString(), StackTrace.current);
     }
   }
 }

@@ -35,4 +35,16 @@ class BloodRequestRepo {
       return Left(e.toString());
     }
   }
+
+  static Future<Either<Failure, bool>> changeRequestStatus({
+    required String status,
+    required String requestId,
+  }) async {
+    try {
+      await requestRef.doc(requestId).update({"status": status});
+      return const Right(true);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
 }

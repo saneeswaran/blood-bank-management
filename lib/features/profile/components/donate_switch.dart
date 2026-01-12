@@ -2,7 +2,7 @@ import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/util/custom_snack.dart';
 import 'package:blood_bank/core/util/material_util.dart';
 import 'package:blood_bank/features/profile/model/state/user_state.dart';
-import 'package:blood_bank/features/profile/view%20model/profile_notifier.dart';
+import 'package:blood_bank/features/profile/view%20model/notifier/profile_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

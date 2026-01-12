@@ -3,7 +3,7 @@ import 'package:blood_bank/features/profile/components/donate_switch.dart';
 import 'package:blood_bank/features/profile/components/profile_tile.dart';
 import 'package:blood_bank/features/profile/model/model/profile_tile_model.dart';
 import 'package:blood_bank/features/profile/model/state/user_state.dart';
-import 'package:blood_bank/features/profile/view%20model/profile_notifier.dart';
+import 'package:blood_bank/features/profile/view%20model/notifier/profile_notifier.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
