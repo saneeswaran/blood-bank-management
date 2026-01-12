@@ -16,6 +16,7 @@ import 'package:blood_bank/features/home%20page/compoments/priority_container.da
 import 'package:blood_bank/features/home%20page/compoments/unit_slider.dart';
 import 'package:blood_bank/features/home%20page/controller/request_controller.dart';
 import 'package:blood_bank/features/home%20page/model/blood%20request/blood_request.dart';
+import 'package:blood_bank/features/home%20page/service/blood_request_hive_manager.dart';
 import 'package:blood_bank/features/home%20page/util/location_util.dart';
 import 'package:blood_bank/features/home%20page/view%20model/blood_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -479,8 +480,10 @@ class _RequestDonorState extends State<RequestDonor> {
         log(error);
         customSnackBar(context: context, content: error, type: SnackType.error);
       },
-      (success) {
+      (success) async {
+        await BloodRequestHiveManager.addRequest(bloodData);
         loader.state = false;
+        if (!context.mounted) return;
         log(success.toString());
         customSnackBar(
           context: context,
