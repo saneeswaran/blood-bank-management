@@ -36,8 +36,10 @@ class _BottomNaviState extends State<BottomNavi> {
               builder: (context) => Material(
                 color: Colors.white,
                 child: DragSheet(
-                  builder: (controller) =>
-                      LocalRequests(controller: controller),
+                  builder: (controller) => LocalRequests(
+                    controller: controller,
+                    requests: existsRequests,
+                  ),
                 ),
               ),
             );

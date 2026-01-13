@@ -34,4 +34,12 @@ class DateUtil {
       return createdAt;
     }
   }
+
+  static String formatDateStringToString(String date) {
+    try {
+      return DateFormat('MMM dd, yyyy').format(DateTime.parse(date));
+    } catch (_) {
+      return date;
+    }
+  }
 }

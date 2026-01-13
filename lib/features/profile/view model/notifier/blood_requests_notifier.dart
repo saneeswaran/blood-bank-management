@@ -44,7 +44,6 @@ class BloodRequestsNotifier extends StateNotifier<AsyncValue> {
       (element) => element.requestId == requestId,
     );
     try {
-      state = const AsyncLoading();
       final result = await BloodRequestRepo.changeRequestStatus(
         requestId: requestId,
         status: status,
