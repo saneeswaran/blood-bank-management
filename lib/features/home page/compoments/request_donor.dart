@@ -457,6 +457,7 @@ class _RequestDonorState extends State<RequestDonor> {
     final currentDate = DateUtil.currentDate();
 
     final bloodData = BloodRequest(
+      patientName: patientNameController.text,
       requestedBy: FirebaseAuth.instance.currentUser!.uid,
       bloodGroup: blood!,
       units: unit.toInt(),
@@ -496,6 +497,7 @@ class _RequestDonorState extends State<RequestDonor> {
       },
     );
     if (!context.mounted) return;
+    Navigator.pop(context);
     Navigator.pop(context);
   }
 }

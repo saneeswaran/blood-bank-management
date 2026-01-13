@@ -1,5 +1,7 @@
 import 'package:blood_bank/core/constants/appthemes.dart';
+import 'package:blood_bank/core/constants/navigation.dart';
 import 'package:blood_bank/features/bottom%20nav/components/request_item.dart';
+import 'package:blood_bank/features/home%20page/compoments/request_donor.dart';
 import 'package:blood_bank/features/home%20page/model/blood%20request/blood_request.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +20,9 @@ class LocalRequests extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Appthemes.primaryColor,
-        onPressed: () {},
+        onPressed: () {
+          navigateTo(context: context, route: const RequestDonor());
+        },
         icon: const Icon(Icons.add, color: Colors.white),
         label: const Text('New Request', style: TextStyle(color: Colors.white)),
       ),
@@ -54,18 +58,15 @@ class LocalRequests extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            if (requests.isEmpty)
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 40),
-                  child: Text(
-                    'No blood requests yet',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ),
-              )
-            else
-              ...requests.map((request) => RequestItem(request: request)),
+            ListView.builder(
+              itemCount: requests.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                final request = requests[index];
+                return RequestItem(request: request, navigate: true);
+              },
+            ),
           ],
         ),
       ),

@@ -1,103 +1,113 @@
 import 'package:blood_bank/core/constants/appthemes.dart';
+import 'package:blood_bank/core/enum/request_status_enum.dart';
 import 'package:blood_bank/core/util/date_util.dart';
+import 'package:blood_bank/core/widgets/drag_sheet.dart';
+import 'package:blood_bank/features/bottom%20nav/components/change_request_status.dart';
 import 'package:blood_bank/features/home%20page/model/blood%20request/blood_request.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class RequestItem extends StatelessWidget {
+  final bool? navigate;
   final BloodRequest request;
-
-  const RequestItem({super.key, required this.request});
+  const RequestItem({super.key, required this.request, this.navigate});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 14),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 22,
-                backgroundColor: Appthemes.primaryColor,
-                child: Text(
-                  request.bloodGroup,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () {
+        if (navigate!) {
+          showCupertinoModalBottomSheet(
+            context: context,
+            builder: (context) => Material(
+              color: Colors.white,
+              child: DragSheet(
+                initialChildSize: 0.67,
+                builder: (controller) => ChangeRequestStatus(
+                  bloodRequest: request,
+                  scrollController: controller,
+                ),
+              ),
+            ),
+          );
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 14),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 22,
+                  backgroundColor: Appthemes.primaryColor,
+                  child: Text(
+                    request.bloodGroup,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      request.patientName?.isNotEmpty == true
-                          ? request.patientName!
-                          : 'Anonymous Patient',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        request.patientName?.isNotEmpty == true
+                            ? request.patientName!
+                            : 'Anonymous Patient',
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      request.hospitalName,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey.shade600,
+                      const SizedBox(height: 4),
+                      Text(
+                        request.hospitalName,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey.shade600,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              _StatusChip(status: request.status),
-            ],
-          ),
-
-          const SizedBox(height: 12),
-
-          _InfoRow(Icons.bloodtype, '${request.units} units'),
-          _InfoRow(Icons.phone, request.contactPhone),
-          _InfoRow(
-            Icons.priority_high,
-            request.urgency,
-            color: _urgencyColor(request.urgency),
-          ),
-          _InfoRow(
-            Icons.calendar_today,
-            DateUtil.formatDateStringToString(request.createdAt),
-          ),
-
-          if (request.location.isNotEmpty)
-            _InfoRow(
-              Icons.location_on,
-              request.location['fullAddress'] ?? 'Location',
+                _StatusChip(status: request.status),
+              ],
             ),
-        ],
+
+            const SizedBox(height: 12),
+
+            _InfoRow(Icons.bloodtype, '${request.units} units'),
+            _InfoRow(Icons.phone, request.contactPhone),
+            _InfoRow(
+              Icons.priority_high,
+              request.urgency,
+              color: Appthemes.primaryColor,
+            ),
+            _InfoRow(
+              Icons.calendar_today,
+              DateUtil.formatDateStringToString(request.createdAt),
+            ),
+
+            if (request.location.isNotEmpty)
+              _InfoRow(
+                Icons.location_on,
+                request.location['fullAddress'] ?? 'Location',
+              ),
+          ],
+        ),
       ),
     );
-  }
-
-  Color _urgencyColor(String urgency) {
-    switch (urgency.toLowerCase()) {
-      case 'high':
-        return Colors.red;
-      case 'medium':
-        return Colors.orange;
-      case 'low':
-        return Colors.green;
-      default:
-        return Colors.grey;
-    }
   }
 }
 
@@ -138,25 +148,18 @@ class _StatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = switch (status) {
-      'active' => Colors.orange,
-      'fulfilled' => Colors.green,
-      'cancelled' => Colors.red,
-      _ => Colors.grey,
-    };
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
+        color: getRequestStatusColor(status),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         status.toUpperCase(),
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w600,
-          color: color,
+          color: Colors.white,
         ),
       ),
     );
