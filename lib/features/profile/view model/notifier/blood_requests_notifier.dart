@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/legacy.dart';
 
 final bloodRequestsNotifier =
     StateNotifierProvider<BloodRequestsNotifier, AsyncValue>(
-      (ref) => BloodRequestsNotifier(),
+      (ref) => BloodRequestsNotifier()..fetchRequests(),
     );
 
 class BloodRequestsNotifier extends StateNotifier<AsyncValue> {
@@ -44,29 +44,15 @@ class BloodRequestsNotifier extends StateNotifier<AsyncValue> {
       (element) => element.requestId == requestId,
     );
     try {
-      final result = await BloodRequestRepo.changeRequestStatus(
-        requestId: requestId,
-        status: status,
-      );
+      final newData = oldData.map((e) {
+        if (e.requestId == selectedRequest.requestId) {
+          return selectedRequest.copyWith(status: status);
+        } else {
+          return e;
+        }
+      }).toList();
 
-      result.fold(
-        (error) {
-          log(error);
-          state = AsyncError(error, StackTrace.current);
-        },
-        (success) {
-          if (success) {
-            final newData = oldData.map((e) {
-              if (e.requestId == selectedRequest.requestId) {
-                return selectedRequest.copyWith(status: status);
-              } else {
-                return e;
-              }
-            }).toList();
-            return newData;
-          }
-        },
-      );
+      state = AsyncValue.data(newData);
     } catch (e) {
       state = AsyncError(e.toString(), StackTrace.current);
     }

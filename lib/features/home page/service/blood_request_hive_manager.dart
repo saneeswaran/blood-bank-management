@@ -34,6 +34,8 @@ class BloodRequestHiveManager {
   static List<BloodRequest> getAllRequests() {
     final box = Hive.box<RequestBloodHive>(boxName);
     return box.values
+        .where((e) => e.status != "fulfilled")
+        .toList()
         .map(
           (e) => BloodRequest(
             requestId: e.requestId,
