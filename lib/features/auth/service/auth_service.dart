@@ -14,6 +14,7 @@ class AuthService {
     required String password,
     required String userName,
     required bool isDonor,
+    required Map<String, dynamic> locationData,
   }) async {
     try {
       final userCredential = await _auth.createUserWithEmailAndPassword(
@@ -28,6 +29,7 @@ class AuthService {
           email: email,
           userName: userName,
           isDonor: isDonor,
+          locationData: locationData,
         );
       }
 

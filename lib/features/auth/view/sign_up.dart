@@ -431,6 +431,7 @@ class _SignUpState extends State<SignUp> {
         password: passwordController.text.trim(),
         isDonor: isDonor,
         userName: userNameController.text,
+        locationData: {},
       );
 
       if (result != null) {

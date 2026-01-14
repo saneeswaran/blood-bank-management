@@ -12,6 +12,7 @@ _UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
   name: json['name'] as String,
   email: json['email'] as String,
   fcmToken: json['fcmToken'] as String?,
+  locationData: json['locationData'] as Map<String, dynamic>,
   donationCount: (json['donationCount'] as num?)?.toInt() ?? 0,
   isDonor: json['isDonor'] as bool? ?? false,
 );
@@ -23,6 +24,7 @@ Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
       'name': instance.name,
       'email': instance.email,
       'fcmToken': instance.fcmToken,
+      'locationData': instance.locationData,
       'donationCount': instance.donationCount,
       'isDonor': instance.isDonor,
     };

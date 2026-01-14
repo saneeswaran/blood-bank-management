@@ -11,6 +11,7 @@ abstract class UserModel with _$UserModel {
     required String name,
     required String email,
     required String? fcmToken,
+    required Map<String, dynamic> locationData,
     @Default(0) int? donationCount,
     @Default(false) bool? isDonor,
   }) = _UserModel;
