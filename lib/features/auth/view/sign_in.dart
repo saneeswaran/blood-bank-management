@@ -156,6 +156,7 @@ class _SignInState extends State<SignIn> {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
+      //TODO : handle changing the location after login
       if (!context.mounted) return;
       if (result != null) {
         notifier.state = true;

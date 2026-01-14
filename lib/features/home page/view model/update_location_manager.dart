@@ -2,6 +2,8 @@ import 'package:blood_bank/features/home%20page/model/location/location_settings
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:hive_ce/hive_ce.dart';
 
+final updateLocationLoader = StateProvider.autoDispose<bool>((ref) => false);
+
 final askLocationUpdateRequestNotifier =
     StateNotifierProvider<UpdateLocationManager, bool>(
       (ref) => UpdateLocationManager(),

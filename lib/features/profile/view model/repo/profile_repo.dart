@@ -30,4 +30,17 @@ class ProfileRepo {
       return Left(e.toString());
     }
   }
+
+  static Future<Either<Failure, bool>> changeLocationData({
+    required Map<String, dynamic> locationData,
+  }) async {
+    try {
+      final doc = userCollection.doc(userId);
+      await doc.update({"locationData": locationData});
+      return const Right(true);
+    } catch (e) {
+      log("profile repo $e");
+      return Left(e.toString());
+    }
+  }
 }

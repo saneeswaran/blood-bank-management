@@ -1,8 +1,14 @@
+import 'dart:developer';
+
 import 'package:blood_bank/core/constants/navigation.dart';
+import 'package:blood_bank/core/util/custom_snack.dart';
+import 'package:blood_bank/core/util/material_util.dart';
 import 'package:blood_bank/core/widgets/custom_icon_button.dart';
 import 'package:blood_bank/core/widgets/custom_search_form_field.dart';
 import 'package:blood_bank/features/home%20page/util/home_page_ui.dart';
+import 'package:blood_bank/features/home%20page/util/location_util.dart';
 import 'package:blood_bank/features/home%20page/view%20model/update_location_manager.dart';
+import 'package:blood_bank/features/profile/view%20model/repo/profile_repo.dart';
 import 'package:blood_bank/features/search/view/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,7 +36,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final showLocationDialog = ref.watch(askLocationUpdateRequestNotifier);
 
-    // 🔥 SHOW DIALOG ONCE
     if (showLocationDialog && !_dialogShown) {
       _dialogShown = true;
 
@@ -43,13 +48,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 .saveTodayAsAsked();
             Navigator.pop(context);
           },
-          onUpdate: () async {
-            // TODO: get location & update firestore
-            ref
-                .read(askLocationUpdateRequestNotifier.notifier)
-                .saveTodayAsAsked();
-            Navigator.pop(context);
-          },
+          onUpdate: () async {},
         );
       });
     }
@@ -89,6 +88,66 @@ class _HomePageState extends ConsumerState<HomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> updateLocation({
+    required BuildContext context,
+    required WidgetRef ref,
+  }) async {
+    final notifier = ref.read(updateLocationLoader.notifier);
+    // show loader
+    notifier.state = true;
+    MaterialUtil.showFullScreenLoader(context);
+    //get location and convert to address
+    final currentLatlong = await LocationUtil.getCurrentLatLong();
+    currentLatlong.fold(
+      (error) {
+        log(error);
+        customSnackBar(context: context, content: error, type: SnackType.error);
+      },
+      (latlng) async {
+        final addressData = await LocationUtil.getCurrentLocation(latlng);
+
+        addressData.fold(
+          (error) {
+            log(error);
+            customSnackBar(
+              context: context,
+              content: error,
+              type: SnackType.error,
+            );
+          },
+          (address) async {
+            final result = await ProfileRepo.changeLocationData(
+              locationData: address.toJson(),
+            );
+
+            result.fold(
+              (error) {
+                log(error);
+                customSnackBar(
+                  context: context,
+                  content: error,
+                  type: SnackType.error,
+                );
+              },
+              (success) {
+                customSnackBar(
+                  context: context,
+                  content: "Location Updated Successfully",
+                  type: SnackType.success,
+                );
+                //update local
+                ref
+                    .read(askLocationUpdateRequestNotifier.notifier)
+                    .saveTodayAsAsked();
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
+      },
     );
   }
 }
