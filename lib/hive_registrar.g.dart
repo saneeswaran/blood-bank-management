@@ -4,15 +4,18 @@
 
 import 'package:hive_ce/hive.dart';
 import 'package:blood_bank/features/home%20page/model/hive/request_blood_hive.dart';
+import 'package:blood_bank/features/home%20page/model/location/location_settings.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
+    registerAdapter(LocationSettingsAdapter());
     registerAdapter(RequestBloodHiveAdapter());
   }
 }
 
 extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
+    registerAdapter(LocationSettingsAdapter());
     registerAdapter(RequestBloodHiveAdapter());
   }
 }

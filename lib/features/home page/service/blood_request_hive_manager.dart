@@ -34,7 +34,7 @@ class BloodRequestHiveManager {
   static List<BloodRequest> getAllRequests() {
     final box = Hive.box<RequestBloodHive>(boxName);
     return box.values
-        .where((e) => e.status != "fulfilled")
+        .where((e) => e.status == "pending" || e.status == "Pending")
         .toList()
         .map(
           (e) => BloodRequest(
