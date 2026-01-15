@@ -1,3 +1,4 @@
+import 'package:blood_bank/core/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 class HomePageUi {
@@ -6,6 +7,7 @@ class HomePageUi {
     required VoidCallback onUpdate,
     required VoidCallback onSkip,
   }) {
+    final size = MediaQuery.of(context).size;
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -61,28 +63,31 @@ class HomePageUi {
                 Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Colors.grey),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                      child: SizedBox(
+                        width: size.width * 0.8,
+                        height: 40,
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Colors.grey),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
+                          onPressed: onSkip,
+                          child: const Text('Not now'),
                         ),
-                        onPressed: onSkip,
-                        child: const Text('Not now'),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                      child: SizedBox(
+                        width: size.width * 0.8,
+                        height: 40,
+                        child: CustomElevatedButton(
+                          onPressed: onUpdate,
+                          text: "Update",
+                          minSize: true,
                         ),
-                        onPressed: onUpdate,
-                        child: const Text('Update location'),
                       ),
                     ),
                   ],

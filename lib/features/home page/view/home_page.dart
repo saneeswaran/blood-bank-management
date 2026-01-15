@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:blood_bank/core/constants/navigation.dart';
 import 'package:blood_bank/core/util/custom_snack.dart';
 import 'package:blood_bank/core/util/material_util.dart';
