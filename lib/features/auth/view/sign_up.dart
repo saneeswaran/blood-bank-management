@@ -1,5 +1,3 @@
-import 'dart:developer' show log;
-
 import 'package:blood_bank/core/animations/highlightable.dart';
 import 'package:blood_bank/core/constants/app_images.dart';
 import 'package:blood_bank/core/constants/appthemes.dart';
@@ -346,7 +344,6 @@ class _SignUpState extends State<SignUp> {
 
       latlngResult.fold(
         (error) {
-          log(error.toString());
           navigateBack(context);
           customSnackBar(
             context: context,
@@ -356,12 +353,11 @@ class _SignUpState extends State<SignUp> {
         },
         (latlng) async {
           statusNotifier.state = "Converting to Address";
-          log(latlng.toString());
+
           final locationResult = await LocationUtil.getCurrentLocation(latlng);
 
           locationResult.fold(
             (error) {
-              log(error.toString());
               navigateBack(context);
               customSnackBar(
                 context: context,
@@ -370,7 +366,6 @@ class _SignUpState extends State<SignUp> {
               );
             },
             (location) {
-              log(location.toString());
               ref.read(RequestController.selectedLocation.notifier).state =
                   location;
               notifier.state = false;
@@ -385,7 +380,6 @@ class _SignUpState extends State<SignUp> {
         },
       );
     } catch (e) {
-      log(e.toString());
       notifier.state = true;
       if (!context.mounted) return;
       navigateBack(context);

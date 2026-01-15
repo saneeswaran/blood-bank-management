@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/features/auth/inits/main_inits.dart';
 import 'package:blood_bank/features/auth/splash_page.dart';
@@ -33,7 +31,6 @@ class MyApp extends StatelessWidget {
           }
 
           final bool isVisitedOnboard = OnboardManager.isOnboardVisited();
-          log(isVisitedOnboard.toString());
 
           if (!isVisitedOnboard) return const OnboardPage();
 

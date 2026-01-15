@@ -1,7 +1,6 @@
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/features/home%20page/view/home_page.dart';
 import 'package:blood_bank/features/notification/view/notification_page.dart';
-import 'package:blood_bank/features/placeholder/view/place_holder.dart';
 import 'package:blood_bank/features/profile/view/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
@@ -16,7 +15,7 @@ List<BottomBarItem> bottomBarItems = [
   ),
   BottomBarItem(
     icon: const Icon(Iconsax.notification),
-    title: const Text("PlaceHolder"),
+    title: const Text("Map"),
     selectedColor: Appthemes.primaryColor,
     unSelectedColor: Appthemes.grey,
   ),
@@ -34,9 +33,4 @@ List<BottomBarItem> bottomBarItems = [
   ),
 ];
 
-List<Widget> pages = const [
-  HomePage(),
-  PlaceHolder(),
-  NotificationPage(),
-  ProfilePage(),
-];
+List<Widget> pages = const [HomePage(), NotificationPage(), ProfilePage()];
