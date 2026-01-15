@@ -3,7 +3,7 @@ import 'package:blood_bank/features/home%20page/model/location/location.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:geocoding/geocoding.dart' hide Location;
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class LocationUtil {
