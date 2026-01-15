@@ -10,17 +10,17 @@ List<BottomNavItem> bottomBarItems = [
   BottomNavItem(
     icon: Iconsax.image,
     label: "Article",
-    widget: const ArticlePage(),
+    // widget: const ArticlePage(),
   ),
   BottomNavItem(
     icon: Iconsax.notification,
     label: "Notification",
-    widget: const NotificationPage(),
+    // widget: const NotificationPage(),
   ),
   BottomNavItem(
     icon: Iconsax.personalcard,
     label: "Profile",
-    widget: const ProfilePage(),
+    // widget: const ProfilePage(),
   ),
 ];
 
