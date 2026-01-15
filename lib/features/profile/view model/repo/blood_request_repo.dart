@@ -17,8 +17,9 @@ class BloodRequestRepo {
   static Future<Either<Failure, List<BloodRequest>>>
   fetchBloodrequests() async {
     try {
+      log(userId);
       final queries = await requestRef
-          .where("requestId", isEqualTo: userId)
+          .where("requestedBy", isEqualTo: userId)
           .get();
 
       if (queries.docs.isNotEmpty) {

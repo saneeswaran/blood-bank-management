@@ -15,6 +15,7 @@ class BloodRequestsNotifier extends StateNotifier<AsyncValue> {
 
   Future<void> fetchRequests() async {
     try {
+      log("fetching requests");
       state = const AsyncLoading();
       final result = await BloodRequestRepo.fetchBloodrequests();
 
@@ -24,6 +25,7 @@ class BloodRequestsNotifier extends StateNotifier<AsyncValue> {
           state = AsyncValue.error(error, StackTrace.current);
         },
         (requests) {
+          log(requests.toString());
           state = AsyncValue.data(requests);
         },
       );

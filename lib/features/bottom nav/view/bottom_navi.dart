@@ -22,39 +22,42 @@ class _BottomNaviState extends State<BottomNavi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        elevation: 1.5,
-        shape: const CircleBorder(),
-        backgroundColor: Colors.white,
-        onPressed: () {
-          final existsRequests = BloodRequestHiveManager.getAllRequests();
-          log(existsRequests.toString());
+      floatingActionButton: currentIndex == 0
+          ? FloatingActionButton(
+              elevation: 1.5,
+              shape: const CircleBorder(),
+              backgroundColor: Colors.white,
+              onPressed: () {
+                final existsRequests = BloodRequestHiveManager.getAllRequests();
+                log(existsRequests.toString());
 
-          if (existsRequests.isNotEmpty) {
-            showCupertinoModalBottomSheet(
-              context: context,
-              builder: (context) => Material(
-                color: Colors.white,
-                child: DragSheet(
-                  builder: (controller) => LocalRequests(
-                    controller: controller,
-                    requests: existsRequests,
-                  ),
-                ),
-              ),
-            );
-          } else {
-            navigateTo(context: context, route: const RequestDonor());
-          }
-        },
+                if (existsRequests.isNotEmpty) {
+                  showCupertinoModalBottomSheet(
+                    context: context,
+                    builder: (context) => Material(
+                      color: Colors.white,
+                      child: DragSheet(
+                        builder: (controller) => LocalRequests(
+                          controller: controller,
+                          requests: existsRequests,
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  navigateTo(context: context, route: const RequestDonor());
+                }
+              },
 
-        child: const Icon(Icons.add, color: Colors.black),
-      ),
+              child: const Icon(Icons.add, color: Colors.black),
+            )
+          : const SizedBox.shrink(),
       bottomNavigationBar: FlashyTabBar(
         selectedIndex: currentIndex,
         animationCurve: Curves.bounceInOut,
         items: bottomBarItems,
         onItemSelected: (int index) => setState(() => currentIndex = index),
+        showElevation: false,
       ),
       body: pages[currentIndex],
     );

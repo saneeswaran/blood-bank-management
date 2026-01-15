@@ -7,6 +7,7 @@ import 'package:blood_bank/core/widgets/custom_search_form_field.dart';
 import 'package:blood_bank/features/home%20page/util/home_page_ui.dart';
 import 'package:blood_bank/features/home%20page/util/location_util.dart';
 import 'package:blood_bank/features/home%20page/view%20model/update_location_manager.dart';
+import 'package:blood_bank/features/profile/view%20model/notifier/blood_requests_notifier.dart';
 import 'package:blood_bank/features/profile/view%20model/repo/profile_repo.dart';
 import 'package:blood_bank/features/search/view/search_page.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(askLocationUpdateRequestNotifier.notifier).init();
+      ref.read(bloodRequestsNotifier.notifier).fetchRequests();
     });
   }
 
