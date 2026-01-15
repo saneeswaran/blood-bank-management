@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:blood_bank/core/constants/constats.dart';
 import 'package:blood_bank/features/home%20page/model/blood%20request/blood_request.dart';
 import 'package:blood_bank/features/home%20page/service/blood_request_hive_manager.dart';
@@ -17,13 +15,11 @@ class BloodRequestRepo {
   static Future<Either<Failure, List<BloodRequest>>>
   fetchBloodrequests() async {
     try {
-      log(userId);
       final queries = await requestRef
           .where("requestedBy", isEqualTo: userId)
           .get();
 
       if (queries.docs.isNotEmpty) {
-        log(queries.docs.length.toString());
         final requests = queries.docs
             .map((e) => BloodRequest.fromJson(e.data()))
             .toList();

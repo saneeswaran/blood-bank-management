@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserModel {
 
- String? get id; String? get image; String get name; String get email; String? get fcmToken; Map<String, dynamic> get location; int? get donationCount; bool? get isDonor;
+ String? get id; String? get image; String get name; String get email; String? get fcmToken; Map<String, dynamic> get location; int? get donationCount; bool? get isDonor; bool get isAvailable; String? get lastDonationDate; String? get availableFrom;
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserModelCopyWith<UserModel> get copyWith => _$UserModelCopyWithImpl<UserModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.image, image) || other.image == image)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.fcmToken, fcmToken) || other.fcmToken == fcmToken)&&const DeepCollectionEquality().equals(other.location, location)&&(identical(other.donationCount, donationCount) || other.donationCount == donationCount)&&(identical(other.isDonor, isDonor) || other.isDonor == isDonor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.image, image) || other.image == image)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.fcmToken, fcmToken) || other.fcmToken == fcmToken)&&const DeepCollectionEquality().equals(other.location, location)&&(identical(other.donationCount, donationCount) || other.donationCount == donationCount)&&(identical(other.isDonor, isDonor) || other.isDonor == isDonor)&&(identical(other.isAvailable, isAvailable) || other.isAvailable == isAvailable)&&(identical(other.lastDonationDate, lastDonationDate) || other.lastDonationDate == lastDonationDate)&&(identical(other.availableFrom, availableFrom) || other.availableFrom == availableFrom));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,image,name,email,fcmToken,const DeepCollectionEquality().hash(location),donationCount,isDonor);
+int get hashCode => Object.hash(runtimeType,id,image,name,email,fcmToken,const DeepCollectionEquality().hash(location),donationCount,isDonor,isAvailable,lastDonationDate,availableFrom);
 
 @override
 String toString() {
-  return 'UserModel(id: $id, image: $image, name: $name, email: $email, fcmToken: $fcmToken, location: $location, donationCount: $donationCount, isDonor: $isDonor)';
+  return 'UserModel(id: $id, image: $image, name: $name, email: $email, fcmToken: $fcmToken, location: $location, donationCount: $donationCount, isDonor: $isDonor, isAvailable: $isAvailable, lastDonationDate: $lastDonationDate, availableFrom: $availableFrom)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserModelCopyWith<$Res>  {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
- String? id, String? image, String name, String email, String? fcmToken, Map<String, dynamic> location, int? donationCount, bool? isDonor
+ String? id, String? image, String name, String email, String? fcmToken, Map<String, dynamic> location, int? donationCount, bool? isDonor, bool isAvailable, String? lastDonationDate, String? availableFrom
 });
 
 
@@ -65,7 +65,7 @@ class _$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? image = freezed,Object? name = null,Object? email = null,Object? fcmToken = freezed,Object? location = null,Object? donationCount = freezed,Object? isDonor = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? image = freezed,Object? name = null,Object? email = null,Object? fcmToken = freezed,Object? location = null,Object? donationCount = freezed,Object? isDonor = freezed,Object? isAvailable = null,Object? lastDonationDate = freezed,Object? availableFrom = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
@@ -75,7 +75,10 @@ as String,fcmToken: freezed == fcmToken ? _self.fcmToken : fcmToken // ignore: c
 as String?,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>,donationCount: freezed == donationCount ? _self.donationCount : donationCount // ignore: cast_nullable_to_non_nullable
 as int?,isDonor: freezed == isDonor ? _self.isDonor : isDonor // ignore: cast_nullable_to_non_nullable
-as bool?,
+as bool?,isAvailable: null == isAvailable ? _self.isAvailable : isAvailable // ignore: cast_nullable_to_non_nullable
+as bool,lastDonationDate: freezed == lastDonationDate ? _self.lastDonationDate : lastDonationDate // ignore: cast_nullable_to_non_nullable
+as String?,availableFrom: freezed == availableFrom ? _self.availableFrom : availableFrom // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -160,10 +163,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? image,  String name,  String email,  String? fcmToken,  Map<String, dynamic> location,  int? donationCount,  bool? isDonor)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? image,  String name,  String email,  String? fcmToken,  Map<String, dynamic> location,  int? donationCount,  bool? isDonor,  bool isAvailable,  String? lastDonationDate,  String? availableFrom)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.id,_that.image,_that.name,_that.email,_that.fcmToken,_that.location,_that.donationCount,_that.isDonor);case _:
+return $default(_that.id,_that.image,_that.name,_that.email,_that.fcmToken,_that.location,_that.donationCount,_that.isDonor,_that.isAvailable,_that.lastDonationDate,_that.availableFrom);case _:
   return orElse();
 
 }
@@ -181,10 +184,10 @@ return $default(_that.id,_that.image,_that.name,_that.email,_that.fcmToken,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? image,  String name,  String email,  String? fcmToken,  Map<String, dynamic> location,  int? donationCount,  bool? isDonor)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? image,  String name,  String email,  String? fcmToken,  Map<String, dynamic> location,  int? donationCount,  bool? isDonor,  bool isAvailable,  String? lastDonationDate,  String? availableFrom)  $default,) {final _that = this;
 switch (_that) {
 case _UserModel():
-return $default(_that.id,_that.image,_that.name,_that.email,_that.fcmToken,_that.location,_that.donationCount,_that.isDonor);case _:
+return $default(_that.id,_that.image,_that.name,_that.email,_that.fcmToken,_that.location,_that.donationCount,_that.isDonor,_that.isAvailable,_that.lastDonationDate,_that.availableFrom);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +204,10 @@ return $default(_that.id,_that.image,_that.name,_that.email,_that.fcmToken,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? image,  String name,  String email,  String? fcmToken,  Map<String, dynamic> location,  int? donationCount,  bool? isDonor)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? image,  String name,  String email,  String? fcmToken,  Map<String, dynamic> location,  int? donationCount,  bool? isDonor,  bool isAvailable,  String? lastDonationDate,  String? availableFrom)?  $default,) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.id,_that.image,_that.name,_that.email,_that.fcmToken,_that.location,_that.donationCount,_that.isDonor);case _:
+return $default(_that.id,_that.image,_that.name,_that.email,_that.fcmToken,_that.location,_that.donationCount,_that.isDonor,_that.isAvailable,_that.lastDonationDate,_that.availableFrom);case _:
   return null;
 
 }
@@ -216,7 +219,7 @@ return $default(_that.id,_that.image,_that.name,_that.email,_that.fcmToken,_that
 @JsonSerializable()
 
 class _UserModel implements UserModel {
-  const _UserModel({this.id, this.image, required this.name, required this.email, required this.fcmToken, required final  Map<String, dynamic> location, this.donationCount = 0, this.isDonor = false}): _location = location;
+  const _UserModel({this.id, this.image, required this.name, required this.email, required this.fcmToken, required final  Map<String, dynamic> location, this.donationCount = 0, this.isDonor = false, this.isAvailable = true, this.lastDonationDate, this.availableFrom}): _location = location;
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 @override final  String? id;
@@ -233,6 +236,9 @@ class _UserModel implements UserModel {
 
 @override@JsonKey() final  int? donationCount;
 @override@JsonKey() final  bool? isDonor;
+@override@JsonKey() final  bool isAvailable;
+@override final  String? lastDonationDate;
+@override final  String? availableFrom;
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
@@ -247,16 +253,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.image, image) || other.image == image)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.fcmToken, fcmToken) || other.fcmToken == fcmToken)&&const DeepCollectionEquality().equals(other._location, _location)&&(identical(other.donationCount, donationCount) || other.donationCount == donationCount)&&(identical(other.isDonor, isDonor) || other.isDonor == isDonor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.image, image) || other.image == image)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.fcmToken, fcmToken) || other.fcmToken == fcmToken)&&const DeepCollectionEquality().equals(other._location, _location)&&(identical(other.donationCount, donationCount) || other.donationCount == donationCount)&&(identical(other.isDonor, isDonor) || other.isDonor == isDonor)&&(identical(other.isAvailable, isAvailable) || other.isAvailable == isAvailable)&&(identical(other.lastDonationDate, lastDonationDate) || other.lastDonationDate == lastDonationDate)&&(identical(other.availableFrom, availableFrom) || other.availableFrom == availableFrom));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,image,name,email,fcmToken,const DeepCollectionEquality().hash(_location),donationCount,isDonor);
+int get hashCode => Object.hash(runtimeType,id,image,name,email,fcmToken,const DeepCollectionEquality().hash(_location),donationCount,isDonor,isAvailable,lastDonationDate,availableFrom);
 
 @override
 String toString() {
-  return 'UserModel(id: $id, image: $image, name: $name, email: $email, fcmToken: $fcmToken, location: $location, donationCount: $donationCount, isDonor: $isDonor)';
+  return 'UserModel(id: $id, image: $image, name: $name, email: $email, fcmToken: $fcmToken, location: $location, donationCount: $donationCount, isDonor: $isDonor, isAvailable: $isAvailable, lastDonationDate: $lastDonationDate, availableFrom: $availableFrom)';
 }
 
 
@@ -267,7 +273,7 @@ abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Re
   factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String? image, String name, String email, String? fcmToken, Map<String, dynamic> location, int? donationCount, bool? isDonor
+ String? id, String? image, String name, String email, String? fcmToken, Map<String, dynamic> location, int? donationCount, bool? isDonor, bool isAvailable, String? lastDonationDate, String? availableFrom
 });
 
 
@@ -284,7 +290,7 @@ class __$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? image = freezed,Object? name = null,Object? email = null,Object? fcmToken = freezed,Object? location = null,Object? donationCount = freezed,Object? isDonor = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? image = freezed,Object? name = null,Object? email = null,Object? fcmToken = freezed,Object? location = null,Object? donationCount = freezed,Object? isDonor = freezed,Object? isAvailable = null,Object? lastDonationDate = freezed,Object? availableFrom = freezed,}) {
   return _then(_UserModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
@@ -294,7 +300,10 @@ as String,fcmToken: freezed == fcmToken ? _self.fcmToken : fcmToken // ignore: c
 as String?,location: null == location ? _self._location : location // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>,donationCount: freezed == donationCount ? _self.donationCount : donationCount // ignore: cast_nullable_to_non_nullable
 as int?,isDonor: freezed == isDonor ? _self.isDonor : isDonor // ignore: cast_nullable_to_non_nullable
-as bool?,
+as bool?,isAvailable: null == isAvailable ? _self.isAvailable : isAvailable // ignore: cast_nullable_to_non_nullable
+as bool,lastDonationDate: freezed == lastDonationDate ? _self.lastDonationDate : lastDonationDate // ignore: cast_nullable_to_non_nullable
+as String?,availableFrom: freezed == availableFrom ? _self.availableFrom : availableFrom // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

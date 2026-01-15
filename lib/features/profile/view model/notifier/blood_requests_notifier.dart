@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:blood_bank/features/home%20page/model/blood%20request/blood_request.dart';
 import 'package:blood_bank/features/profile/view%20model/repo/blood_request_repo.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,17 +13,14 @@ class BloodRequestsNotifier extends StateNotifier<AsyncValue> {
 
   Future<void> fetchRequests() async {
     try {
-      log("fetching requests");
       state = const AsyncLoading();
       final result = await BloodRequestRepo.fetchBloodrequests();
 
       result.fold(
         (error) {
-          log(error);
           state = AsyncValue.error(error, StackTrace.current);
         },
         (requests) {
-          log(requests.toString());
           state = AsyncValue.data(requests);
         },
       );

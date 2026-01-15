@@ -15,6 +15,9 @@ _UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
   location: json['location'] as Map<String, dynamic>,
   donationCount: (json['donationCount'] as num?)?.toInt() ?? 0,
   isDonor: json['isDonor'] as bool? ?? false,
+  isAvailable: json['isAvailable'] as bool? ?? true,
+  lastDonationDate: json['lastDonationDate'] as String?,
+  availableFrom: json['availableFrom'] as String?,
 );
 
 Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
@@ -27,4 +30,7 @@ Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
       'location': instance.location,
       'donationCount': instance.donationCount,
       'isDonor': instance.isDonor,
+      'isAvailable': instance.isAvailable,
+      'lastDonationDate': instance.lastDonationDate,
+      'availableFrom': instance.availableFrom,
     };
