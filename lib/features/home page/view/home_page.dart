@@ -47,7 +47,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                 .saveTodayAsAsked();
             Navigator.pop(context);
           },
-          onUpdate: () async {},
+          onUpdate: () async {
+            await updateLocation(context: context, ref: ref);
+          },
         );
       });
     }
@@ -98,17 +100,16 @@ class _HomePageState extends ConsumerState<HomePage> {
     // show loader
     notifier.state = true;
     MaterialUtil.showFullScreenLoader(context);
-    //get location and convert to address
-    final currentLatlong = await LocationUtil.getCurrentLatLong();
-    currentLatlong.fold(
+    final locationResult = await LocationUtil.askLocationPermission();
+
+    locationResult.fold(
       (error) {
         log(error);
         customSnackBar(context: context, content: error, type: SnackType.error);
       },
-      (latlng) async {
-        final addressData = await LocationUtil.getCurrentLocation(latlng);
-
-        addressData.fold(
+      (access) async {
+        final currentLatlong = await LocationUtil.getCurrentLatLong();
+        currentLatlong.fold(
           (error) {
             log(error);
             customSnackBar(
@@ -117,12 +118,10 @@ class _HomePageState extends ConsumerState<HomePage> {
               type: SnackType.error,
             );
           },
-          (address) async {
-            final result = await ProfileRepo.changeLocationData(
-              locationData: address.toJson(),
-            );
+          (latlng) async {
+            final addressData = await LocationUtil.getCurrentLocation(latlng);
 
-            result.fold(
+            addressData.fold(
               (error) {
                 log(error);
                 customSnackBar(
@@ -131,22 +130,39 @@ class _HomePageState extends ConsumerState<HomePage> {
                   type: SnackType.error,
                 );
               },
-              (success) {
-                customSnackBar(
-                  context: context,
-                  content: "Location Updated Successfully",
-                  type: SnackType.success,
+              (address) async {
+                final result = await ProfileRepo.changeLocationData(
+                  locationData: address.toJson(),
                 );
-                //update local
-                ref
-                    .read(askLocationUpdateRequestNotifier.notifier)
-                    .saveTodayAsAsked();
-                Navigator.pop(context);
+
+                result.fold(
+                  (error) {
+                    log(error);
+                    customSnackBar(
+                      context: context,
+                      content: error,
+                      type: SnackType.error,
+                    );
+                  },
+                  (success) {
+                    customSnackBar(
+                      context: context,
+                      content: "Location Updated Successfully",
+                      type: SnackType.success,
+                    );
+                    //update local
+                    ref
+                        .read(askLocationUpdateRequestNotifier.notifier)
+                        .saveTodayAsAsked();
+                    Navigator.pop(context);
+                  },
+                );
               },
             );
           },
         );
       },
     );
+    //get location and convert to address
   }
 }
