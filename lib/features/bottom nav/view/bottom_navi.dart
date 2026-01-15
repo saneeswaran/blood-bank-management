@@ -7,6 +7,7 @@ import 'package:blood_bank/features/bottom%20nav/model/bottom_model.dart';
 import 'package:blood_bank/features/home%20page/compoments/request_donor.dart';
 import 'package:blood_bank/features/home%20page/service/blood_request_hive_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_navkit/animated_bottom_navkit.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
@@ -50,13 +51,13 @@ class _BottomNaviState extends State<BottomNavi> {
 
         child: const Icon(Icons.add, color: Colors.black),
       ),
-      bottomNavigationBar: StylishBottomBar(
-        option: AnimatedBarOptions(iconStyle: IconStyle.animated),
-        backgroundColor: Colors.white,
+      bottomNavigationBar: AnimatedBottomNavkit(
+        menuExpandDuration: const Duration(milliseconds: 500),
+        middleHexagonIconSize: 25,
+        middleHexagonElevation: 15,
+        expandedMenuIconSpacing: 25,
+
         currentIndex: currentIndex,
-        hasNotch: true,
-        fabLocation: StylishBarFabLocation.center,
-        notchStyle: NotchStyle.circle,
         items: bottomBarItems,
         onTap: (int index) => setState(() => currentIndex = index),
       ),

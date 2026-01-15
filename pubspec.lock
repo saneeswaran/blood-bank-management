@@ -414,6 +414,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_animated_navkit:
+    dependency: "direct main"
+    description:
+      name: flutter_animated_navkit
+      sha256: "5a0fe4d8c7898d368d3548188e9a275f5cbf10a1954df6fb10a156fc932ecbdb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -664,6 +672,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.8"
+  hexagon:
+    dependency: transitive
+    description:
+      name: hexagon
+      sha256: "058f445a8c293c2a0474546cd6f592693bf8b014f5c682e8174d34d5fd024d87"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   hive_ce:
     dependency: "direct main"
     description:

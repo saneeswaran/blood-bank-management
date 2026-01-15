@@ -1,36 +1,24 @@
-import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/features/home%20page/view/home_page.dart';
 import 'package:blood_bank/features/notification/view/notification_page.dart';
 import 'package:blood_bank/features/profile/view/profile_page.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_animated_navkit/animated_bottom_navkit.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
-List<BottomBarItem> bottomBarItems = [
-  BottomBarItem(
-    icon: const Icon(Iconsax.home),
-    title: const Text("Home"),
-    selectedColor: Appthemes.primaryColor,
-    unSelectedColor: Appthemes.grey,
+List<BottomNavItem> bottomBarItems = [
+  BottomNavItem(icon: Iconsax.home, label: "Home", widget: const HomePage()),
+  BottomNavItem(
+    icon: Iconsax.notification,
+    label: "Map",
+    widget: const NotificationPage(),
   ),
-  BottomBarItem(
-    icon: const Icon(Iconsax.notification),
-    title: const Text("Map"),
-    selectedColor: Appthemes.primaryColor,
-    unSelectedColor: Appthemes.grey,
+  BottomNavItem(
+    icon: Iconsax.notification,
+    label: "Notification",
+    widget: const NotificationPage(),
   ),
-  BottomBarItem(
-    icon: const Icon(Iconsax.notification),
-    title: const Text("Notification"),
-    selectedColor: Appthemes.primaryColor,
-    unSelectedColor: Appthemes.grey,
-  ),
-  BottomBarItem(
-    icon: const Icon(Iconsax.personalcard),
-    title: const Text("Profile"),
-    selectedColor: Appthemes.primaryColor,
-    unSelectedColor: Appthemes.grey,
+  BottomNavItem(
+    icon: Iconsax.personalcard,
+    label: "Profile",
+    widget: const ProfilePage(),
   ),
 ];
-
-List<Widget> pages = const [HomePage(), NotificationPage(), ProfilePage()];
