@@ -1,15 +1,14 @@
 import 'dart:developer';
 
+import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/constants/navigation.dart';
 import 'package:blood_bank/core/widgets/drag_sheet.dart';
 import 'package:blood_bank/features/bottom%20nav/components/local_requests.dart';
 import 'package:blood_bank/features/bottom%20nav/model/bottom_model.dart';
 import 'package:blood_bank/features/home%20page/compoments/request_donor.dart';
 import 'package:blood_bank/features/home%20page/service/blood_request_hive_manager.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_animated_navkit/animated_bottom_navkit.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
 class BottomNavi extends StatefulWidget {
   const BottomNavi({super.key});
@@ -23,8 +22,8 @@ class _BottomNaviState extends State<BottomNavi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        tooltip: "Add Request",
         shape: const CircleBorder(),
         backgroundColor: Colors.white,
         onPressed: () {
@@ -56,7 +55,8 @@ class _BottomNaviState extends State<BottomNavi> {
         middleHexagonIconSize: 25,
         middleHexagonElevation: 15,
         expandedMenuIconSpacing: 25,
-
+        activeColor: Appthemes.primaryColor,
+        inactiveColor: Appthemes.grey,
         currentIndex: currentIndex,
         items: bottomBarItems,
         onTap: (int index) => setState(() => currentIndex = index),
