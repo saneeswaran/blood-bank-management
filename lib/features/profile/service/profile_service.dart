@@ -25,7 +25,7 @@ class ProfileService {
         name: userName,
         email: email,
         fcmToken: await FirebaseMessaging.instance.getToken(),
-        locationData: locationData,
+        location: locationData,
       );
 
       await doc.set(userModel.toJson());
