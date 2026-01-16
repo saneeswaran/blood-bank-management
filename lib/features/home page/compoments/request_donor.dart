@@ -18,7 +18,7 @@ import 'package:blood_bank/features/home%20page/controller/request_controller.da
 import 'package:blood_bank/features/home%20page/model/blood%20request/blood_request.dart';
 import 'package:blood_bank/features/home%20page/service/blood_request_hive_manager.dart';
 import 'package:blood_bank/features/home%20page/util/location_util.dart';
-import 'package:blood_bank/features/home%20page/view%20model/blood_repo.dart';
+import 'package:blood_bank/features/home%20page/view%20model/blood_repo_impl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -473,7 +473,9 @@ class _RequestDonorState extends State<RequestDonor> {
     loader.state = true;
     MaterialUtil.showFullScreenLoader(context);
 
-    final result = await BloodRepo.giveBloodRequst(bloodRequest: bloodData);
+    final result = await BloodRepoImpl().giveBloodRequst(
+      bloodRequest: bloodData,
+    );
 
     result.fold(
       (error) {
