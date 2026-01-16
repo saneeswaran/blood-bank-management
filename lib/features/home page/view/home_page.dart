@@ -26,7 +26,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(askLocationUpdateRequestNotifier.notifier).init();
       ref.read(bloodRequestsNotifier.notifier).fetchRequests();
@@ -106,6 +105,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     locationResult.fold(
       (error) {
+        Navigator.pop(context);
         log(error);
         customSnackBar(context: context, content: error, type: SnackType.error);
       },
@@ -119,6 +119,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               content: error,
               type: SnackType.error,
             );
+            Navigator.pop(context);
           },
           (latlng) async {
             final addressData = await LocationUtil.getCurrentLocation(latlng);
@@ -131,6 +132,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   content: error,
                   type: SnackType.error,
                 );
+                Navigator.pop(context);
               },
               (address) async {
                 final result = await ProfileRepo.changeLocationData(
@@ -145,6 +147,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       content: error,
                       type: SnackType.error,
                     );
+                    Navigator.pop(context);
                   },
                   (success) {
                     customSnackBar(
@@ -156,6 +159,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ref
                         .read(askLocationUpdateRequestNotifier.notifier)
                         .saveTodayAsAsked();
+                    Navigator.pop(context);
                     Navigator.pop(context);
                   },
                 );
