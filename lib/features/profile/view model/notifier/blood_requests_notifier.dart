@@ -4,11 +4,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 final bloodRequestsNotifier =
-    StateNotifierProvider<BloodRequestsNotifier, AsyncValue>(
-      (ref) => BloodRequestsNotifier()..fetchRequests(),
-    );
+    StateNotifierProvider<
+      BloodRequestsNotifier,
+      AsyncValue<List<BloodRequest>>
+    >((ref) {
+      return BloodRequestsNotifier()..fetchRequests();
+    });
 
-class BloodRequestsNotifier extends StateNotifier<AsyncValue> {
+class BloodRequestsNotifier
+    extends StateNotifier<AsyncValue<List<BloodRequest>>> {
   BloodRequestsNotifier() : super(const AsyncValue.data([]));
 
   Future<void> fetchRequests() async {

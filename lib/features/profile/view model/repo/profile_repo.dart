@@ -36,7 +36,7 @@ class ProfileRepo {
   }) async {
     try {
       final doc = userCollection.doc(userId);
-      await doc.update({"locationData": locationData});
+      await doc.update({"location": locationData});
       return const Right(true);
     } catch (e) {
       log("profile repo $e");

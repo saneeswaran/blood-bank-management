@@ -2,11 +2,14 @@ import 'dart:developer';
 import 'package:blood_bank/core/constants/navigation.dart';
 import 'package:blood_bank/core/util/custom_snack.dart';
 import 'package:blood_bank/core/util/material_util.dart';
+import 'package:blood_bank/core/util/styles.dart';
 import 'package:blood_bank/core/widgets/custom_icon_button.dart';
 import 'package:blood_bank/core/widgets/custom_search_form_field.dart';
+import 'package:blood_bank/core/widgets/loader.dart';
 import 'package:blood_bank/features/home%20page/util/home_page_ui.dart';
 import 'package:blood_bank/features/home%20page/util/location_util.dart';
 import 'package:blood_bank/features/home%20page/view%20model/update_location_manager.dart';
+import 'package:blood_bank/features/home%20page/widgets/requset_tile.dart';
 import 'package:blood_bank/features/profile/view%20model/notifier/blood_requests_notifier.dart';
 import 'package:blood_bank/features/profile/view%20model/repo/profile_repo.dart';
 import 'package:blood_bank/features/search/view/search_page.dart';
@@ -35,7 +38,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final showLocationDialog = ref.watch(askLocationUpdateRequestNotifier);
-
+    final allRequests = ref.watch(bloodRequestsNotifier);
     if (showLocationDialog && !_dialogShown) {
       _dialogShown = true;
 
@@ -59,6 +62,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 60),
 
@@ -86,6 +90,28 @@ class _HomePageState extends ConsumerState<HomePage> {
                   },
                 ),
               ],
+            ),
+            const SizedBox(height: 20),
+            const Text("Requstions", style: Styles.requestDonorTitle),
+
+            allRequests.when(
+              data: (requests) {
+                log(requests.length.toString());
+                if (requests.isEmpty) {
+                  return const Center(child: Text("No requests found"));
+                }
+                return ListView.builder(
+                  itemCount: requests.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final request = requests[index];
+                    return RequsetTile(bloodRequest: request);
+                  },
+                );
+              },
+              error: (error, st) => Text(error.toString()),
+              loading: () => const Loader(),
             ),
           ],
         ),
