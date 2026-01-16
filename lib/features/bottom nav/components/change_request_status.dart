@@ -6,7 +6,7 @@ import 'package:blood_bank/core/widgets/custom_elevated_button.dart';
 import 'package:blood_bank/features/bottom%20nav/components/request_item.dart';
 import 'package:blood_bank/features/home%20page/model/blood%20request/blood_request.dart';
 import 'package:blood_bank/features/profile/view%20model/notifier/blood_requests_notifier.dart';
-import 'package:blood_bank/features/profile/view%20model/repo/blood_request_repo.dart';
+import 'package:blood_bank/features/profile/view%20model/repo/blood_request_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
@@ -119,7 +119,7 @@ class _ChangeRequestStatusState extends State<ChangeRequestStatus> {
         return;
       }
       loaderNotifier.state = true;
-      final result = await BloodRequestRepo.changeRequestStatus(
+      final result = await BloodRequestImpl().changeRequestStatus(
         status: status!,
         requestId: widget.bloodRequest.requestId!,
       );
