@@ -7,6 +7,7 @@ import 'package:blood_bank/core/util/form_validator.dart';
 import 'package:blood_bank/core/util/material_util.dart';
 import 'package:blood_bank/core/util/styles.dart';
 import 'package:blood_bank/core/widgets/custom_check_box.dart';
+import 'package:blood_bank/core/widgets/custom_drop_down.dart';
 import 'package:blood_bank/core/widgets/custom_elevated_button.dart';
 import 'package:blood_bank/core/widgets/custom_rounded_button.dart';
 import 'package:blood_bank/core/widgets/custom_text_form_field.dart';
@@ -32,8 +33,12 @@ class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final userNameController = TextEditingController();
+  final ageController = TextEditingController();
+  final weightController = TextEditingController();
+  final mobileNumberController = TextEditingController();
   Location? location;
   String? bloodGroup;
+  String? gender;
   bool isDonor = false;
   final formKey = GlobalKey<FormState>();
 
@@ -48,6 +53,9 @@ class _SignUpState extends State<SignUp> {
     emailController.dispose();
     passwordController.dispose();
     userNameController.dispose();
+    ageController.dispose();
+    weightController.dispose();
+    mobileNumberController.dispose();
     super.dispose();
   }
 
@@ -213,6 +221,62 @@ class _SignUpState extends State<SignUp> {
                     );
                   },
                 ),
+                const Text("Age & Weight ", style: Styles.requestDonorTitle),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextFormField(
+                        controller: ageController,
+                        labelText: "Age",
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: CustomTextFormField(
+                        controller: weightController,
+                        labelText: "Weight",
+                      ),
+                    ),
+                  ],
+                ),
+
+                const Text(
+                  "Mobile Number & Gender ",
+                  style: Styles.requestDonorTitle,
+                ),
+                //TODO
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextFormField(
+                        controller: mobileNumberController,
+                        labelText: "Mobile number",
+                      ),
+                    ),
+                    Expanded(
+                      child: CustomDropDown(
+                        items: const [
+                          DropdownMenuItem(value: "male", child: Text("Male")),
+                          DropdownMenuItem(
+                            value: "female",
+                            child: Text("Female"),
+                          ),
+                          DropdownMenuItem(
+                            value: "others",
+                            child: Text("Others"),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            gender = value!;
+                          });
+                        },
+                        labelText: "Gender",
+                      ),
+                    ),
+                  ],
+                ),
 
                 Row(
                   children: [
@@ -233,6 +297,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ],
                 ),
+
                 Consumer(
                   builder: (context, ref, child) {
                     final loader = ref.watch(authSignUpLoader);
@@ -425,7 +490,13 @@ class _SignUpState extends State<SignUp> {
         password: passwordController.text.trim(),
         isDonor: isDonor,
         userName: userNameController.text,
-        locationData: {},
+        locationData: location.toJson(),
+        age: int.parse(ageController.text),
+        bloodGroup: bloodGroup,
+        phone: int.parse(mobileNumberController.text),
+        gender: gender!,
+        image: "",
+        weight: double.parse(weightController.text),
       );
 
       if (result != null) {
