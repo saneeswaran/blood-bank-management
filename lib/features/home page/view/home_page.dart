@@ -11,7 +11,7 @@ import 'package:blood_bank/features/home%20page/util/location_util.dart';
 import 'package:blood_bank/features/home%20page/service/update_location_manager.dart';
 import 'package:blood_bank/features/home%20page/widgets/requset_tile.dart';
 import 'package:blood_bank/features/profile/view%20model/notifier/blood_requests_notifier.dart';
-import 'package:blood_bank/features/profile/view%20model/repo/profile_repo.dart';
+import 'package:blood_bank/features/profile/view%20model/repo/profile_repo_impl.dart';
 import 'package:blood_bank/features/search/view/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -165,7 +165,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 Navigator.pop(context);
               },
               (address) async {
-                final result = await ProfileRepo.changeLocationData(
+                final result = await ProfileRepoImpl().changeLocationData(
                   locationData: address.toJson(),
                 );
 

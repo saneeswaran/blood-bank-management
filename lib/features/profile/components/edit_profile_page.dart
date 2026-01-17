@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:blood_bank/features/search/model/user_model.dart';
 import 'package:flutter/material.dart';
 
@@ -580,7 +582,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   void _changeProfilePicture() {
     // Implement image picker logic here
-    print('Change profile picture');
+    log('Change profile picture');
   }
 
   void _saveProfile() {
