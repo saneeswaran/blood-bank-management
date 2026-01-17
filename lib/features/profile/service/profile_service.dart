@@ -18,7 +18,6 @@ class ProfileService {
     required String bloodGroup,
     required int age,
     required String gender,
-    required String image,
     required double weight,
   }) async {
     try {
@@ -38,7 +37,7 @@ class ProfileService {
         age: age,
         donationCount: 0,
         gender: gender,
-        image: image,
+
         isAvailable: false,
         weight: weight,
       );

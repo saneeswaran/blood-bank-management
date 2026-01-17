@@ -19,7 +19,7 @@ class AuthService {
     required String bloodGroup,
     required int age,
     required String gender,
-    required String image,
+
     required double weight,
   }) async {
     try {
@@ -40,7 +40,7 @@ class AuthService {
           bloodGroup: bloodGroup,
           age: age,
           gender: gender,
-          image: image,
+
           weight: weight,
         );
       }

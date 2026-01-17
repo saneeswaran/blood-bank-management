@@ -229,6 +229,9 @@ class _SignUpState extends State<SignUp> {
                       child: CustomTextFormField(
                         controller: ageController,
                         labelText: "Age",
+                        validator: FormValidator.validateMobileNumber(
+                          number: 3,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -236,6 +239,9 @@ class _SignUpState extends State<SignUp> {
                       child: CustomTextFormField(
                         controller: weightController,
                         labelText: "Weight",
+                        validator: FormValidator.validateMobileNumber(
+                          number: 3,
+                        ),
                       ),
                     ),
                   ],
@@ -251,6 +257,9 @@ class _SignUpState extends State<SignUp> {
                     Expanded(
                       child: CustomTextFormField(
                         controller: mobileNumberController,
+                        validator: FormValidator.validateMobileNumber(
+                          number: 10,
+                        ),
                         labelText: "Mobile number",
                       ),
                     ),
@@ -495,7 +504,7 @@ class _SignUpState extends State<SignUp> {
         bloodGroup: bloodGroup,
         phone: int.parse(mobileNumberController.text),
         gender: gender!,
-        image: "",
+
         weight: double.parse(weightController.text),
       );
 
