@@ -143,6 +143,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         final currentLatlong = await LocationUtil.getCurrentLatLong();
         currentLatlong.fold(
           (error) {
+            notifier.state = false;
             log(error);
             customSnackBar(
               context: context,
@@ -156,6 +157,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
             addressData.fold(
               (error) {
+                notifier.state = false;
                 log(error);
                 customSnackBar(
                   context: context,
@@ -171,6 +173,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
                 result.fold(
                   (error) {
+                    notifier.state = false;
                     log(error);
                     customSnackBar(
                       context: context,
@@ -191,6 +194,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         .saveTodayAsAsked();
                     Navigator.pop(context);
                     Navigator.pop(context);
+                    notifier.state = false;
                   },
                 );
               },
@@ -199,6 +203,5 @@ class _HomePageState extends ConsumerState<HomePage> {
         );
       },
     );
-    //get location and convert to address
   }
 }

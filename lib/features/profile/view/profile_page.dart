@@ -1,6 +1,12 @@
+import 'dart:developer';
+
 import 'package:blood_bank/core/constants/app_images.dart';
 import 'package:blood_bank/core/constants/navigation.dart';
+import 'package:blood_bank/core/util/custom_snack.dart';
+import 'package:blood_bank/core/util/material_util.dart';
 import 'package:blood_bank/features/auth/service/auth_service.dart';
+import 'package:blood_bank/features/home%20page/service/update_location_manager.dart';
+import 'package:blood_bank/features/home%20page/util/location_util.dart';
 import 'package:blood_bank/features/profile/components/donate_switch.dart';
 import 'package:blood_bank/features/profile/components/edit_profile_page.dart';
 import 'package:blood_bank/features/profile/components/profile_tile.dart';
@@ -83,6 +89,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                 ),
                 ProfileTile(
+                  title: "Update Address",
+                  icon: Icons.location_on,
+                  onTap: () {},
+                ),
+                ProfileTile(
                   title: "Blood request",
                   icon: Icons.bloodtype,
                   onTap: () {},
@@ -124,6 +135,86 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> updateLocation({
+    required BuildContext context,
+    required WidgetRef ref,
+  }) async {
+    final notifier = ref.read(updateLocationLoader.notifier);
+    final repo = ref.read(profileRepoImpl);
+    // show loader
+    notifier.state = true;
+    MaterialUtil.showFullScreenLoader(context);
+    final locationResult = await LocationUtil.askLocationPermission();
+
+    locationResult.fold(
+      (error) {
+        Navigator.pop(context);
+        log(error);
+        customSnackBar(context: context, content: error, type: SnackType.error);
+      },
+      (access) async {
+        final currentLatlong = await LocationUtil.getCurrentLatLong();
+        currentLatlong.fold(
+          (error) {
+            notifier.state = false;
+            log(error);
+            customSnackBar(
+              context: context,
+              content: error,
+              type: SnackType.error,
+            );
+            Navigator.pop(context);
+          },
+          (latlng) async {
+            final addressData = await LocationUtil.getCurrentLocation(latlng);
+
+            addressData.fold(
+              (error) {
+                notifier.state = false;
+                log(error);
+                customSnackBar(
+                  context: context,
+                  content: error,
+                  type: SnackType.error,
+                );
+                Navigator.pop(context);
+              },
+              (address) async {
+                final result = await repo.changeLocationData(
+                  locationData: address.toJson(),
+                );
+
+                result.fold(
+                  (error) {
+                    notifier.state = false;
+                    log(error);
+                    customSnackBar(
+                      context: context,
+                      content: error,
+                      type: SnackType.error,
+                    );
+                    Navigator.pop(context);
+                  },
+                  (success) {
+                    customSnackBar(
+                      context: context,
+                      content: "Location Updated Successfully",
+                      type: SnackType.success,
+                    );
+
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    notifier.state = false;
+                  },
+                );
+              },
+            );
+          },
+        );
+      },
     );
   }
 }
