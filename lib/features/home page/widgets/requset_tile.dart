@@ -52,7 +52,7 @@ class RequestTile extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.red,
+                    color: Appthemes.primaryColor,
                   ),
                 ),
               ),
@@ -152,7 +152,7 @@ class RequestTile extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: onAccept,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
+                    backgroundColor: Appthemes.primaryColor,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
