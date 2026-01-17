@@ -17,7 +17,11 @@ _UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
   isDonor: json['isDonor'] as bool? ?? false,
   isAvailable: json['isAvailable'] as bool? ?? true,
   lastDonationDate: json['lastDonationDate'] as String?,
-  availableFrom: json['availableFrom'] as String?,
+  phone: (json['phone'] as num).toInt(),
+  bloodGroup: json['bloodGroup'] as String,
+  age: (json['age'] as num?)?.toInt(),
+  weight: (json['weight'] as num?)?.toDouble(),
+  gender: json['gender'] as String?,
 );
 
 Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
@@ -32,5 +36,9 @@ Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
       'isDonor': instance.isDonor,
       'isAvailable': instance.isAvailable,
       'lastDonationDate': instance.lastDonationDate,
-      'availableFrom': instance.availableFrom,
+      'phone': instance.phone,
+      'bloodGroup': instance.bloodGroup,
+      'age': instance.age,
+      'weight': instance.weight,
+      'gender': instance.gender,
     };

@@ -1,7 +1,9 @@
 import 'package:blood_bank/core/constants/app_images.dart';
+import 'package:blood_bank/core/constants/navigation.dart';
+import 'package:blood_bank/features/auth/service/auth_service.dart';
 import 'package:blood_bank/features/profile/components/donate_switch.dart';
+import 'package:blood_bank/features/profile/components/edit_profile_page.dart';
 import 'package:blood_bank/features/profile/components/profile_tile.dart';
-import 'package:blood_bank/features/profile/model/model/profile_tile_model.dart';
 import 'package:blood_bank/features/profile/model/state/user_state.dart';
 import 'package:blood_bank/features/profile/view%20model/notifier/profile_notifier.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -57,23 +59,60 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 const SizedBox(height: 30),
 
+                const DonateSwitch(),
+
                 // Tiles
-                ListView.builder(
-                  itemCount: ProfileTileModel.profileTiles.length + 1,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return const DonateSwitch();
-                    }
-
-                    final tile = ProfileTileModel.profileTiles[index - 1];
-
-                    return ProfileTile(
-                      icon: tile.icon,
-                      title: tile.title,
-                      onTap: () => tile.onTap(context),
+                ProfileTile(
+                  title: "Edit Profile",
+                  icon: Icons.person,
+                  onTap: () {},
+                ),
+                ProfileTile(
+                  title: "Blood request",
+                  icon: Icons.bloodtype,
+                  onTap: () {},
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final userState = ref.watch(profileNotifier);
+                    final userData = userState.maybeWhen(
+                      orElse: () => null,
+                      loaded: (user) => user,
+                      error: (error) => null,
                     );
+                    return ProfileTile(
+                      title: "Settings",
+                      icon: Icons.settings,
+                      onTap: () {
+                        navigateTo(
+                          context: context,
+                          route: EditProfilePage(userProfile: userData!),
+                        );
+                      },
+                    );
+                  },
+                ),
+                ProfileTile(
+                  title: "Invite Friends",
+                  icon: Icons.share,
+                  onTap: () {},
+                ),
+                ProfileTile(
+                  title: "Privacy Policy",
+                  icon: Icons.privacy_tip,
+                  onTap: () {},
+                ),
+                ProfileTile(
+                  title: "Terms and Conditions",
+                  icon: Icons.policy,
+                  onTap: () {},
+                ),
+                ProfileTile(title: "About Us", icon: Icons.info, onTap: () {}),
+                ProfileTile(
+                  title: "Logout",
+                  icon: Icons.logout,
+                  onTap: () async {
+                    await AuthService.signOut();
                   },
                 ),
               ],

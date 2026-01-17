@@ -14,6 +14,12 @@ class ProfileService {
     required String userName,
     required bool isDonor,
     required Map<String, dynamic> locationData,
+    required int phone,
+    required String bloodGroup,
+    required int age,
+    required String gender,
+    required String image,
+    required double weight,
   }) async {
     try {
       if (user == null) {
@@ -26,6 +32,15 @@ class ProfileService {
         email: email,
         fcmToken: await FirebaseMessaging.instance.getToken(),
         location: locationData,
+        phone: phone,
+        isDonor: isDonor,
+        bloodGroup: bloodGroup,
+        age: age,
+        donationCount: 0,
+        gender: gender,
+        image: image,
+        isAvailable: false,
+        weight: weight,
       );
 
       await doc.set(userModel.toJson());

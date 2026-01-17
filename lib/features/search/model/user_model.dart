@@ -15,9 +15,12 @@ abstract class UserModel with _$UserModel {
     @Default(0) int? donationCount,
     @Default(false) bool? isDonor,
     @Default(true) bool isAvailable,
-
     String? lastDonationDate,
-    String? availableFrom,
+    required int phone,
+    required String bloodGroup,
+    int? age,
+    double? weight,
+    String? gender,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
