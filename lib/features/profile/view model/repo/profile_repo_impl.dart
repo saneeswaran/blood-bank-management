@@ -62,4 +62,18 @@ class ProfileRepoImpl extends ProfileRepo {
       return Left(e.toString());
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> updateAvailableStatus({
+    required bool isAvailable,
+  }) async {
+    try {
+      final doc = userCollection.doc(userId);
+      await doc.update({"isAvailable": isAvailable});
+      return const Right(true);
+    } catch (e) {
+      log("profile repo $e");
+      return Left(e.toString());
+    }
+  }
 }

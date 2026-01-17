@@ -10,4 +10,8 @@ abstract class ProfileRepo {
   });
 
   Future<Either<Failure, bool>> updateProfile({required UserModel userModel});
+
+  Future<Either<Failure, bool>> updateAvailableStatus({
+    required bool isAvailable,
+  });
 }

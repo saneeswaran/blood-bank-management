@@ -62,16 +62,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 const DonateSwitch(),
 
                 // Tiles
-                ProfileTile(
-                  title: "Edit Profile",
-                  icon: Icons.person,
-                  onTap: () {},
-                ),
-                ProfileTile(
-                  title: "Blood request",
-                  icon: Icons.bloodtype,
-                  onTap: () {},
-                ),
                 Consumer(
                   builder: (context, ref, child) {
                     final userState = ref.watch(profileNotifier);
@@ -81,14 +71,28 @@ class _ProfilePageState extends State<ProfilePage> {
                       error: (error) => null,
                     );
                     return ProfileTile(
-                      title: "Settings",
-                      icon: Icons.settings,
+                      title: "Edit Profile",
+                      icon: Icons.person,
                       onTap: () {
                         navigateTo(
                           context: context,
                           route: EditProfilePage(userProfile: userData!),
                         );
                       },
+                    );
+                  },
+                ),
+                ProfileTile(
+                  title: "Blood request",
+                  icon: Icons.bloodtype,
+                  onTap: () {},
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    return ProfileTile(
+                      title: "Settings",
+                      icon: Icons.settings,
+                      onTap: () {},
                     );
                   },
                 ),

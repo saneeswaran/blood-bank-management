@@ -14,7 +14,7 @@ abstract class UserModel with _$UserModel {
     required Map<String, dynamic> location,
     @Default(0) int? donationCount,
     @Default(false) bool? isDonor,
-    @Default(true) bool isAvailable,
+    @Default(false) bool isAvailable,
     String? lastDonationDate,
     required int phone,
     required String bloodGroup,
