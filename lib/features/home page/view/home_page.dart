@@ -106,7 +106,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     final request = requests[index];
-                    return RequsetTile(bloodRequest: request);
+                    return RequestTile(
+                      bloodRequest: request,
+                      onAccept: () {},
+                      onContact: () {},
+                    );
                   },
                 );
               },

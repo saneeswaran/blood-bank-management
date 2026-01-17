@@ -428,8 +428,6 @@ class _SignUpState extends State<SignUp> {
         locationData: {},
       );
 
-      //TODO: handle changing the location
-
       if (result != null) {
         notifier.state = false;
         if (!context.mounted) return;
