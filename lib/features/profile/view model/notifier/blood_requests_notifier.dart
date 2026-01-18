@@ -19,53 +19,65 @@ final bloodRequestsNotifier =
 class BloodRequestsNotifier extends StateNotifier<BloodRequestsState> {
   final BloodRequestRepo _repo;
   final Ref ref;
+
   BloodRequestsNotifier(this._repo, this.ref)
     : super(const BloodRequestsState());
 
   DocumentSnapshot? _lastDoc;
   static const int _pageSize = 10;
 
-  Future<void> fetchSafeWithLocal() async {
-    final checkConnection = ref.watch(checkInternetConnection).asData!.value;
+  void _setState(BloodRequestsState newState) {
+    if (!mounted) return;
+    state = newState;
+  }
 
-    if (checkConnection) {
-      await fetchInitial();
-    } else {
-      loadHive();
-    }
+  Future<void> fetchSafeWithLocal() async {
+    final connectionState = ref.watch(checkInternetConnection);
+
+    connectionState.when(
+      data: (isConnected) async {
+        if (isConnected) {
+          await fetchInitial();
+        } else {
+          loadHive();
+        }
+      },
+      loading: () {
+        loadHive();
+      },
+      error: (err, st) {
+        loadHive();
+      },
+    );
   }
 
   void loadHive() {
     final data = BloodRequestHiveManager.getAllRequests();
-
-    final newData = state.copyWith(requests: data);
-
-    state = newData;
+    _setState(state.copyWith(requests: data));
   }
 
   Future<void> fetchInitial() async {
-    state = state.copyWith(
-      isLoading: true,
-      error: null,
-      requests: [],
-      hasMore: true,
+    _setState(
+      state.copyWith(isLoading: true, error: null, requests: [], hasMore: true),
     );
 
     _lastDoc = null;
 
     final result = await _repo.fetchBloodrequests(limit: _pageSize);
-
+    if (!mounted) return;
     result.fold(
       (error) {
-        state = state.copyWith(isLoading: false, error: error);
+        _setState(state.copyWith(isLoading: false, error: error));
       },
       (data) {
         _lastDoc = data.isNotEmpty ? data.last.snapshot : null;
 
-        state = state.copyWith(
-          isLoading: false,
-          requests: data,
-          hasMore: data.length == _pageSize,
+        _setState(
+          state.copyWith(
+            isLoading: false,
+            requests: data,
+            hasMore: data.length == _pageSize,
+          ),
         );
       },
     );
@@ -74,24 +86,26 @@ class BloodRequestsNotifier extends StateNotifier<BloodRequestsState> {
   Future<void> fetchMore() async {
     if (state.isLoadingMore || !state.hasMore) return;
 
-    state = state.copyWith(isLoadingMore: true);
+    _setState(state.copyWith(isLoadingMore: true));
 
     final result = await _repo.fetchBloodrequests(
       limit: _pageSize,
       lastDoc: _lastDoc,
     );
-
+    if (!mounted) return;
     result.fold(
       (error) {
-        state = state.copyWith(isLoadingMore: false, error: error);
+        _setState(state.copyWith(isLoadingMore: false, error: error));
       },
       (newData) {
         _lastDoc = newData.isNotEmpty ? newData.last.snapshot : _lastDoc;
 
-        state = state.copyWith(
-          isLoadingMore: false,
-          hasMore: newData.length == _pageSize,
-          requests: [...state.requests, ...newData],
+        _setState(
+          state.copyWith(
+            isLoadingMore: false,
+            hasMore: newData.length == _pageSize,
+            requests: [...state.requests, ...newData],
+          ),
         );
       },
     );

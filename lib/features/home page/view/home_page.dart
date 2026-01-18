@@ -56,12 +56,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
-            pinned: true,
-            backgroundColor: Colors.red,
-            expandedHeight: 110,
-            flexibleSpace: FlexibleSpaceBar(title: Text("Blood Bank")),
-          ),
+          const SliverPadding(padding: EdgeInsets.only(top: 40)),
 
           // Sticky Search Bar
           SliverPersistentHeader(
