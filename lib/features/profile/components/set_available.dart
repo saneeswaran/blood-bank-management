@@ -16,8 +16,8 @@ class SetAvailable extends ConsumerStatefulWidget {
 class _SetAvailableState extends ConsumerState<SetAvailable> {
   @override
   Widget build(BuildContext context) {
-    final notifier = ref.read(profileRepoImpl);
     final donorState = ref.watch(profileNotifier);
+    final notifier = ref.read(profileNotifier.notifier);
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -33,7 +33,7 @@ class _SetAvailableState extends ConsumerState<SetAvailable> {
         children: [
           const Icon(Icons.bloodtype, color: Appthemes.primaryColor),
           const SizedBox(width: 15),
-          const Text("I want to Donate"),
+          const Text("Set Available"),
           const Spacer(),
           donorState.when(
             initial: () => const Switch(value: false, onChanged: null),
@@ -49,7 +49,7 @@ class _SetAvailableState extends ConsumerState<SetAvailable> {
                       context,
                       message: "Updating...",
                     );
-                    await notifier.updateAvailableStatus(isAvailable: value);
+                    await notifier.changeAvailabilityStatus(isAvailable: value);
                     if (!context.mounted) return;
                     Navigator.pop(context);
                   } catch (e) {

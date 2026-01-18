@@ -10,6 +10,7 @@ import 'package:blood_bank/features/home%20page/util/location_util.dart';
 import 'package:blood_bank/features/profile/components/donate_switch.dart';
 import 'package:blood_bank/features/profile/components/edit_profile_page.dart';
 import 'package:blood_bank/features/profile/components/profile_tile.dart';
+import 'package:blood_bank/features/profile/components/set_available.dart';
 import 'package:blood_bank/features/profile/model/state/user_state.dart';
 import 'package:blood_bank/features/profile/view%20model/notifier/profile_notifier.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -67,6 +68,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 const DonateSwitch(),
 
+                const SetAvailable(),
+
                 // Tiles
                 Consumer(
                   builder: (context, ref, child) {
@@ -76,7 +79,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       loaded: (user) => user,
                       error: (error) => null,
                     );
-                    log(userData.toString(), name: "user data");
                     return ProfileTile(
                       title: "Edit Profile",
                       icon: Icons.person,

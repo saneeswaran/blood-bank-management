@@ -57,4 +57,27 @@ class ProfileNotifier extends StateNotifier<UserState> {
       state = UserState.error(e.toString());
     }
   }
+
+  Future<void> changeAvailabilityStatus({required bool isAvailable}) async {
+    try {
+      final result = await profileRepo.updateAvailableStatus(
+        isAvailable: isAvailable,
+      );
+
+      result.fold(
+        (error) {
+          log(error);
+          return state = UserState.error(error);
+        },
+        (_) {
+          final updatedUser = state
+              .maybeWhen(loaded: (user) => user, orElse: () => null)
+              ?.copyWith(isAvailable: isAvailable);
+          state = UserState.loaded(updatedUser);
+        },
+      );
+    } catch (e) {
+      state = UserState.error(e.toString());
+    }
+  }
 }
