@@ -16,6 +16,7 @@ class BloodRequestImpl extends BloodRequestRepo {
     try {
       Query query = requestRef
           .where("status", isEqualTo: "pending")
+          .orderBy("createdAt", descending: true)
           .limit(limit);
 
       if (lastDoc != null) {

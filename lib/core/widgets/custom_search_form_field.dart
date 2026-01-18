@@ -20,6 +20,7 @@ class CustomSearchFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       child: TextField(
         controller: controller,
         onChanged: onChanged,

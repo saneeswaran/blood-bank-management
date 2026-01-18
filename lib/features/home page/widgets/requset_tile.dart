@@ -145,6 +145,7 @@ class RequestTile extends StatelessWidget {
           const SizedBox(height: 16),
 
           // Buttons row
+          //TODO : make invisible he accept and contact is the requested by is equal to same user
           Row(
             children: [
               // Accept button

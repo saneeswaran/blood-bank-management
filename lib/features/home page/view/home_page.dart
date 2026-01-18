@@ -56,8 +56,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverPadding(padding: EdgeInsets.only(top: 40)),
-
           // Sticky Search Bar
           SliverPersistentHeader(
             pinned: true,

@@ -37,25 +37,28 @@ class _AllRequestsState extends ConsumerState<AllRequests> {
     final state = ref.watch(bloodRequestsNotifier);
 
     return SliverList(
-      delegate: SliverChildBuilderDelegate((context, index) {
-        if (index == state.requests.length) {
-          return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Center(child: CircularProgressIndicator()),
+      delegate: SliverChildBuilderDelegate(
+        childCount: state.requests.length + (state.hasMore ? 1 : 0),
+        (context, index) {
+          if (index == state.requests.length) {
+            return const Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          final request = state.requests[index];
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: RequestTile(
+              bloodRequest: request,
+              onAccept: () {},
+              onContact: () {},
+            ),
           );
-        }
-
-        final request = state.requests[index];
-
-        return Card(
-          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: RequestTile(
-            bloodRequest: request,
-            onAccept: () {},
-            onContact: () {},
-          ),
-        );
-      }, childCount: state.requests.length + (state.hasMore ? 1 : 0)),
+        },
+      ),
     );
   }
 }

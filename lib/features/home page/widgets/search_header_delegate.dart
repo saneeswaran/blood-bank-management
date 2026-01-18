@@ -11,43 +11,50 @@ class SearchHeaderDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    return Container(
-      height: 90,
-      color: Colors.white,
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                navigateTo(context: context, route: const SearchPage());
-              },
-              child: const Hero(
-                tag: "search",
-                child: AbsorbPointer(child: CustomSearchFormField()),
+    final double topPadding = MediaQuery.of(context).padding.top;
+
+    return SizedBox(
+      height: maxExtent,
+      child: Container(
+        color: Colors.white,
+        padding: EdgeInsets.only(top: topPadding + 16, left: 16, right: 16),
+        child: Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  navigateTo(context: context, route: const SearchPage());
+                },
+                child: const Hero(
+                  tag: "search",
+                  child: AbsorbPointer(child: CustomSearchFormField()),
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 10),
-          CustomIconButton(
-            icon: const Icon(Icons.filter, color: Colors.white),
-            onPressed: () {
-              navigateTo(
-                context: context,
-                route: const SearchPage(isFilter: true),
-              );
-            },
-          ),
-        ],
+            const SizedBox(width: 10),
+            CustomIconButton(
+              icon: const Icon(Icons.filter, color: Colors.white),
+              onPressed: () {
+                navigateTo(
+                  context: context,
+                  route: const SearchPage(isFilter: true),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 
   @override
-  double get maxExtent => 90;
+  double get maxExtent {
+    final topPadding = WidgetsBinding.instance.window.viewPadding.top;
+    return 90 + topPadding;
+  }
 
   @override
-  double get minExtent => 90;
+  double get minExtent => maxExtent;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
