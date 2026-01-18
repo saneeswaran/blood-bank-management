@@ -3,12 +3,10 @@ import 'package:blood_bank/features/home%20page/model/blood%20request/blood_requ
 import 'package:blood_bank/features/home%20page/service/blood_request_hive_manager.dart';
 import 'package:blood_bank/features/profile/view%20model/repo/blood_request_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 
 class BloodRequestImpl extends BloodRequestRepo {
   final requestRef = FirebaseFirestore.instance.collection('blood_requests');
-  final userId = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Future<Either<Failure, List<BloodRequest>>> fetchBloodrequests({
@@ -17,7 +15,7 @@ class BloodRequestImpl extends BloodRequestRepo {
   }) async {
     try {
       Query query = requestRef
-          .where("requestedBy", isEqualTo: userId)
+          .where("status", isEqualTo: "pending")
           .orderBy("createdAt", descending: true)
           .limit(limit);
 
