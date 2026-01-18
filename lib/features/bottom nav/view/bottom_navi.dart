@@ -18,7 +18,7 @@ class BottomNavi extends StatefulWidget {
 }
 
 class _BottomNaviState extends State<BottomNavi> {
-  int currentIndex = 0;
+  int currentIndex = 3;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

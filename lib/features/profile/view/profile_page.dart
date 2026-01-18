@@ -16,6 +16,7 @@ import 'package:blood_bank/features/profile/view%20model/notifier/profile_notifi
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -91,44 +92,63 @@ class _ProfilePageState extends State<ProfilePage> {
                     );
                   },
                 ),
-                ProfileTile(
-                  title: "Update Address",
-                  icon: Icons.location_on,
-                  onTap: () {},
-                ),
-                ProfileTile(
-                  title: "Blood request",
-                  icon: Icons.bloodtype,
-                  onTap: () {},
-                ),
                 Consumer(
                   builder: (context, ref, child) {
                     return ProfileTile(
-                      title: "Settings",
-                      icon: Icons.settings,
-                      onTap: () {},
+                      title: "Update Address",
+                      icon: Iconsax.location,
+                      onTap: () async {
+                        await updateLocation(context: context, ref: ref);
+                      },
                     );
                   },
                 ),
+
+                ProfileTile(
+                  title: "Blood request",
+                  icon: Iconsax.drop,
+                  onTap: () {
+                    customSnackBar(
+                      context: context,
+                      content: "Content displayinh",
+                      type: SnackType.success,
+                    );
+                  },
+                ),
+
+                ProfileTile(
+                  title: "Settings",
+                  icon: Iconsax.setting_2,
+                  onTap: () {},
+                ),
+
                 ProfileTile(
                   title: "Invite Friends",
-                  icon: Icons.share,
+                  icon: Iconsax.share,
                   onTap: () {},
                 ),
+
                 ProfileTile(
                   title: "Privacy Policy",
-                  icon: Icons.privacy_tip,
+                  icon: Iconsax.security_safe,
                   onTap: () {},
                 ),
+
                 ProfileTile(
                   title: "Terms and Conditions",
-                  icon: Icons.policy,
+                  icon: Iconsax.document_text,
                   onTap: () {},
                 ),
-                ProfileTile(title: "About Us", icon: Icons.info, onTap: () {}),
+
+                ProfileTile(
+                  title: "About Us",
+                  icon: Iconsax.info_circle,
+                  onTap: () {},
+                ),
+
                 ProfileTile(
                   title: "Logout",
-                  icon: Icons.logout,
+                  icon: Iconsax.logout,
                   onTap: () async {
                     await AuthService.signOut();
                   },
@@ -207,8 +227,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       content: "Location Updated Successfully",
                       type: SnackType.success,
                     );
-
-                    Navigator.pop(context);
                     Navigator.pop(context);
                     notifier.state = false;
                   },

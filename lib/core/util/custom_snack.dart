@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toastification/toastification.dart';
 
 enum SnackType { success, error, info }
 
@@ -7,17 +8,20 @@ void customSnackBar({
   required String content,
   required SnackType type,
   Duration duration = const Duration(seconds: 2),
-  final Color textColor = Colors.white,
+  Color textColor = Colors.black,
 }) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      duration: duration,
-      backgroundColor: type == SnackType.success
-          ? Colors.green
-          : type == SnackType.error
-          ? Colors.red
-          : Colors.grey.shade400,
-      content: Text(content, style: const TextStyle(color: Colors.white)),
-    ),
+  toastification.show(
+    context: context,
+    title: Text(content, style: TextStyle(color: textColor)),
+    type: type == SnackType.success
+        ? ToastificationType.success
+        : type == SnackType.error
+        ? ToastificationType.error
+        : ToastificationType.info,
+    style: ToastificationStyle.flat,
+    autoCloseDuration: duration,
+    alignment: Alignment.topCenter,
+    showProgressBar: false,
+    closeButtonShowType: CloseButtonShowType.none,
   );
 }
