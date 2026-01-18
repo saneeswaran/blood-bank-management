@@ -229,9 +229,9 @@ class _SignUpState extends State<SignUp> {
                       child: CustomTextFormField(
                         controller: ageController,
                         labelText: "Age",
-                        validator: FormValidator.validateMobileNumber(
-                          number: 3,
-                        ),
+                        validator: FormValidator.validateLength(2),
+                        maxLength: 2,
+                        textInputType: TextInputType.number,
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -239,9 +239,10 @@ class _SignUpState extends State<SignUp> {
                       child: CustomTextFormField(
                         controller: weightController,
                         labelText: "Weight",
-                        validator: FormValidator.validateMobileNumber(
-                          number: 3,
-                        ),
+                        validator: FormValidator.validateLength(2),
+
+                        textInputType: TextInputType.number,
+                        maxLength: 2,
                       ),
                     ),
                   ],
@@ -261,6 +262,9 @@ class _SignUpState extends State<SignUp> {
                           number: 10,
                         ),
                         labelText: "Mobile number",
+                        maxLength: 10,
+
+                        textInputType: TextInputType.number,
                       ),
                     ),
                     Expanded(
@@ -504,7 +508,6 @@ class _SignUpState extends State<SignUp> {
         bloodGroup: bloodGroup,
         phone: int.parse(mobileNumberController.text),
         gender: gender!,
-
         weight: double.parse(weightController.text),
       );
 
@@ -525,7 +528,6 @@ class _SignUpState extends State<SignUp> {
         navigateWithReplacement(context: context, route: const BottomNavi());
       }
     } catch (e) {
-      notifier.state = false;
       if (!context.mounted) return;
       customSnackBar(
         context: context,

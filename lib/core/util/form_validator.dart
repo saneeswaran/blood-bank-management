@@ -48,4 +48,18 @@ class FormValidator {
     }
     return null;
   }
+
+  static String? Function(String?)? validateLength(int? length) {
+    if (length != null) {
+      return (value) {
+        if (value == null || value.trim().isEmpty) {
+          return "please enter value";
+        } else if (value.length != length) {
+          return "please enter valid value";
+        }
+        return null;
+      };
+    }
+    return null;
+  }
 }
