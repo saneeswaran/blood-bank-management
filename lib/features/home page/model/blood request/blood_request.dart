@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'blood_request.freezed.dart';
@@ -12,13 +13,10 @@ abstract class BloodRequest with _$BloodRequest {
     String? patientName,
 
     required String bloodGroup,
-
     required int units,
-
     required String hospitalName,
 
     required Map<String, dynamic> location,
-
     required String contactPhone,
 
     /// high / medium / low
@@ -29,6 +27,8 @@ abstract class BloodRequest with _$BloodRequest {
 
     /// Firestore timestamps
     required String createdAt,
+
+    @JsonKey(ignore: true) DocumentSnapshot<Map<String, dynamic>>? snapshot,
   }) = _BloodRequest;
 
   factory BloodRequest.fromJson(Map<String, dynamic> json) =>

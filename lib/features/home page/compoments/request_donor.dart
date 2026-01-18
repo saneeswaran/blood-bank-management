@@ -4,7 +4,6 @@ import 'package:blood_bank/core/animations/highlightable.dart';
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/constants/navigation.dart';
 import 'package:blood_bank/core/util/custom_snack.dart';
-import 'package:blood_bank/core/util/date_util.dart';
 import 'package:blood_bank/core/util/form_validator.dart';
 import 'package:blood_bank/core/util/material_util.dart';
 import 'package:blood_bank/core/util/styles.dart';
@@ -454,8 +453,6 @@ class _RequestDonorState extends State<RequestDonor> {
       }
     }
 
-    final currentDate = DateUtil.currentDate();
-
     final bloodData = BloodRequest(
       patientName: patientNameController.text,
       requestedBy: FirebaseAuth.instance.currentUser!.uid,
@@ -466,7 +463,7 @@ class _RequestDonorState extends State<RequestDonor> {
       contactPhone: mobileNumberController.text,
       urgency: priority!,
       status: "Pending",
-      createdAt: currentDate,
+      createdAt: DateTime.now().toIso8601String(),
     );
 
     //  All valid -> submit

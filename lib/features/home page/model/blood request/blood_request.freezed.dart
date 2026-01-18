@@ -18,7 +18,7 @@ mixin _$BloodRequest {
  String? get requestId; String get requestedBy; String? get patientName; String get bloodGroup; int get units; String get hospitalName; Map<String, dynamic> get location; String get contactPhone;/// high / medium / low
  String get urgency;/// active / fulfilled / expired / cancelled
  String get status;/// Firestore timestamps
- String get createdAt;
+ String get createdAt;@JsonKey(ignore: true) DocumentSnapshot<Map<String, dynamic>>? get snapshot;
 /// Create a copy of BloodRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -31,16 +31,16 @@ $BloodRequestCopyWith<BloodRequest> get copyWith => _$BloodRequestCopyWithImpl<B
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BloodRequest&&(identical(other.requestId, requestId) || other.requestId == requestId)&&(identical(other.requestedBy, requestedBy) || other.requestedBy == requestedBy)&&(identical(other.patientName, patientName) || other.patientName == patientName)&&(identical(other.bloodGroup, bloodGroup) || other.bloodGroup == bloodGroup)&&(identical(other.units, units) || other.units == units)&&(identical(other.hospitalName, hospitalName) || other.hospitalName == hospitalName)&&const DeepCollectionEquality().equals(other.location, location)&&(identical(other.contactPhone, contactPhone) || other.contactPhone == contactPhone)&&(identical(other.urgency, urgency) || other.urgency == urgency)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BloodRequest&&(identical(other.requestId, requestId) || other.requestId == requestId)&&(identical(other.requestedBy, requestedBy) || other.requestedBy == requestedBy)&&(identical(other.patientName, patientName) || other.patientName == patientName)&&(identical(other.bloodGroup, bloodGroup) || other.bloodGroup == bloodGroup)&&(identical(other.units, units) || other.units == units)&&(identical(other.hospitalName, hospitalName) || other.hospitalName == hospitalName)&&const DeepCollectionEquality().equals(other.location, location)&&(identical(other.contactPhone, contactPhone) || other.contactPhone == contactPhone)&&(identical(other.urgency, urgency) || other.urgency == urgency)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.snapshot, snapshot) || other.snapshot == snapshot));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,requestId,requestedBy,patientName,bloodGroup,units,hospitalName,const DeepCollectionEquality().hash(location),contactPhone,urgency,status,createdAt);
+int get hashCode => Object.hash(runtimeType,requestId,requestedBy,patientName,bloodGroup,units,hospitalName,const DeepCollectionEquality().hash(location),contactPhone,urgency,status,createdAt,snapshot);
 
 @override
 String toString() {
-  return 'BloodRequest(requestId: $requestId, requestedBy: $requestedBy, patientName: $patientName, bloodGroup: $bloodGroup, units: $units, hospitalName: $hospitalName, location: $location, contactPhone: $contactPhone, urgency: $urgency, status: $status, createdAt: $createdAt)';
+  return 'BloodRequest(requestId: $requestId, requestedBy: $requestedBy, patientName: $patientName, bloodGroup: $bloodGroup, units: $units, hospitalName: $hospitalName, location: $location, contactPhone: $contactPhone, urgency: $urgency, status: $status, createdAt: $createdAt, snapshot: $snapshot)';
 }
 
 
@@ -51,7 +51,7 @@ abstract mixin class $BloodRequestCopyWith<$Res>  {
   factory $BloodRequestCopyWith(BloodRequest value, $Res Function(BloodRequest) _then) = _$BloodRequestCopyWithImpl;
 @useResult
 $Res call({
- String? requestId, String requestedBy, String? patientName, String bloodGroup, int units, String hospitalName, Map<String, dynamic> location, String contactPhone, String urgency, String status, String createdAt
+ String? requestId, String requestedBy, String? patientName, String bloodGroup, int units, String hospitalName, Map<String, dynamic> location, String contactPhone, String urgency, String status, String createdAt,@JsonKey(ignore: true) DocumentSnapshot<Map<String, dynamic>>? snapshot
 });
 
 
@@ -68,7 +68,7 @@ class _$BloodRequestCopyWithImpl<$Res>
 
 /// Create a copy of BloodRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? requestId = freezed,Object? requestedBy = null,Object? patientName = freezed,Object? bloodGroup = null,Object? units = null,Object? hospitalName = null,Object? location = null,Object? contactPhone = null,Object? urgency = null,Object? status = null,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? requestId = freezed,Object? requestedBy = null,Object? patientName = freezed,Object? bloodGroup = null,Object? units = null,Object? hospitalName = null,Object? location = null,Object? contactPhone = null,Object? urgency = null,Object? status = null,Object? createdAt = null,Object? snapshot = freezed,}) {
   return _then(_self.copyWith(
 requestId: freezed == requestId ? _self.requestId : requestId // ignore: cast_nullable_to_non_nullable
 as String?,requestedBy: null == requestedBy ? _self.requestedBy : requestedBy // ignore: cast_nullable_to_non_nullable
@@ -81,7 +81,8 @@ as Map<String, dynamic>,contactPhone: null == contactPhone ? _self.contactPhone 
 as String,urgency: null == urgency ? _self.urgency : urgency // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,
+as String,snapshot: freezed == snapshot ? _self.snapshot : snapshot // ignore: cast_nullable_to_non_nullable
+as DocumentSnapshot<Map<String, dynamic>>?,
   ));
 }
 
@@ -166,10 +167,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  String contactPhone,  String urgency,  String status,  String createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  String contactPhone,  String urgency,  String status,  String createdAt, @JsonKey(ignore: true)  DocumentSnapshot<Map<String, dynamic>>? snapshot)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BloodRequest() when $default != null:
-return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodGroup,_that.units,_that.hospitalName,_that.location,_that.contactPhone,_that.urgency,_that.status,_that.createdAt);case _:
+return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodGroup,_that.units,_that.hospitalName,_that.location,_that.contactPhone,_that.urgency,_that.status,_that.createdAt,_that.snapshot);case _:
   return orElse();
 
 }
@@ -187,10 +188,10 @@ return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodG
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  String contactPhone,  String urgency,  String status,  String createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  String contactPhone,  String urgency,  String status,  String createdAt, @JsonKey(ignore: true)  DocumentSnapshot<Map<String, dynamic>>? snapshot)  $default,) {final _that = this;
 switch (_that) {
 case _BloodRequest():
-return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodGroup,_that.units,_that.hospitalName,_that.location,_that.contactPhone,_that.urgency,_that.status,_that.createdAt);case _:
+return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodGroup,_that.units,_that.hospitalName,_that.location,_that.contactPhone,_that.urgency,_that.status,_that.createdAt,_that.snapshot);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -207,10 +208,10 @@ return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodG
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  String contactPhone,  String urgency,  String status,  String createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  String contactPhone,  String urgency,  String status,  String createdAt, @JsonKey(ignore: true)  DocumentSnapshot<Map<String, dynamic>>? snapshot)?  $default,) {final _that = this;
 switch (_that) {
 case _BloodRequest() when $default != null:
-return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodGroup,_that.units,_that.hospitalName,_that.location,_that.contactPhone,_that.urgency,_that.status,_that.createdAt);case _:
+return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodGroup,_that.units,_that.hospitalName,_that.location,_that.contactPhone,_that.urgency,_that.status,_that.createdAt,_that.snapshot);case _:
   return null;
 
 }
@@ -222,7 +223,7 @@ return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodG
 @JsonSerializable()
 
 class _BloodRequest implements BloodRequest {
-  const _BloodRequest({this.requestId, required this.requestedBy, this.patientName, required this.bloodGroup, required this.units, required this.hospitalName, required final  Map<String, dynamic> location, required this.contactPhone, required this.urgency, required this.status, required this.createdAt}): _location = location;
+  const _BloodRequest({this.requestId, required this.requestedBy, this.patientName, required this.bloodGroup, required this.units, required this.hospitalName, required final  Map<String, dynamic> location, required this.contactPhone, required this.urgency, required this.status, required this.createdAt, @JsonKey(ignore: true) this.snapshot}): _location = location;
   factory _BloodRequest.fromJson(Map<String, dynamic> json) => _$BloodRequestFromJson(json);
 
 @override final  String? requestId;
@@ -245,6 +246,7 @@ class _BloodRequest implements BloodRequest {
 @override final  String status;
 /// Firestore timestamps
 @override final  String createdAt;
+@override@JsonKey(ignore: true) final  DocumentSnapshot<Map<String, dynamic>>? snapshot;
 
 /// Create a copy of BloodRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -259,16 +261,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BloodRequest&&(identical(other.requestId, requestId) || other.requestId == requestId)&&(identical(other.requestedBy, requestedBy) || other.requestedBy == requestedBy)&&(identical(other.patientName, patientName) || other.patientName == patientName)&&(identical(other.bloodGroup, bloodGroup) || other.bloodGroup == bloodGroup)&&(identical(other.units, units) || other.units == units)&&(identical(other.hospitalName, hospitalName) || other.hospitalName == hospitalName)&&const DeepCollectionEquality().equals(other._location, _location)&&(identical(other.contactPhone, contactPhone) || other.contactPhone == contactPhone)&&(identical(other.urgency, urgency) || other.urgency == urgency)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BloodRequest&&(identical(other.requestId, requestId) || other.requestId == requestId)&&(identical(other.requestedBy, requestedBy) || other.requestedBy == requestedBy)&&(identical(other.patientName, patientName) || other.patientName == patientName)&&(identical(other.bloodGroup, bloodGroup) || other.bloodGroup == bloodGroup)&&(identical(other.units, units) || other.units == units)&&(identical(other.hospitalName, hospitalName) || other.hospitalName == hospitalName)&&const DeepCollectionEquality().equals(other._location, _location)&&(identical(other.contactPhone, contactPhone) || other.contactPhone == contactPhone)&&(identical(other.urgency, urgency) || other.urgency == urgency)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.snapshot, snapshot) || other.snapshot == snapshot));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,requestId,requestedBy,patientName,bloodGroup,units,hospitalName,const DeepCollectionEquality().hash(_location),contactPhone,urgency,status,createdAt);
+int get hashCode => Object.hash(runtimeType,requestId,requestedBy,patientName,bloodGroup,units,hospitalName,const DeepCollectionEquality().hash(_location),contactPhone,urgency,status,createdAt,snapshot);
 
 @override
 String toString() {
-  return 'BloodRequest(requestId: $requestId, requestedBy: $requestedBy, patientName: $patientName, bloodGroup: $bloodGroup, units: $units, hospitalName: $hospitalName, location: $location, contactPhone: $contactPhone, urgency: $urgency, status: $status, createdAt: $createdAt)';
+  return 'BloodRequest(requestId: $requestId, requestedBy: $requestedBy, patientName: $patientName, bloodGroup: $bloodGroup, units: $units, hospitalName: $hospitalName, location: $location, contactPhone: $contactPhone, urgency: $urgency, status: $status, createdAt: $createdAt, snapshot: $snapshot)';
 }
 
 
@@ -279,7 +281,7 @@ abstract mixin class _$BloodRequestCopyWith<$Res> implements $BloodRequestCopyWi
   factory _$BloodRequestCopyWith(_BloodRequest value, $Res Function(_BloodRequest) _then) = __$BloodRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String? requestId, String requestedBy, String? patientName, String bloodGroup, int units, String hospitalName, Map<String, dynamic> location, String contactPhone, String urgency, String status, String createdAt
+ String? requestId, String requestedBy, String? patientName, String bloodGroup, int units, String hospitalName, Map<String, dynamic> location, String contactPhone, String urgency, String status, String createdAt,@JsonKey(ignore: true) DocumentSnapshot<Map<String, dynamic>>? snapshot
 });
 
 
@@ -296,7 +298,7 @@ class __$BloodRequestCopyWithImpl<$Res>
 
 /// Create a copy of BloodRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? requestId = freezed,Object? requestedBy = null,Object? patientName = freezed,Object? bloodGroup = null,Object? units = null,Object? hospitalName = null,Object? location = null,Object? contactPhone = null,Object? urgency = null,Object? status = null,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? requestId = freezed,Object? requestedBy = null,Object? patientName = freezed,Object? bloodGroup = null,Object? units = null,Object? hospitalName = null,Object? location = null,Object? contactPhone = null,Object? urgency = null,Object? status = null,Object? createdAt = null,Object? snapshot = freezed,}) {
   return _then(_BloodRequest(
 requestId: freezed == requestId ? _self.requestId : requestId // ignore: cast_nullable_to_non_nullable
 as String?,requestedBy: null == requestedBy ? _self.requestedBy : requestedBy // ignore: cast_nullable_to_non_nullable
@@ -309,7 +311,8 @@ as Map<String, dynamic>,contactPhone: null == contactPhone ? _self.contactPhone 
 as String,urgency: null == urgency ? _self.urgency : urgency // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,
+as String,snapshot: freezed == snapshot ? _self.snapshot : snapshot // ignore: cast_nullable_to_non_nullable
+as DocumentSnapshot<Map<String, dynamic>>?,
   ));
 }
 

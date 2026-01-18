@@ -31,7 +31,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(askLocationUpdateRequestNotifier.notifier).init();
-      ref.read(bloodRequestsNotifier.notifier).fetchRequests();
+      ref.read(bloodRequestsNotifier.notifier).fetchInitial();
     });
   }
 

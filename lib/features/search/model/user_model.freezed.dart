@@ -15,7 +15,21 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserModel {
 
- String? get id; String? get image; String get name; String get email; String? get fcmToken; Map<String, dynamic> get location; int? get donationCount; bool? get isDonor; bool get isAvailable; String? get lastDonationDate; int get phone; String get bloodGroup; int? get age; double? get weight; String? get gender;
+ String? get id;//
+ String? get image;//
+ String get name;//
+ String get email;//
+ String? get fcmToken;//
+ Map<String, dynamic> get location;//
+ int? get donationCount;//
+ bool? get isDonor;//
+ bool get isAvailable;//
+ String? get lastDonationDate;//
+ int get phone;//
+ String get bloodGroup;//
+ int? get age;//
+ double? get weight;//
+ String? get gender;
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -223,29 +237,44 @@ return $default(_that.id,_that.image,_that.name,_that.email,_that.fcmToken,_that
 @JsonSerializable()
 
 class _UserModel implements UserModel {
-  const _UserModel({this.id, this.image, required this.name, required this.email, required this.fcmToken, required final  Map<String, dynamic> location, this.donationCount = 0, this.isDonor = false, this.isAvailable = true, this.lastDonationDate, required this.phone, required this.bloodGroup, this.age, this.weight, this.gender}): _location = location;
+  const _UserModel({this.id, this.image, required this.name, required this.email, required this.fcmToken, required final  Map<String, dynamic> location, this.donationCount = 0, this.isDonor = false, this.isAvailable = false, this.lastDonationDate, required this.phone, required this.bloodGroup, this.age, this.weight, this.gender}): _location = location;
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 @override final  String? id;
+//
 @override final  String? image;
+//
 @override final  String name;
+//
 @override final  String email;
+//
 @override final  String? fcmToken;
+//
  final  Map<String, dynamic> _location;
+//
 @override Map<String, dynamic> get location {
   if (_location is EqualUnmodifiableMapView) return _location;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableMapView(_location);
 }
 
+//
 @override@JsonKey() final  int? donationCount;
+//
 @override@JsonKey() final  bool? isDonor;
+//
 @override@JsonKey() final  bool isAvailable;
+//
 @override final  String? lastDonationDate;
+//
 @override final  int phone;
+//
 @override final  String bloodGroup;
+//
 @override final  int? age;
+//
 @override final  double? weight;
+//
 @override final  String? gender;
 
 /// Create a copy of UserModel

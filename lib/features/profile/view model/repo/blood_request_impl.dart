@@ -8,8 +8,39 @@ import 'package:fpdart/fpdart.dart';
 
 class BloodRequestImpl extends BloodRequestRepo {
   final requestRef = FirebaseFirestore.instance.collection('blood_requests');
-
   final userId = FirebaseAuth.instance.currentUser!.uid;
+
+  @override
+  Future<Either<Failure, List<BloodRequest>>> fetchBloodrequests({
+    int limit = 10,
+    DocumentSnapshot? lastDoc,
+  }) async {
+    try {
+      Query query = requestRef
+          .where("requestedBy", isEqualTo: userId)
+          .orderBy("createdAt", descending: true)
+          .limit(limit);
+
+      if (lastDoc != null) {
+        query = query.startAfterDocument(lastDoc);
+      }
+
+      final snapshot = await query.get();
+
+      final requests = snapshot.docs
+          .map((e) => BloodRequest.fromJson(e.data() as Map<String, dynamic>))
+          .toList();
+
+      for (final req in requests) {
+        await BloodRequestHiveManager.addRequest(req);
+      }
+
+      return Right(requests);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
   @override
   Future<Either<Failure, bool>> changeRequestStatus({
     required String status,
@@ -18,30 +49,6 @@ class BloodRequestImpl extends BloodRequestRepo {
     try {
       await requestRef.doc(requestId).update({"status": status});
       return const Right(true);
-    } catch (e) {
-      return Left(e.toString());
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<BloodRequest>>> fetchBloodrequests() async {
-    try {
-      final queries = await requestRef
-          .where("requestedBy", isEqualTo: userId)
-          .get();
-
-      if (queries.docs.isNotEmpty) {
-        final requests = queries.docs
-            .map((e) => BloodRequest.fromJson(e.data()))
-            .toList();
-
-        for (final req in requests) {
-          await BloodRequestHiveManager.addRequest(req);
-        }
-        return Right(requests);
-      } else {
-        return const Left("Request not found");
-      }
     } catch (e) {
       return Left(e.toString());
     }

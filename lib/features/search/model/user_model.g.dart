@@ -15,7 +15,7 @@ _UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
   location: json['location'] as Map<String, dynamic>,
   donationCount: (json['donationCount'] as num?)?.toInt() ?? 0,
   isDonor: json['isDonor'] as bool? ?? false,
-  isAvailable: json['isAvailable'] as bool? ?? true,
+  isAvailable: json['isAvailable'] as bool? ?? false,
   lastDonationDate: json['lastDonationDate'] as String?,
   phone: (json['phone'] as num).toInt(),
   bloodGroup: json['bloodGroup'] as String,
