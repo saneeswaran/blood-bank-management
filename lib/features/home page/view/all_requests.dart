@@ -36,48 +36,26 @@ class _AllRequestsState extends ConsumerState<AllRequests> {
   Widget build(BuildContext context) {
     final state = ref.watch(bloodRequestsNotifier);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('All Requests')),
-      body: Builder(
-        builder: (context) {
-          if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state.error != null) {
-            return Center(child: Text(state.error!));
-          }
-
-          if (state.requests.isEmpty) {
-            return const Center(child: Text('No requests found'));
-          }
-
-          return ListView.builder(
-            controller: _scrollController,
-            itemCount: state.requests.length + (state.hasMore ? 1 : 0),
-            itemBuilder: (context, index) {
-              // Pagination loader
-              if (index == state.requests.length) {
-                return const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              }
-
-              final request = state.requests[index];
-
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                child: RequestTile(
-                  bloodRequest: request,
-                  onAccept: () {},
-                  onContact: () {},
-                ),
-              );
-            },
+    return SliverList(
+      delegate: SliverChildBuilderDelegate((context, index) {
+        if (index == state.requests.length) {
+          return const Padding(
+            padding: EdgeInsets.all(16),
+            child: Center(child: CircularProgressIndicator()),
           );
-        },
-      ),
+        }
+
+        final request = state.requests[index];
+
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: RequestTile(
+            bloodRequest: request,
+            onAccept: () {},
+            onContact: () {},
+          ),
+        );
+      }, childCount: state.requests.length + (state.hasMore ? 1 : 0)),
     );
   }
 }
