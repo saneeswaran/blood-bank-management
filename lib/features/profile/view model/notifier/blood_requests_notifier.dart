@@ -1,4 +1,4 @@
-import 'package:blood_bank/features/home%20page/model/blood%20request/blood_request.dart';
+import 'package:blood_bank/features/home%20page/model/state/blood_requests_state.dart';
 import 'package:blood_bank/features/profile/view%20model/repo/blood_request_impl.dart';
 import 'package:blood_bank/features/profile/view%20model/repo/blood_request_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,53 +8,52 @@ import 'package:flutter_riverpod/legacy.dart';
 final bloodRequestRepoProvider = Provider<BloodRequestRepo>((ref) {
   return BloodRequestImpl();
 });
-
 final bloodRequestsNotifier =
-    StateNotifierProvider<
-      BloodRequestsNotifier,
-      AsyncValue<List<BloodRequest>>
-    >((ref) {
+    StateNotifierProvider<BloodRequestsNotifier, BloodRequestsState>((ref) {
       final repo = ref.read(bloodRequestRepoProvider);
       return BloodRequestsNotifier(repo)..fetchInitial();
     });
 
-class BloodRequestsNotifier
-    extends StateNotifier<AsyncValue<List<BloodRequest>>> {
+class BloodRequestsNotifier extends StateNotifier<BloodRequestsState> {
   final BloodRequestRepo _repo;
 
-  BloodRequestsNotifier(this._repo) : super(const AsyncValue.loading());
+  BloodRequestsNotifier(this._repo) : super(const BloodRequestsState());
 
   DocumentSnapshot? _lastDoc;
-  bool _hasMore = true;
-  bool _isFetching = false;
-
   static const int _pageSize = 10;
 
   Future<void> fetchInitial() async {
-    state = const AsyncLoading();
+    state = state.copyWith(
+      isLoading: true,
+      error: null,
+      requests: [],
+      hasMore: true,
+    );
+
     _lastDoc = null;
-    _hasMore = true;
 
     final result = await _repo.fetchBloodrequests(limit: _pageSize);
 
     result.fold(
-      (error) => state = AsyncValue.error(error, StackTrace.current),
+      (error) {
+        state = state.copyWith(isLoading: false, error: error);
+      },
       (data) {
-        if (data.isNotEmpty) {
-          _lastDoc = data.last.snapshot;
-        }
-        _hasMore = data.length == _pageSize;
-        state = AsyncValue.data(data);
+        _lastDoc = data.isNotEmpty ? data.last.snapshot : null;
+
+        state = state.copyWith(
+          isLoading: false,
+          requests: data,
+          hasMore: data.length == _pageSize,
+        );
       },
     );
   }
 
   Future<void> fetchMore() async {
-    if (!_hasMore || _isFetching) return;
+    if (state.isLoadingMore || !state.hasMore) return;
 
-    _isFetching = true;
-
-    final oldData = state.value ?? [];
+    state = state.copyWith(isLoadingMore: true);
 
     final result = await _repo.fetchBloodrequests(
       limit: _pageSize,
@@ -63,32 +62,29 @@ class BloodRequestsNotifier
 
     result.fold(
       (error) {
-        state = AsyncValue.error(error, StackTrace.current);
+        state = state.copyWith(isLoadingMore: false, error: error);
       },
       (newData) {
-        if (newData.isNotEmpty) {
-          _lastDoc = newData.last.snapshot;
-        }
-        _hasMore = newData.length == _pageSize;
+        _lastDoc = newData.isNotEmpty ? newData.last.snapshot : _lastDoc;
 
-        state = AsyncValue.data([...oldData, ...newData]);
+        state = state.copyWith(
+          isLoadingMore: false,
+          hasMore: newData.length == _pageSize,
+          requests: [...state.requests, ...newData],
+        );
       },
     );
-
-    _isFetching = false;
   }
 
   Future<void> changeRequestStatus({
     required String requestId,
     required String status,
   }) async {
-    final oldData = state.value ?? [];
-
-    final updated = oldData.map((e) {
+    final updated = state.requests.map((e) {
       return e.requestId == requestId ? e.copyWith(status: status) : e;
     }).toList();
 
-    state = AsyncValue.data(updated);
+    state = state.copyWith(requests: updated);
 
     await _repo.changeRequestStatus(requestId: requestId, status: status);
   }
