@@ -1,3 +1,4 @@
+import 'package:blood_bank/features/home%20page/widgets/requset_tile.dart';
 import 'package:blood_bank/features/profile/view%20model/notifier/blood_requests_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -67,12 +68,10 @@ class _AllRequestsState extends ConsumerState<AllRequests> {
 
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                child: ListTile(
-                  title: Text(request.patientName ?? 'Unknown'),
-                  subtitle: Text(
-                    '${request.bloodGroup} • ${request.hospitalName}',
-                  ),
-                  trailing: Text(request.status),
+                child: RequestTile(
+                  bloodRequest: request,
+                  onAccept: () {},
+                  onContact: () {},
                 ),
               );
             },
