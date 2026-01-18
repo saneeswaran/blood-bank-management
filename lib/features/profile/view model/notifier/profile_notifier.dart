@@ -13,7 +13,7 @@ final profileNotifier = StateNotifierProvider<ProfileNotifier, UserState>((
   ref,
 ) {
   final repo = ref.read(profileRepoImpl);
-  return ProfileNotifier(repo);
+  return ProfileNotifier(repo)..fetchUserData();
 });
 
 class ProfileNotifier extends StateNotifier<UserState> {
@@ -22,8 +22,11 @@ class ProfileNotifier extends StateNotifier<UserState> {
 
   Future<void> fetchUserData() async {
     try {
+      log("inside the notifier");
       state = const UserState.loading();
+      log("Loading completed");
       final result = await profileRepo.fetchCurrentUserData();
+      log("fetched current user data");
 
       result.fold((error) {
         log(error);

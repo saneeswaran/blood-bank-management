@@ -76,6 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       loaded: (user) => user,
                       error: (error) => null,
                     );
+                    log(userData.toString(), name: "user data");
                     return ProfileTile(
                       title: "Edit Profile",
                       icon: Icons.person,
