@@ -1,4 +1,6 @@
+import 'package:blood_bank/core/util/network_util.dart';
 import 'package:blood_bank/features/home%20page/model/state/blood_requests_state.dart';
+import 'package:blood_bank/features/home%20page/service/blood_request_hive_manager.dart';
 import 'package:blood_bank/features/profile/view%20model/repo/blood_request_impl.dart';
 import 'package:blood_bank/features/profile/view%20model/repo/blood_request_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,16 +13,35 @@ final bloodRequestRepoProvider = Provider<BloodRequestRepo>((ref) {
 final bloodRequestsNotifier =
     StateNotifierProvider<BloodRequestsNotifier, BloodRequestsState>((ref) {
       final repo = ref.read(bloodRequestRepoProvider);
-      return BloodRequestsNotifier(repo)..fetchInitial();
+      return BloodRequestsNotifier(repo, ref)..fetchSafeWithLocal();
     });
 
 class BloodRequestsNotifier extends StateNotifier<BloodRequestsState> {
   final BloodRequestRepo _repo;
-
-  BloodRequestsNotifier(this._repo) : super(const BloodRequestsState());
+  final Ref ref;
+  BloodRequestsNotifier(this._repo, this.ref)
+    : super(const BloodRequestsState());
 
   DocumentSnapshot? _lastDoc;
   static const int _pageSize = 10;
+
+  Future<void> fetchSafeWithLocal() async {
+    final checkConnection = ref.watch(checkInternetConnection).asData!.value;
+
+    if (checkConnection) {
+      await fetchInitial();
+    } else {
+      loadHive();
+    }
+  }
+
+  void loadHive() {
+    final data = BloodRequestHiveManager.getAllRequests();
+
+    final newData = state.copyWith(requests: data);
+
+    state = newData;
+  }
 
   Future<void> fetchInitial() async {
     state = state.copyWith(
