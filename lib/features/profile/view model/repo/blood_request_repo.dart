@@ -13,4 +13,6 @@ abstract class BloodRequestRepo {
     required String status,
     required String requestId,
   });
+
+  Future<Either<Failure, List<BloodRequest>>> fetchMyBloodrequests();
 }
