@@ -1,63 +1,79 @@
-import 'dart:developer';
-
-import 'package:blood_bank/core/widgets/custom_icon_button.dart';
-import 'package:blood_bank/core/widgets/custom_search_form_field.dart';
+import 'package:blood_bank/core/constants/appthemes.dart';
+import 'package:blood_bank/core/enum/blood_groud_enum.dart';
+import 'package:blood_bank/core/util/styles.dart';
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatefulWidget {
-  final bool isFilter;
-  const SearchPage({super.key, this.isFilter = false});
+  const SearchPage({super.key});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final searchController = TextEditingController();
-  final FocusNode focusNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    isFocus();
-  }
-
-  void isFocus() {
-    widget.isFilter ? focusNode.unfocus() : focusNode.requestFocus();
-  }
-
-  @override
-  void dispose() {
-    searchController.dispose();
-    focusNode.dispose();
-    super.dispose();
-  }
+  String? selectedBloodGroup;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffF8F9FB),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 50),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomSearchFormField(
-                      controller: searchController,
-                      focusNode: focusNode,
-                      onSubmitted: (value) {
-                        log(value);
-                      },
+
+              /// Title
+              const Text("Select Blood Group", style: Styles.requestDonorTitle),
+
+              const SizedBox(height: 20),
+
+              /// Blood Group Chips
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+
+                children: BloodGroudEnum.values.map((bloodEnum) {
+                  final blood = bloodEnum.title;
+                  final isSelected = selectedBloodGroup == blood;
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedBloodGroup = blood;
+                      });
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.all(2),
+                      height: 75,
+                      width: 75,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: isSelected
+                              ? Appthemes.primaryColor
+                              : Colors.transparent,
+                          width: 1.2,
+                        ),
+                        color: isSelected ? Colors.white : Appthemes.lightGrey,
+                      ),
+                      child: Center(
+                        child: Text(
+                          blood,
+                          style: TextStyle(
+                            color: isSelected
+                                ? Appthemes.primaryColor
+                                : Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  CustomIconButton(
-                    icon: const Icon(Icons.filter, color: Colors.white),
-                    onPressed: () {},
-                  ),
-                ],
+                  );
+                }).toList(),
               ),
             ],
           ),

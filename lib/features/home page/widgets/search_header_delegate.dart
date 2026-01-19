@@ -35,10 +35,7 @@ class SearchHeaderDelegate extends SliverPersistentHeaderDelegate {
             CustomIconButton(
               icon: const Icon(Icons.filter, color: Colors.white),
               onPressed: () {
-                navigateTo(
-                  context: context,
-                  route: const SearchPage(isFilter: true),
-                );
+                navigateTo(context: context, route: const SearchPage());
               },
             ),
           ],
