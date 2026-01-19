@@ -1,4 +1,5 @@
-import 'package:blood_bank/features/home%20page/widgets/requset_tile.dart';
+import 'package:blood_bank/core/animations/list/list_of_blood_request_loader.dart';
+import 'package:blood_bank/features/home%20page/widgets/request_tile.dart';
 import 'package:blood_bank/features/profile/view%20model/notifier/blood_requests_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,7 +44,7 @@ class _AllRequestsState extends ConsumerState<AllRequests> {
           if (index == state.requests.length) {
             return const Padding(
               padding: EdgeInsets.all(16),
-              child: Center(child: CircularProgressIndicator()),
+              child: Center(child: ListOfBloodRequestLoader()),
             );
           }
 
