@@ -15,21 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserModel {
 
- String? get id;//
- String? get image;//
- String get name;//
- String get email;//
- String? get fcmToken;//
- Map<String, dynamic> get location;//
- int? get donationCount;//
- bool? get isDonor;//
- bool get isAvailable;//
- String? get lastDonationDate;//
- int get phone;//
- String get bloodGroup;//
- int? get age;//
- double? get weight;//
- String? get gender;
+ String? get id; String? get image; String get name; String get email; String? get fcmToken; Map<String, dynamic> get location; int? get donationCount; bool? get isDonor; bool get isAvailable; String? get lastDonationDate; int get phone; String get bloodGroup; int? get age; double? get weight; String? get gender;
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -241,40 +227,25 @@ class _UserModel implements UserModel {
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 @override final  String? id;
-//
 @override final  String? image;
-//
 @override final  String name;
-//
 @override final  String email;
-//
 @override final  String? fcmToken;
-//
  final  Map<String, dynamic> _location;
-//
 @override Map<String, dynamic> get location {
   if (_location is EqualUnmodifiableMapView) return _location;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableMapView(_location);
 }
 
-//
 @override@JsonKey() final  int? donationCount;
-//
 @override@JsonKey() final  bool? isDonor;
-//
 @override@JsonKey() final  bool isAvailable;
-//
 @override final  String? lastDonationDate;
-//
 @override final  int phone;
-//
 @override final  String bloodGroup;
-//
 @override final  int? age;
-//
 @override final  double? weight;
-//
 @override final  String? gender;
 
 /// Create a copy of UserModel

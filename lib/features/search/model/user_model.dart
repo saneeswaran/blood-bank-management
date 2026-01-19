@@ -6,21 +6,21 @@ part 'user_model.g.dart';
 @freezed
 abstract class UserModel with _$UserModel {
   const factory UserModel({
-    String? id, //
-    String? image, //
-    required String name, //
-    required String email, //
-    required String? fcmToken, //
-    required Map<String, dynamic> location, //
-    @Default(0) int? donationCount, //
-    @Default(false) bool? isDonor, //
-    @Default(false) bool isAvailable, //
-    String? lastDonationDate, //
-    required int phone, //
-    required String bloodGroup, //
-    int? age, //
-    double? weight, //
-    String? gender, //
+    String? id,
+    String? image,
+    required String name,
+    required String email,
+    required String? fcmToken,
+    required Map<String, dynamic> location,
+    @Default(0) int? donationCount,
+    @Default(false) bool? isDonor,
+    @Default(false) bool isAvailable,
+    String? lastDonationDate,
+    required int phone,
+    required String bloodGroup,
+    int? age,
+    double? weight,
+    String? gender,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
