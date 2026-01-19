@@ -5,68 +5,63 @@ import 'package:hive_ce_flutter/adapters.dart';
 class MyBloodRequestHiveManager {
   static const String boxName = "my_blood_request_box";
 
-  static Future<void> safeInits() async {
-    await Hive.openBox<BloodRequest>(boxName);
+  static Future<void> init() async {
+    await Hive.openBox<RequestBloodHive>(boxName);
   }
 
-  static Future<void> addRequest(BloodRequest bloodRequest) async {
-    final box = Hive.box<RequestBloodHive>(boxName);
-    final requestHiveModel = converToHiveModel(bloodRequest);
-    await box.put(requestHiveModel.requestId, requestHiveModel);
+  static Box<RequestBloodHive> get _box => Hive.box<RequestBloodHive>(boxName);
+
+  static Future<void> addRequest(BloodRequest request) async {
+    final hiveModel = _toHive(request);
+    await _box.put(hiveModel.requestId, hiveModel);
   }
 
-  static Future<void> deleteRequest(int key) async {
-    final box = Hive.box<RequestBloodHive>(boxName);
-    await box.delete(key);
+  static Future<void> updateRequest(BloodRequest request) async {
+    final hiveModel = _toHive(request);
+    await _box.put(hiveModel.requestId, hiveModel);
   }
 
-  static Future<void> updateRequest(BloodRequest bloodRequest) async {
-    final box = Hive.box<RequestBloodHive>(boxName);
-    final requestHiveModel = converToHiveModel(bloodRequest);
-    await box.put(requestHiveModel.requestId, requestHiveModel);
+  static Future<void> deleteRequest(String key) async {
+    await _box.delete(key);
   }
 
   static Future<void> clearAll() async {
-    final box = Hive.box<RequestBloodHive>(boxName);
-    await box.clear();
+    await _box.clear();
   }
 
   static List<BloodRequest> getAllRequests() {
-    final box = Hive.box<RequestBloodHive>(boxName);
-    return box.values
-        .where((e) => e.status == "pending" || e.status == "Pending")
-        .toList()
-        .map(
-          (e) => BloodRequest(
-            requestId: e.requestId,
-            requestedBy: e.requestedBy,
-            bloodGroup: e.bloodGroup,
-            units: e.units,
-            hospitalName: e.hospitalName,
-            location: e.location,
-            contactPhone: e.contactPhone,
-            urgency: e.urgency,
-            status: e.status,
-            createdAt: e.createdAt,
-            patientName: e.patientName,
-          ),
-        )
-        .toList();
+    return _box.values.map(_fromHive).toList();
   }
 
-  static RequestBloodHive converToHiveModel(BloodRequest bloodRequest) {
+  static RequestBloodHive _toHive(BloodRequest e) {
     return RequestBloodHive(
-      requestId: bloodRequest.requestId,
-      requestedBy: bloodRequest.requestedBy,
-      bloodGroup: bloodRequest.bloodGroup,
-      units: bloodRequest.units,
-      hospitalName: bloodRequest.hospitalName,
-      location: bloodRequest.location,
-      contactPhone: bloodRequest.contactPhone,
-      urgency: bloodRequest.urgency,
-      status: bloodRequest.status,
-      createdAt: bloodRequest.createdAt,
-      patientName: bloodRequest.patientName,
+      requestId: e.requestId,
+      requestedBy: e.requestedBy,
+      patientName: e.patientName,
+      bloodGroup: e.bloodGroup,
+      units: e.units,
+      hospitalName: e.hospitalName,
+      location: e.location,
+      contactPhone: e.contactPhone,
+      urgency: e.urgency,
+      status: e.status,
+      createdAt: e.createdAt,
+    );
+  }
+
+  static BloodRequest _fromHive(RequestBloodHive e) {
+    return BloodRequest(
+      requestId: e.requestId,
+      requestedBy: e.requestedBy,
+      patientName: e.patientName,
+      bloodGroup: e.bloodGroup,
+      units: e.units,
+      hospitalName: e.hospitalName,
+      location: e.location,
+      contactPhone: e.contactPhone,
+      urgency: e.urgency,
+      status: e.status,
+      createdAt: e.createdAt,
     );
   }
 }
