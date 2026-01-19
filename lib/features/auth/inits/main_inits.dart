@@ -1,5 +1,4 @@
 import 'package:blood_bank/features/home%20page/model/hive/request_blood_hive.dart';
-import 'package:blood_bank/features/home%20page/service/blood_request_hive_manager.dart';
 import 'package:blood_bank/features/home%20page/service/my_blood_request_hive_manager.dart';
 import 'package:blood_bank/features/onboard/service/onboard_manager.dart';
 import 'package:blood_bank/firebase_options.dart';
@@ -17,12 +16,11 @@ class MainInits {
 
     await Hive.initFlutter();
 
-    if (!Hive.isAdapterRegistered(0)) {
+    if (!Hive.isAdapterRegistered(RequestBloodHiveAdapter().typeId)) {
       Hive.registerAdapter(RequestBloodHiveAdapter());
     }
 
     await OnboardManager.init();
-    await BloodRequestHiveManager.init();
     await MyBloodRequestHiveManager.init();
   }
 }

@@ -53,7 +53,7 @@ class _AllRequestsState extends ConsumerState<AllRequests> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: RequestTile(
               bloodRequest: request,
-              onAccept: () {},
+              onAccept: () async {},
               onContact: () {},
             ),
           );

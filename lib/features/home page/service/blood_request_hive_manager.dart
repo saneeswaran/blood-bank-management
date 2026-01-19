@@ -1,41 +1,44 @@
-import 'package:blood_bank/features/home%20page/model/blood%20request/blood_request.dart';
-import 'package:blood_bank/features/home%20page/model/hive/request_blood_hive.dart';
+import 'package:blood_bank/features/home page/model/blood request/blood_request.dart';
+import 'package:blood_bank/features/home page/model/hive/request_blood_hive.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 
 class BloodRequestHiveManager {
   static const String boxName = "blood_request_box";
-  static Future<void> init() async {
-    Hive.registerAdapter<RequestBloodHive>(RequestBloodHiveAdapter());
-    await Hive.openBox<RequestBloodHive>(boxName);
+
+  static Future<Box<RequestBloodHive>> _getBox() async {
+    if (!Hive.isBoxOpen(boxName)) {
+      return await Hive.openBox<RequestBloodHive>(boxName);
+    }
+    return Hive.box<RequestBloodHive>(boxName);
   }
 
   static Future<void> addRequest(BloodRequest bloodRequest) async {
-    final box = Hive.box<RequestBloodHive>(boxName);
-    final requestHiveModel = converToHiveModel(bloodRequest);
+    final box = await _getBox();
+    final requestHiveModel = _convertToHiveModel(bloodRequest);
     await box.put(requestHiveModel.requestId, requestHiveModel);
   }
 
   static Future<void> deleteRequest(int key) async {
-    final box = Hive.box<RequestBloodHive>(boxName);
+    final box = await _getBox();
     await box.delete(key);
   }
 
   static Future<void> updateRequest(BloodRequest bloodRequest) async {
-    final box = Hive.box<RequestBloodHive>(boxName);
-    final requestHiveModel = converToHiveModel(bloodRequest);
+    final box = await _getBox();
+    final requestHiveModel = _convertToHiveModel(bloodRequest);
     await box.put(requestHiveModel.requestId, requestHiveModel);
   }
 
   static Future<void> clearAll() async {
-    final box = Hive.box<RequestBloodHive>(boxName);
+    final box = await _getBox();
     await box.clear();
   }
 
-  static List<BloodRequest> getAllRequests() {
-    final box = Hive.box<RequestBloodHive>(boxName);
+  static Future<List<BloodRequest>> getAllRequests() async {
+    final box = await _getBox();
+
     return box.values
         .where((e) => e.status == "pending" || e.status == "Pending")
-        .toList()
         .map(
           (e) => BloodRequest(
             requestId: e.requestId,
@@ -54,7 +57,7 @@ class BloodRequestHiveManager {
         .toList();
   }
 
-  static RequestBloodHive converToHiveModel(BloodRequest bloodRequest) {
+  static RequestBloodHive _convertToHiveModel(BloodRequest bloodRequest) {
     return RequestBloodHive(
       requestId: bloodRequest.requestId,
       requestedBy: bloodRequest.requestedBy,

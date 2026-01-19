@@ -51,8 +51,8 @@ class BloodRequestsNotifier extends StateNotifier<BloodRequestsState> {
     );
   }
 
-  void loadHive() {
-    final data = BloodRequestHiveManager.getAllRequests();
+  void loadHive() async {
+    final data = await BloodRequestHiveManager.getAllRequests();
     _setState(state.copyWith(requests: data));
   }
 
