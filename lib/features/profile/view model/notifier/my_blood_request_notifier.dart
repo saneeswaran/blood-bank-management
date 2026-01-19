@@ -34,4 +34,6 @@ class MyBloodRequestNotifier
       state = AsyncError(e, StackTrace.current);
     }
   }
+
+  //TODO add manual update also
 }

@@ -12,14 +12,23 @@ import 'package:flutter_animated_navkit/animated_bottom_navkit.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-class BottomNavi extends StatefulWidget {
+class BottomNavi extends ConsumerStatefulWidget {
   const BottomNavi({super.key});
 
   @override
-  State<BottomNavi> createState() => _BottomNaviState();
+  ConsumerState<BottomNavi> createState() => _BottomNaviState();
 }
 
-class _BottomNaviState extends State<BottomNavi> {
+class _BottomNaviState extends ConsumerState<BottomNavi> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      if (!mounted) return;
+      ref.read(myBloodRequests.notifier).fetchMyRequests(context);
+    });
+  }
+
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -27,10 +36,6 @@ class _BottomNaviState extends State<BottomNavi> {
       floatingActionButton: currentIndex == 0
           ? Consumer(
               builder: (context, ref, child) {
-                Future.microtask(() {
-                  if (!context.mounted) return;
-                  ref.read(myBloodRequests.notifier).fetchMyRequests(context);
-                });
                 return FloatingActionButton(
                   elevation: 1.5,
                   shape: const CircleBorder(),
