@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:blood_bank/features/search/model/user_model.dart';
+import 'package:blood_bank/features/profile/model/model/user_model.dart';
 import 'package:flutter/material.dart';
 
 class EditProfilePage extends StatefulWidget {

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SearchState {
 
- List<UserModel> get donors; bool get isLoading; bool get hasMore; DocumentSnapshot? get lastDoc;
+ List<UserModel> get donors; bool get isLoading; bool get hasMore; DocumentSnapshot<Object?>? get lastDoc;
 /// Create a copy of SearchState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $SearchStateCopyWith<$Res>  {
   factory $SearchStateCopyWith(SearchState value, $Res Function(SearchState) _then) = _$SearchStateCopyWithImpl;
 @useResult
 $Res call({
- List<UserModel> donors, bool isLoading, bool hasMore, DocumentSnapshot? lastDoc
+ List<UserModel> donors, bool isLoading, bool hasMore, DocumentSnapshot<Object?>? lastDoc
 });
 
 
@@ -68,7 +68,7 @@ donors: null == donors ? _self.donors : donors // ignore: cast_nullable_to_non_n
 as List<UserModel>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
 as bool,lastDoc: freezed == lastDoc ? _self.lastDoc : lastDoc // ignore: cast_nullable_to_non_nullable
-as DocumentSnapshot?,
+as DocumentSnapshot<Object?>?,
   ));
 }
 
@@ -153,7 +153,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<UserModel> donors,  bool isLoading,  bool hasMore,  DocumentSnapshot? lastDoc)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<UserModel> donors,  bool isLoading,  bool hasMore,  DocumentSnapshot<Object?>? lastDoc)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SearchState() when $default != null:
 return $default(_that.donors,_that.isLoading,_that.hasMore,_that.lastDoc);case _:
@@ -174,7 +174,7 @@ return $default(_that.donors,_that.isLoading,_that.hasMore,_that.lastDoc);case _
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<UserModel> donors,  bool isLoading,  bool hasMore,  DocumentSnapshot? lastDoc)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<UserModel> donors,  bool isLoading,  bool hasMore,  DocumentSnapshot<Object?>? lastDoc)  $default,) {final _that = this;
 switch (_that) {
 case _SearchState():
 return $default(_that.donors,_that.isLoading,_that.hasMore,_that.lastDoc);case _:
@@ -194,7 +194,7 @@ return $default(_that.donors,_that.isLoading,_that.hasMore,_that.lastDoc);case _
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<UserModel> donors,  bool isLoading,  bool hasMore,  DocumentSnapshot? lastDoc)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<UserModel> donors,  bool isLoading,  bool hasMore,  DocumentSnapshot<Object?>? lastDoc)?  $default,) {final _that = this;
 switch (_that) {
 case _SearchState() when $default != null:
 return $default(_that.donors,_that.isLoading,_that.hasMore,_that.lastDoc);case _:
@@ -221,7 +221,7 @@ class _SearchState implements SearchState {
 
 @override@JsonKey() final  bool isLoading;
 @override@JsonKey() final  bool hasMore;
-@override final  DocumentSnapshot? lastDoc;
+@override final  DocumentSnapshot<Object?>? lastDoc;
 
 /// Create a copy of SearchState
 /// with the given fields replaced by the non-null parameter values.
@@ -253,7 +253,7 @@ abstract mixin class _$SearchStateCopyWith<$Res> implements $SearchStateCopyWith
   factory _$SearchStateCopyWith(_SearchState value, $Res Function(_SearchState) _then) = __$SearchStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<UserModel> donors, bool isLoading, bool hasMore, DocumentSnapshot? lastDoc
+ List<UserModel> donors, bool isLoading, bool hasMore, DocumentSnapshot<Object?>? lastDoc
 });
 
 
@@ -276,7 +276,7 @@ donors: null == donors ? _self._donors : donors // ignore: cast_nullable_to_non_
 as List<UserModel>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
 as bool,lastDoc: freezed == lastDoc ? _self.lastDoc : lastDoc // ignore: cast_nullable_to_non_nullable
-as DocumentSnapshot?,
+as DocumentSnapshot<Object?>?,
   ));
 }
 

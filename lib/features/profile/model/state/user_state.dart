@@ -1,4 +1,4 @@
-import 'package:blood_bank/features/search/model/user_model.dart';
+import 'package:blood_bank/features/profile/model/model/user_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_state.freezed.dart';

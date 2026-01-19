@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:blood_bank/core/constants/constats.dart';
 import 'package:blood_bank/features/profile/view%20model/repo/profile_repo.dart';
-import 'package:blood_bank/features/search/model/user_model.dart';
+import 'package:blood_bank/features/profile/model/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';

@@ -1,10 +1,10 @@
-import 'package:blood_bank/features/search/model/user_model.dart';
+import 'package:blood_bank/features/search/model/result/search_result.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class SearchDonorRepo {
-  Future<List<UserModel>> fetchDonors({
+  Future<SearchResult> fetchDonors({
     required String bloodGroup,
     required Map<String, dynamic> location,
-    DocumentSnapshot? lastDoc,
+    DocumentSnapshot<Object?>? lastDoc,
   });
 }

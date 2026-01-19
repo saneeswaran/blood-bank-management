@@ -14,23 +14,30 @@ class SearchDonorNotifier extends StateNotifier<SearchState> {
     required Map<String, dynamic> location,
     bool loadMore = false,
   }) async {
-    if (state.isLoading || !state.hasMore) return;
+    if (state.isLoading || (loadMore && !state.hasMore)) return;
 
-    state = state.copyWith(isLoading: true);
+    if (!loadMore) {
+      state = const SearchState(isLoading: true);
+    } else {
+      state = state.copyWith(isLoading: true);
+    }
 
-    final lastDoc = loadMore ? state.lastDoc : null;
-    final donors = await repository.fetchDonors(
-      bloodGroup: bloodGroup,
-      location: location,
-      lastDoc: lastDoc,
-    );
+    try {
+      final result = await repository.fetchDonors(
+        bloodGroup: bloodGroup,
+        location: location,
+        lastDoc: loadMore ? state.lastDoc : null,
+      );
 
-    state = state.copyWith(
-      donors: loadMore ? [...state.donors, ...donors] : donors,
-      isLoading: false,
-      hasMore: donors.length == SearchDonorImpl.pageSize,
-      lastDoc: donors.isNotEmpty ? donors.lastDoc : state.lastDoc,
-    );
+      state = state.copyWith(
+        donors: loadMore ? [...state.donors, ...result.donors] : result.donors,
+        lastDoc: result.lastDoc,
+        hasMore: result.donors.length == SearchDonorImpl.pageSize,
+        isLoading: false,
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false);
+    }
   }
 }
 

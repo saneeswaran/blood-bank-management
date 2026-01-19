@@ -1,5 +1,6 @@
-import 'package:blood_bank/features/search/model/user_model.dart';
-import 'package:blood_bank/features/search/view%20model/search_donor_repo.dart';
+import 'package:blood_bank/features/profile/model/model/user_model.dart';
+import 'package:blood_bank/features/search/model/result/search_result.dart';
+import 'package:blood_bank/features/search/view model/search_donor_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SearchDonorImpl extends SearchDonorRepo {
@@ -9,13 +10,13 @@ class SearchDonorImpl extends SearchDonorRepo {
 
   static const int pageSize = 10;
 
-  Future<List<QueryDocumentSnapshot>> _queryDonors({
+  Future<QuerySnapshot<Object?>> _queryDonors({
     required String bloodGroup,
     required String field,
     required dynamic value,
-    DocumentSnapshot? lastDoc,
+    DocumentSnapshot<Object?>? lastDoc,
   }) async {
-    Query query = _firestore
+    Query<Object?> query = _firestore
         .collection('users')
         .where('bloodGroup', isEqualTo: bloodGroup)
         .where('isDonor', isEqualTo: true)
@@ -28,38 +29,41 @@ class SearchDonorImpl extends SearchDonorRepo {
       query = query.startAfterDocument(lastDoc);
     }
 
-    final snapshot = await query.get();
-    return snapshot.docs;
+    return await query.get();
   }
 
   @override
-  Future<List<UserModel>> fetchDonors({
+  Future<SearchResult> fetchDonors({
     required String bloodGroup,
     required Map<String, dynamic> location,
-    DocumentSnapshot? lastDoc,
+    DocumentSnapshot<Object?>? lastDoc,
   }) async {
-    final searchFields = ['streetName', 'city', 'state', 'pincode'];
+    /// SEARCH PRIORITY (as requested)
+    final searchOrder = ['village', 'city', 'pincode', 'state'];
 
-    for (final field in searchFields) {
+    for (final field in searchOrder) {
       final value = location[field];
       if (value == null) continue;
 
-      final docs = await _queryDonors(
+      final snapshot = await _queryDonors(
         bloodGroup: bloodGroup,
         field: field,
         value: value,
         lastDoc: lastDoc,
       );
 
-      if (docs.isNotEmpty) {
-        return docs
-            .map(
-              (doc) => UserModel.fromJson(doc.data() as Map<String, dynamic>),
-            )
-            .toList();
+      if (snapshot.docs.isNotEmpty) {
+        final donors = snapshot.docs.map((doc) {
+          return UserModel.fromJson({
+            ...doc.data() as Map<String, dynamic>,
+            'id': doc.id,
+          });
+        }).toList();
+
+        return SearchResult(donors: donors, lastDoc: snapshot.docs.last);
       }
     }
 
-    return [];
+    return SearchResult(donors: const [], lastDoc: lastDoc);
   }
 }
