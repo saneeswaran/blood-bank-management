@@ -8,6 +8,7 @@ import 'package:blood_bank/core/widgets/custom_elevated_button.dart';
 import 'package:blood_bank/core/widgets/custom_text_form_field.dart';
 import 'package:blood_bank/features/home%20page/model/location/location.dart';
 import 'package:blood_bank/features/home%20page/util/location_util.dart';
+import 'package:blood_bank/features/search/view/search_result_page.dart';
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatefulWidget {
@@ -185,7 +186,9 @@ class _SearchPageState extends State<SearchPage> {
               const SizedBox(height: 20),
               Center(
                 child: CustomElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    submitREquest();
+                  },
                   text: "Search Donor",
                   minSize: true,
                 ),
@@ -277,6 +280,33 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void submitREquest() {
+    if (selectedBloodGroup == null) {
+      customSnackBar(
+        context: context,
+        content: "Please select blood group",
+        type: SnackType.error,
+      );
+      return;
+    }
+
+    if (selectedLocation == null) {
+      customSnackBar(
+        context: context,
+        content: "Please select location",
+        type: SnackType.error,
+      );
+      return;
+    }
+    navigateTo(
+      context: context,
+      route: SearchResultPage(
+        bloodGroup: selectedBloodGroup!,
+        location: selectedLocation!.toJson(),
       ),
     );
   }

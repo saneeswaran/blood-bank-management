@@ -41,6 +41,7 @@ class SearchDonorNotifier extends StateNotifier<SearchState> {
   }
 }
 
-final donorProvider = StateNotifierProvider<SearchDonorNotifier, SearchState>(
-  (ref) => SearchDonorNotifier(SearchDonorImpl(FirebaseFirestore.instance)),
-);
+final searchDonorNotifier =
+    StateNotifierProvider<SearchDonorNotifier, SearchState>(
+      (ref) => SearchDonorNotifier(SearchDonorImpl(FirebaseFirestore.instance)),
+    );
