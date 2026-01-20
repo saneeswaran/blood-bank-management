@@ -1,4 +1,3 @@
-import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/widgets/loader.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -111,21 +110,21 @@ class DonorTileLoader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: Appthemes.primaryColor.withOpacity(0.1),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Appthemes.primaryColor.withOpacity(0.3)),
+        border: Border.all(color: Colors.white),
       ),
       child: const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.bloodtype, size: 14, color: Appthemes.primaryColor),
+          Icon(Icons.bloodtype, size: 14, color: Colors.white),
           SizedBox(width: 4),
           Text(
             " user.bloodGroup",
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w700,
-              color: Appthemes.primaryColor,
+              color: Colors.white,
             ),
           ),
         ],

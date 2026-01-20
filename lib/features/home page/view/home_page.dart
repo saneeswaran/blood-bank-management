@@ -21,13 +21,13 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   bool _dialogShown = false;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(askLocationUpdateRequestNotifier.notifier).init();
-      ref.read(bloodRequestsNotifier.notifier).fetchInitial();
     });
   }
 
@@ -54,25 +54,37 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          // Sticky Search Bar
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: SearchHeaderDelegate(),
-          ),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (scrollInfo) {
+          final state = ref.read(bloodRequestsNotifier);
+          final notifier = ref.read(bloodRequestsNotifier.notifier);
 
-          // Section Title
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Text("Requests", style: Styles.requestDonorTitle),
+          if (scrollInfo.metrics.pixels >=
+                  scrollInfo.metrics.maxScrollExtent - 200 &&
+              state.hasMore &&
+              !state.isLoadingMore) {
+            log("🔥 PAGINATION FETCH");
+            notifier.fetchMore();
+          }
+          return false;
+        },
+        child: CustomScrollView(
+          controller: _scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: SearchHeaderDelegate(),
             ),
-          ),
-
-          // All Requests list (sliver)
-          const AllRequests(),
-        ],
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Text("Requests", style: Styles.requestDonorTitle),
+              ),
+            ),
+            AllRequests(scrollController: _scrollController),
+          ],
+        ),
       ),
     );
   }
