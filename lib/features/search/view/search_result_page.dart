@@ -1,3 +1,4 @@
+import 'package:blood_bank/features/search/components/donor_tile.dart';
 import 'package:blood_bank/features/search/view%20model/search_donor_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,13 +45,7 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
               itemBuilder: (context, index) {
                 final donor = state.donors[index];
 
-                return Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.person),
-                    title: Text(donor.name),
-                    subtitle: Text("${donor.bloodGroup} • ${donor.phone}"),
-                  ),
-                );
+                return DonorTile(user: donor);
               },
             ),
     );
