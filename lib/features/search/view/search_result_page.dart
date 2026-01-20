@@ -1,3 +1,4 @@
+import 'package:blood_bank/core/animations/list/list_of_donor_loader.dart';
 import 'package:blood_bank/features/search/components/donor_tile.dart';
 import 'package:blood_bank/features/search/view%20model/search_donor_notifier.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
     return Scaffold(
       appBar: AppBar(title: const Text("Search Results")),
       body: state.isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const ListOfDonorLoader()
           : state.donors.isEmpty
           ? const Center(child: Text("No donors found"))
           : ListView.builder(
