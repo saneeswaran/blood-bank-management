@@ -12,19 +12,19 @@ class ResponseBloodRequestImpl extends ResponseBloodRequest {
   final userCollection = FirebaseFirestore.instance.collection("users");
   final userId = FirebaseAuth.instance.currentUser!.uid;
   @override
-  Future<Either<Failure, List<UserModel>>> fetchAccesptedDonors({
+  Future<List<UserModel>> fetchAcceptedDonors({
     required List<String> donorIds,
   }) async {
     try {
       final query = await userCollection.where("id", whereIn: donorIds).get();
       final data = query.docs.map((e) => UserModel.fromJson(e.data())).toList();
       if (data.isEmpty) {
-        return const Left("Request not found");
+        return [];
       }
-      return Right(data);
+      return data;
     } catch (e) {
       log("response blood request $e");
-      return Left(e.toString());
+      return [];
     }
   }
 

@@ -4,9 +4,7 @@ import 'package:blood_bank/features/response/model/model/accept_donation.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract class ResponseBloodRequest {
-  Future<Either<Failure, List<UserModel>>> fetchAccesptedDonors({
-    required List<String> donorIds,
-  });
+  Future<List<UserModel>> fetchAcceptedDonors({required List<String> donorIds});
 
   Future<Either<Failure, List<AcceptDonation>>> fetchDonationRequests({
     required String requestId,

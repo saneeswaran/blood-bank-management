@@ -1,11 +1,19 @@
 import 'dart:developer';
 
+import 'package:blood_bank/features/profile/model/model/user_model.dart';
 import 'package:blood_bank/features/response/model/model/accept_donation.dart';
 import 'package:blood_bank/features/response/model/state/accept_donation_state.dart';
 import 'package:blood_bank/features/response/view%20model/repo/response_blood_request.dart';
 import 'package:blood_bank/features/response/view%20model/repo/response_blood_request_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
+
+final fetchAcceptedDonorRequests = FutureProvider.autoDispose
+    .family<List<UserModel>, List<String>>((ref, ids) async {
+      return ref
+          .read(responseBloodRequestProvider)
+          .fetchAcceptedDonors(donorIds: ids);
+    });
 
 final responseBloodRequestProvider = Provider<ResponseBloodRequestImpl>(
   (ref) => ResponseBloodRequestImpl(),
