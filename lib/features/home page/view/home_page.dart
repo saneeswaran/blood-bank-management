@@ -63,7 +63,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                   scrollInfo.metrics.maxScrollExtent - 200 &&
               state.hasMore &&
               !state.isLoadingMore) {
-            log("🔥 PAGINATION FETCH");
             notifier.fetchMore();
           }
           return false;
