@@ -5,7 +5,7 @@ import 'package:fpdart/fpdart.dart';
 
 abstract class ResponseBloodRequest {
   Future<Either<Failure, List<UserModel>>> fetchAccesptedDonors({
-    required String donationId,
+    required List<String> donorIds,
   });
 
   Future<Either<Failure, List<AcceptDonation>>> fetchDonationRequests({
