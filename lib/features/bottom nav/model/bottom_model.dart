@@ -1,5 +1,5 @@
 import 'package:blood_bank/core/constants/appthemes.dart';
-import 'package:blood_bank/features/article/view/article_page.dart';
+import 'package:blood_bank/features/response/view/response_page.dart';
 import 'package:blood_bank/features/home%20page/view/home_page.dart';
 import 'package:blood_bank/features/notification/view/notification_page.dart';
 import 'package:blood_bank/features/profile/view/profile_page.dart';
@@ -36,7 +36,7 @@ List<FlashyTabBarItem> bottomBarItems = [
 
 final List<Widget> pages = const [
   HomePage(),
-  ArticlePage(),
+  ResponsePage(),
   NotificationPage(),
   ProfilePage(),
 ];
