@@ -10,6 +10,7 @@ import 'package:fpdart/fpdart.dart';
 
 class ResponseBloodRequestImpl extends ResponseBloodRequest {
   final userCollection = FirebaseFirestore.instance.collection("users");
+  final userId = FirebaseAuth.instance.currentUser!.uid;
   @override
   Future<Either<Failure, List<UserModel>>> fetchAccesptedDonors({
     required List<String> donorIds,
@@ -32,7 +33,6 @@ class ResponseBloodRequestImpl extends ResponseBloodRequest {
     required String requestId,
   }) async {
     try {
-      final userId = FirebaseAuth.instance.currentUser!.uid;
       final responseCollection = FirebaseFirestore.instance
           .collection("users")
           .doc(userId)
@@ -49,6 +49,32 @@ class ResponseBloodRequestImpl extends ResponseBloodRequest {
         return const Left("Request not found");
       }
       return Right(data);
+    } catch (e) {
+      log("response blood request $e");
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> changeStatusOfRequest({
+    required String requestId,
+    required String status,
+  }) async {
+    final responseCollection = FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("blood_requests")
+        .doc(requestId)
+        .collection("response");
+    try {
+      final doc = await responseCollection.doc(requestId).get();
+
+      if (doc.exists) {
+        await responseCollection.doc(requestId).update({"status": status});
+        return const Right(true);
+      } else {
+        return const Left("Request not found");
+      }
     } catch (e) {
       log("response blood request $e");
       return Left(e.toString());

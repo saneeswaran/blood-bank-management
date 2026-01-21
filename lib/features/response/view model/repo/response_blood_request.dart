@@ -11,4 +11,9 @@ abstract class ResponseBloodRequest {
   Future<Either<Failure, List<AcceptDonation>>> fetchDonationRequests({
     required String requestId,
   });
+
+  Future<Either<Failure, bool>> changeStatusOfRequest({
+    required String requestId,
+    required String status,
+  });
 }
