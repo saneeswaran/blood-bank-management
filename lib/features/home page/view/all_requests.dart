@@ -36,7 +36,7 @@ class AllRequests extends ConsumerWidget {
                 child: Center(child: ListOfBloodRequestLoader()),
               );
             }
-
+            log(state.requests.toString());
             final request = state.requests[index];
 
             return Padding(
