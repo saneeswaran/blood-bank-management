@@ -88,7 +88,7 @@ class RequestItem extends StatelessWidget {
             const SizedBox(height: 12),
 
             _InfoRow(Icons.bloodtype, '${request.units} units'),
-            _InfoRow(Icons.phone, request.contactPhone),
+            _InfoRow(Icons.phone, request.contactPhone.toString()),
             _InfoRow(
               Icons.priority_high,
               request.urgency,

@@ -17,7 +17,7 @@ abstract class BloodRequest with _$BloodRequest {
     required String hospitalName,
 
     required Map<String, dynamic> location,
-    required String contactPhone,
+    required int contactPhone,
 
     /// high / medium / low
     required String urgency,

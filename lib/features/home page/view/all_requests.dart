@@ -36,6 +36,10 @@ class AllRequests extends ConsumerWidget {
                 child: Center(child: ListOfBloodRequestLoader()),
               );
             }
+
+            if (state.requests.isEmpty) {
+              return const Center(child: Text("No requests found"));
+            }
             log(state.requests.toString());
             final request = state.requests[index];
 

@@ -24,7 +24,7 @@ class RequestBloodHiveAdapter extends TypeAdapter<RequestBloodHive> {
       units: (fields[4] as num).toInt(),
       hospitalName: fields[5] as String,
       location: (fields[6] as Map).cast<String, dynamic>(),
-      contactPhone: fields[7] as String,
+      contactPhone: (fields[7] as num).toInt(),
       urgency: fields[8] as String,
       status: fields[9] as String,
       createdAt: fields[10] as String,

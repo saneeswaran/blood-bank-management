@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BloodRequest {
 
- String? get requestId; String get requestedBy; String? get patientName; String get bloodGroup; int get units; String get hospitalName; Map<String, dynamic> get location; String get contactPhone;/// high / medium / low
+ String? get requestId; String get requestedBy; String? get patientName; String get bloodGroup; int get units; String get hospitalName; Map<String, dynamic> get location; int get contactPhone;/// high / medium / low
  String get urgency;/// active / fulfilled / expired / cancelled
  String get status;/// Firestore timestamps
  String get createdAt;@JsonKey(ignore: true) DocumentSnapshot<Map<String, dynamic>>? get snapshot;
@@ -51,7 +51,7 @@ abstract mixin class $BloodRequestCopyWith<$Res>  {
   factory $BloodRequestCopyWith(BloodRequest value, $Res Function(BloodRequest) _then) = _$BloodRequestCopyWithImpl;
 @useResult
 $Res call({
- String? requestId, String requestedBy, String? patientName, String bloodGroup, int units, String hospitalName, Map<String, dynamic> location, String contactPhone, String urgency, String status, String createdAt,@JsonKey(ignore: true) DocumentSnapshot<Map<String, dynamic>>? snapshot
+ String? requestId, String requestedBy, String? patientName, String bloodGroup, int units, String hospitalName, Map<String, dynamic> location, int contactPhone, String urgency, String status, String createdAt,@JsonKey(ignore: true) DocumentSnapshot<Map<String, dynamic>>? snapshot
 });
 
 
@@ -78,7 +78,7 @@ as String,units: null == units ? _self.units : units // ignore: cast_nullable_to
 as int,hospitalName: null == hospitalName ? _self.hospitalName : hospitalName // ignore: cast_nullable_to_non_nullable
 as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>,contactPhone: null == contactPhone ? _self.contactPhone : contactPhone // ignore: cast_nullable_to_non_nullable
-as String,urgency: null == urgency ? _self.urgency : urgency // ignore: cast_nullable_to_non_nullable
+as int,urgency: null == urgency ? _self.urgency : urgency // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String,snapshot: freezed == snapshot ? _self.snapshot : snapshot // ignore: cast_nullable_to_non_nullable
@@ -167,7 +167,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  String contactPhone,  String urgency,  String status,  String createdAt, @JsonKey(ignore: true)  DocumentSnapshot<Map<String, dynamic>>? snapshot)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  int contactPhone,  String urgency,  String status,  String createdAt, @JsonKey(ignore: true)  DocumentSnapshot<Map<String, dynamic>>? snapshot)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BloodRequest() when $default != null:
 return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodGroup,_that.units,_that.hospitalName,_that.location,_that.contactPhone,_that.urgency,_that.status,_that.createdAt,_that.snapshot);case _:
@@ -188,7 +188,7 @@ return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodG
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  String contactPhone,  String urgency,  String status,  String createdAt, @JsonKey(ignore: true)  DocumentSnapshot<Map<String, dynamic>>? snapshot)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  int contactPhone,  String urgency,  String status,  String createdAt, @JsonKey(ignore: true)  DocumentSnapshot<Map<String, dynamic>>? snapshot)  $default,) {final _that = this;
 switch (_that) {
 case _BloodRequest():
 return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodGroup,_that.units,_that.hospitalName,_that.location,_that.contactPhone,_that.urgency,_that.status,_that.createdAt,_that.snapshot);case _:
@@ -208,7 +208,7 @@ return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodG
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  String contactPhone,  String urgency,  String status,  String createdAt, @JsonKey(ignore: true)  DocumentSnapshot<Map<String, dynamic>>? snapshot)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? requestId,  String requestedBy,  String? patientName,  String bloodGroup,  int units,  String hospitalName,  Map<String, dynamic> location,  int contactPhone,  String urgency,  String status,  String createdAt, @JsonKey(ignore: true)  DocumentSnapshot<Map<String, dynamic>>? snapshot)?  $default,) {final _that = this;
 switch (_that) {
 case _BloodRequest() when $default != null:
 return $default(_that.requestId,_that.requestedBy,_that.patientName,_that.bloodGroup,_that.units,_that.hospitalName,_that.location,_that.contactPhone,_that.urgency,_that.status,_that.createdAt,_that.snapshot);case _:
@@ -239,7 +239,7 @@ class _BloodRequest implements BloodRequest {
   return EqualUnmodifiableMapView(_location);
 }
 
-@override final  String contactPhone;
+@override final  int contactPhone;
 /// high / medium / low
 @override final  String urgency;
 /// active / fulfilled / expired / cancelled
@@ -281,7 +281,7 @@ abstract mixin class _$BloodRequestCopyWith<$Res> implements $BloodRequestCopyWi
   factory _$BloodRequestCopyWith(_BloodRequest value, $Res Function(_BloodRequest) _then) = __$BloodRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String? requestId, String requestedBy, String? patientName, String bloodGroup, int units, String hospitalName, Map<String, dynamic> location, String contactPhone, String urgency, String status, String createdAt,@JsonKey(ignore: true) DocumentSnapshot<Map<String, dynamic>>? snapshot
+ String? requestId, String requestedBy, String? patientName, String bloodGroup, int units, String hospitalName, Map<String, dynamic> location, int contactPhone, String urgency, String status, String createdAt,@JsonKey(ignore: true) DocumentSnapshot<Map<String, dynamic>>? snapshot
 });
 
 
@@ -308,7 +308,7 @@ as String,units: null == units ? _self.units : units // ignore: cast_nullable_to
 as int,hospitalName: null == hospitalName ? _self.hospitalName : hospitalName // ignore: cast_nullable_to_non_nullable
 as String,location: null == location ? _self._location : location // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>,contactPhone: null == contactPhone ? _self.contactPhone : contactPhone // ignore: cast_nullable_to_non_nullable
-as String,urgency: null == urgency ? _self.urgency : urgency // ignore: cast_nullable_to_non_nullable
+as int,urgency: null == urgency ? _self.urgency : urgency // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String,snapshot: freezed == snapshot ? _self.snapshot : snapshot // ignore: cast_nullable_to_non_nullable

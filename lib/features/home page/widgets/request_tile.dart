@@ -113,7 +113,7 @@ class RequestTile extends StatelessWidget {
               // Contact
               _buildDetailChip(
                 icon: Icons.phone,
-                text: bloodRequest.contactPhone,
+                text: bloodRequest.contactPhone.toString(),
               ),
 
               const SizedBox(width: 12),

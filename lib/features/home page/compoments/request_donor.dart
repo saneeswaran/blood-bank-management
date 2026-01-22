@@ -460,7 +460,7 @@ class _RequestDonorState extends State<RequestDonor> {
       units: unit.toInt(),
       hospitalName: hospitalNameController.text,
       location: location!.toJson(),
-      contactPhone: mobileNumberController.text,
+      contactPhone: int.parse(mobileNumberController.text),
       urgency: priority!,
       status: "Pending",
       createdAt: DateTime.now().toIso8601String(),
@@ -496,7 +496,6 @@ class _RequestDonorState extends State<RequestDonor> {
       },
     );
     if (!context.mounted) return;
-    Navigator.pop(context);
     Navigator.pop(context);
   }
 }

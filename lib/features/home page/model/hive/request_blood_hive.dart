@@ -20,7 +20,7 @@ class RequestBloodHive extends HiveObject {
   @HiveField(6)
   final Map<String, dynamic> location;
   @HiveField(7)
-  final String contactPhone;
+  final int contactPhone;
   @HiveField(8)
   /// high / medium / low
   final String urgency;
