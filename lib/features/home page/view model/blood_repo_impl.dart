@@ -12,16 +12,11 @@ class BloodRepoImpl extends BloodRepo {
   Future<Either<Failure, String>> giveBloodRequst({
     required BloodRequest bloodRequest,
   }) async {
-    final userCollectionDoc = FirebaseFirestore.instance
-        .collection("users")
-        .doc(userId)
-        .collection("blood_requests");
     try {
       final docRef = requestRef.doc();
       final id = docRef.id;
       final requst = bloodRequest.copyWith(requestId: id);
       await docRef.set(requst.toJson());
-      await userCollectionDoc.doc(id).set(requst.toJson());
       return Right(id);
     } catch (e) {
       return Left(e.toString());

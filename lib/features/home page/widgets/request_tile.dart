@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class RequestTile extends StatelessWidget {
   final BloodRequest bloodRequest;
-  final VoidCallback onAccept;
-  final VoidCallback onContact;
+  final VoidCallback? onAccept;
+  final VoidCallback? onContact;
 
   const RequestTile({
     super.key,

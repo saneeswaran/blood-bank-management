@@ -1,19 +1,39 @@
-import 'package:blood_bank/core/animations/list/list_of_blood_request_loader.dart';
-import 'package:blood_bank/features/home%20page/widgets/request_tile.dart';
-import 'package:blood_bank/features/profile/view%20model/notifier/blood_requests_notifier.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:developer';
 
-class AllRequests extends ConsumerWidget {
+import 'package:blood_bank/core/animations/list/list_of_blood_request_loader.dart';
+import 'package:blood_bank/core/constants/navigation.dart';
+import 'package:blood_bank/core/util/material_util.dart';
+import 'package:blood_bank/features/home%20page/widgets/request_tile.dart';
+import 'package:blood_bank/features/profile/view%20model/notifier/blood_requests_notifier.dart';
+import 'package:blood_bank/features/response/view%20model/repo/accepted_donation_impl.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class AllRequests extends ConsumerStatefulWidget {
   final ScrollController scrollController;
 
   const AllRequests({super.key, required this.scrollController});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AllRequests> createState() => _AllRequestsState();
+}
+
+class _AllRequestsState extends ConsumerState<AllRequests> {
+  bool _isAccepting = false;
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(bloodRequestsNotifier);
     final notifier = ref.read(bloodRequestsNotifier.notifier);
+
+    if (state.requests.isEmpty && !state.isLoading) {
+      return const SliverFillRemaining(
+        hasScrollBody: false,
+        child: Center(
+          child: Text("No requests found", style: TextStyle(fontSize: 16)),
+        ),
+      );
+    }
 
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollInfo) {
@@ -21,7 +41,7 @@ class AllRequests extends ConsumerWidget {
                 scrollInfo.metrics.maxScrollExtent - 200 &&
             state.hasMore &&
             !state.isLoadingMore) {
-          log("🔥 PAGINATION FETCH");
+          log("PAGINATION FETCH");
           notifier.fetchMore();
         }
         return false;
@@ -37,17 +57,15 @@ class AllRequests extends ConsumerWidget {
               );
             }
 
-            if (state.requests.isEmpty) {
-              return const Center(child: Text("No requests found"));
-            }
-            log(state.requests.toString(), name: "All Requests");
             final request = state.requests[index];
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: RequestTile(
                 bloodRequest: request,
-                onAccept: () async {},
+                onAccept: _isAccepting
+                    ? null
+                    : () => _onAccept(requestId: request.requestId.toString()),
                 onContact: () {},
               ),
             );
@@ -55,5 +73,37 @@ class AllRequests extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _onAccept({required String requestId}) async {
+    if (_isAccepting) return;
+
+    setState(() => _isAccepting = true);
+
+    MaterialUtil.showFullScreenLoader(context);
+
+    try {
+      final result = await AcceptedDonationImpl().giveAcceptRequst(
+        donationRequestId: requestId,
+      );
+
+      result.fold(
+        (error) {
+          log(error);
+        },
+        (data) {
+          log(data.toString());
+        },
+      );
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      if (mounted && Navigator.canPop(context)) {
+        navigateBack(context);
+      }
+      if (mounted) {
+        setState(() => _isAccepting = false);
+      }
+    }
   }
 }
