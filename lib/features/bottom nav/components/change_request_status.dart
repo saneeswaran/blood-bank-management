@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:blood_bank/core/util/custom_snack.dart';
 import 'package:blood_bank/core/widgets/custom_drop_down.dart';
 import 'package:blood_bank/core/widgets/custom_elevated_button.dart';
@@ -73,7 +71,6 @@ class _ChangeRequestStatusState extends State<ChangeRequestStatus> {
                     onChanged: (value) {
                       setState(() {
                         status = value;
-                        log(value!.toLowerCase());
                       });
                     },
                     labelText: "Change Status",
@@ -151,7 +148,12 @@ class _ChangeRequestStatusState extends State<ChangeRequestStatus> {
       Navigator.pop(context);
       Navigator.pop(context);
     } catch (e) {
-      log(e.toString());
+      loaderNotifier.state = false;
+      customSnackBar(
+        context: context,
+        content: e.toString(),
+        type: SnackType.error,
+      );
     }
   }
 }

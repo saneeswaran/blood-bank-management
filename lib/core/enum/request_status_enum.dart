@@ -6,11 +6,11 @@ extension RequestStatusEnumExtension on RequestStatusEnum {
   String get title {
     switch (this) {
       case RequestStatusEnum.pending:
-        return "Pending";
+        return "pending";
       case RequestStatusEnum.fulfilled:
-        return "Fulfilled";
+        return "fulfilled";
       case RequestStatusEnum.cancelled:
-        return "Cancelled";
+        return "cancelled";
     }
   }
 }

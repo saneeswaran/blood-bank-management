@@ -40,7 +40,7 @@ class AllRequests extends ConsumerWidget {
             if (state.requests.isEmpty) {
               return const Center(child: Text("No requests found"));
             }
-            log(state.requests.toString());
+            log(state.requests.toString(), name: "All Requests");
             final request = state.requests[index];
 
             return Padding(

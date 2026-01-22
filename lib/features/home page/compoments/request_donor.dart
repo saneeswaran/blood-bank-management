@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:blood_bank/core/animations/highlightable.dart';
 import 'package:blood_bank/core/constants/appthemes.dart';
 import 'package:blood_bank/core/constants/navigation.dart';
@@ -18,6 +16,7 @@ import 'package:blood_bank/features/home%20page/model/blood%20request/blood_requ
 import 'package:blood_bank/features/home%20page/service/blood_request_hive_manager.dart';
 import 'package:blood_bank/features/home%20page/util/location_util.dart';
 import 'package:blood_bank/features/home%20page/view%20model/blood_repo_impl.dart';
+import 'package:blood_bank/features/profile/view%20model/notifier/blood_requests_notifier.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -329,7 +328,6 @@ class _RequestDonorState extends State<RequestDonor> {
 
       latlngResult.fold(
         (error) {
-          log(error.toString());
           navigateBack(context);
           customSnackBar(
             context: context,
@@ -339,12 +337,10 @@ class _RequestDonorState extends State<RequestDonor> {
         },
         (latlng) async {
           statusNotifier.state = "Converting to Address";
-          log(latlng.toString());
           final locationResult = await LocationUtil.getCurrentLocation(latlng);
 
           locationResult.fold(
             (error) {
-              log(error.toString());
               navigateBack(context);
               customSnackBar(
                 context: context,
@@ -353,7 +349,6 @@ class _RequestDonorState extends State<RequestDonor> {
               );
             },
             (location) {
-              log(location.toString());
               ref.read(RequestController.selectedLocation.notifier).state =
                   location;
               notifier.state = false;
@@ -368,7 +363,6 @@ class _RequestDonorState extends State<RequestDonor> {
         },
       );
     } catch (e) {
-      log(e.toString());
       notifier.state = true;
       if (!context.mounted) return;
       navigateBack(context);
@@ -477,16 +471,17 @@ class _RequestDonorState extends State<RequestDonor> {
     result.fold(
       (error) {
         loader.state = false;
-        log(error);
+
         customSnackBar(context: context, content: error, type: SnackType.error);
       },
       (success) async {
         final localData = bloodData.copyWith(requestId: success);
-        log(localData.toString());
+
         await BloodRequestHiveManager.addRequest(localData);
+        ref.invalidate(bloodRequestsNotifier);
         loader.state = false;
         if (!context.mounted) return;
-        log(success.toString());
+
         customSnackBar(
           context: context,
           content: "Request Submitted Successfully",

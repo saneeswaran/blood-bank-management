@@ -8,8 +8,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 
 class BloodRequestImpl extends BloodRequestRepo {
-  final requestRef = FirebaseFirestore.instance.collection('blood_requests');
   final userId = FirebaseAuth.instance.currentUser!.uid;
+  final requestRef = FirebaseFirestore.instance
+      .collection("users")
+      .doc()
+      .collection('blood_requests');
   @override
   Future<Either<Failure, List<BloodRequest>>> fetchBloodrequests({
     int limit = 10,

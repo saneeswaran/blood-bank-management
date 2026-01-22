@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:blood_bank/core/util/custom_snack.dart';
 import 'package:blood_bank/core/util/material_util.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,6 @@ Future<T?> safeAsyncCall<T>({
 
     return result.fold(
       (error) {
-        log(error);
         if (showLoader) Navigator.pop(context);
 
         customSnackBar(context: context, content: error, type: SnackType.error);
@@ -51,8 +49,6 @@ Future<T?> safeAsyncCall<T>({
   } catch (e) {
     if (!context.mounted) return null;
     if (showLoader) Navigator.pop(context);
-    log(e.toString());
-
     customSnackBar(
       context: context,
       content: "Something went wrong",

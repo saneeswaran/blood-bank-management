@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:blood_bank/core/constants/navigation.dart';
 import 'package:blood_bank/core/widgets/drag_sheet.dart';
 import 'package:blood_bank/features/bottom%20nav/components/local_requests.dart';
@@ -44,7 +42,6 @@ class _BottomNaviState extends ConsumerState<BottomNavi> {
                     //TODO manager this with firebase and local
                     final existsRequests =
                         MyBloodRequestHiveManager.getAllRequests();
-                    log(existsRequests.toString());
 
                     if (existsRequests.isNotEmpty) {
                       showCupertinoModalBottomSheet(
