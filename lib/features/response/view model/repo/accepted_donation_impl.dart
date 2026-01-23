@@ -126,4 +126,19 @@ class AcceptedDonationImpl extends AcceptedDonationRepo {
       return Left(e.toString());
     }
   }
+
+  //TODO: implement
+  /*
+  1.fetch the requests given
+  2. fetch the response by clicking the button  => fetchResponseDonations
+  2. update the status
+
+
+  others
+  fetchMyAcceptDonations -> inside profile page
+  giveAcceptRequst -> give response
+  fetchResponseDonations -> fetch the response
+  fetchUserAcceptedDonation -> fetch the users by the fetchResponseDonation
+  changeAcceptedStatus -> update the status
+  */
 }
