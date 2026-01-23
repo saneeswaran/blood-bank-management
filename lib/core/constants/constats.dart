@@ -9,3 +9,8 @@ typedef Failure = String;
 
 final firestore = FirebaseFirestore.instance;
 final auth = FirebaseAuth.instance;
+
+//collection
+
+final userCollection = firestore.collection("users");
+final bloodCollection = firestore.collection("blood_request");

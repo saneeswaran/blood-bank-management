@@ -25,7 +25,6 @@ class _AllRequestsState extends ConsumerState<AllRequests> {
   Widget build(BuildContext context) {
     final state = ref.watch(bloodRequestsNotifier);
     final notifier = ref.read(bloodRequestsNotifier.notifier);
-
     if (state.requests.isEmpty && !state.isLoading) {
       return const SliverFillRemaining(
         hasScrollBody: false,
