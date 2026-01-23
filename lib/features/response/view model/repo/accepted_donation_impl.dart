@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:blood_bank/core/constants/constats.dart';
 import 'package:blood_bank/features/profile/model/model/user_model.dart';
 import 'package:blood_bank/features/response/model/model/accept_donation.dart';
@@ -82,7 +84,7 @@ class AcceptedDonationImpl extends AcceptedDonationRepo {
   }
 
   @override
-  Future<Either<Failure, List<UserModel>>> fetchUserAcceptedDonation({
+  Future<List<UserModel>> fetchUserAcceptedDonation({
     required List<String> userId,
   }) async {
     try {
@@ -93,12 +95,13 @@ class AcceptedDonationImpl extends AcceptedDonationRepo {
             .map((e) => UserModel.fromJson(e.data()))
             .toList();
 
-        return Right(data);
+        return data;
       } else {
-        return const Left("No user found");
+        return [];
       }
     } catch (e) {
-      return Left(e.toString());
+      log(e.toString());
+      return [];
     }
   }
 

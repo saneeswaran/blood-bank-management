@@ -1,7 +1,26 @@
+import 'package:blood_bank/features/profile/model/model/user_model.dart';
 import 'package:blood_bank/features/response/model/model/accept_donation.dart';
 import 'package:blood_bank/features/response/model/state/accept_donation_state.dart';
+import 'package:blood_bank/features/response/view%20model/repo/accepted_donation_impl.dart';
 import 'package:blood_bank/features/response/view%20model/repo/accepted_donation_repo.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
+
+final acceptDonationImpl = Provider<AcceptedDonationImpl>(
+  (ref) => AcceptedDonationImpl(),
+);
+
+final acceptDonationNotifier =
+    StateNotifierProvider<AcceptDonationNotifier, AcceptDonationState>((ref) {
+      final repo = ref.read(acceptDonationImpl);
+      return AcceptDonationNotifier(repo);
+    });
+
+final fetchAcceptedUserDataNotifier = FutureProvider.autoDispose
+    .family<List<UserModel>, List<String>>((ref, userIds) async {
+      final repo = ref.read(acceptDonationImpl);
+      return repo.fetchUserAcceptedDonation(userId: userIds);
+    });
 
 class AcceptDonationNotifier extends StateNotifier<AcceptDonationState> {
   final AcceptedDonationRepo repo;
