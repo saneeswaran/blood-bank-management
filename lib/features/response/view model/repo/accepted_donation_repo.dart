@@ -17,4 +17,10 @@ abstract class AcceptedDonationRepo {
   Future<Either<Failure, List<UserModel>>> fetchUserAcceptedDonation({
     required List<String> userId,
   });
+
+  Future<Either<Failure, bool>> changeAcceptedStatus({
+    required String donationRequestId,
+    required String acceptId,
+    required String status,
+  });
 }

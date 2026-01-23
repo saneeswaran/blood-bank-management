@@ -39,13 +39,6 @@ class AcceptedDonationImpl extends AcceptedDonationRepo {
           .doc(donationRequestId)
           .collection("response");
 
-      //inside the userCollection AcceptedFields
-
-      final userAccpetedCollection = firestore
-          .collection("users")
-          .doc(auth.currentUser!.uid)
-          .collection("accepted_requests");
-
       final doc = collection.doc();
 
       final acceptedData = AcceptDonation(
@@ -54,8 +47,6 @@ class AcceptedDonationImpl extends AcceptedDonationRepo {
         userId: auth.currentUser!.uid,
         status: "pending",
       );
-
-      await userAccpetedCollection.doc(doc.id).set(acceptedData.toJson());
 
       await doc.set(acceptedData.toJson());
 
@@ -105,6 +96,31 @@ class AcceptedDonationImpl extends AcceptedDonationRepo {
         return Right(data);
       } else {
         return const Left("No user found");
+      }
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> changeAcceptedStatus({
+    required String donationRequestId,
+    required String acceptId,
+    required String status,
+  }) async {
+    try {
+      final query = await firestore
+          .collection("blood_request")
+          .doc(donationRequestId)
+          .collection("response")
+          .doc(acceptId)
+          .get();
+
+      if (query.exists) {
+        await query.reference.update({"status": status});
+        return const Right(true);
+      } else {
+        return const Left("Request not found");
       }
     } catch (e) {
       return Left(e.toString());
