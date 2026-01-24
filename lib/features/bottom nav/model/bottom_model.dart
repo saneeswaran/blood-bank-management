@@ -16,7 +16,7 @@ List<FlashyTabBarItem> bottomBarItems = [
   ),
   FlashyTabBarItem(
     icon: const Icon(Iconsax.image),
-    title: const Text("Article"),
+    title: const Text("Response"),
     activeColor: Appthemes.primaryColor,
     inactiveColor: Appthemes.grey,
   ),

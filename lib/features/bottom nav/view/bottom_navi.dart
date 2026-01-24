@@ -27,7 +27,7 @@ class _BottomNaviState extends ConsumerState<BottomNavi> {
     });
   }
 
-  int currentIndex = 0;
+  int currentIndex = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
