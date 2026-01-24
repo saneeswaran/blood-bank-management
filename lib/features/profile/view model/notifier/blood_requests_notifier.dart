@@ -13,7 +13,7 @@ final bloodRequestRepoProvider = Provider<BloodRequestRepo>((ref) {
 final bloodRequestsNotifier =
     StateNotifierProvider<BloodRequestsNotifier, BloodRequestsState>((ref) {
       final repo = ref.read(bloodRequestRepoProvider);
-      return BloodRequestsNotifier(repo, ref)..fetchSafeWithLocal();
+      return BloodRequestsNotifier(repo, ref)..fetchInitial();
     });
 
 class BloodRequestsNotifier extends StateNotifier<BloodRequestsState> {

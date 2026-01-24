@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:blood_bank/features/profile/view%20model/notifier/blood_requests_notifier.dart';
 import 'package:blood_bank/features/response/components/response_tile.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,7 @@ class _ResponsePageState extends ConsumerState<ResponsePage> {
                 : ListView.builder(
                     itemBuilder: (context, index) {
                       final request = requestState.requests[index];
+                      log(request.toString());
                       return ResponseTile(
                         bloodRequest: request,
                         onViewResponse: () {},
