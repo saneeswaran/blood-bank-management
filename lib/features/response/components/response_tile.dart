@@ -144,22 +144,6 @@ class ResponseTile extends StatelessWidget {
 
           // Single View Response button
           // Removed the TODO comment
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: onViewResponse,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Appthemes.primaryColor,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              icon: const Icon(Icons.visibility, size: 20),
-              label: const Text('View Response'),
-            ),
-          ),
         ],
       ),
     );
