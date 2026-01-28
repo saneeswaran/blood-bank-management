@@ -16,25 +16,21 @@ class _ResponsePageState extends ConsumerState<ResponsePage> {
   @override
   Widget build(BuildContext context) {
     final requestState = ref.watch(bloodRequestsNotifier);
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            requestState.requests.isEmpty
-                ? const Center(child: Text("No requests found"))
-                : ListView.builder(
-                    itemBuilder: (context, index) {
-                      final request = requestState.requests[index];
-                      log(request.toString());
-                      return ResponseTile(
-                        bloodRequest: request,
-                        onViewResponse: () {},
-                      );
-                    },
-                  ),
-          ],
-        ),
-      ),
+      body: requestState.requests.isEmpty
+          ? const Center(child: Text("No requests found"))
+          : ListView.builder(
+              itemCount: requestState.requests.length,
+              itemBuilder: (context, index) {
+                final request = requestState.requests[index];
+                log(request.toString());
+                return ResponseTile(
+                  bloodRequest: request,
+                  onViewResponse: () {},
+                );
+              },
+            ),
     );
   }
 }
