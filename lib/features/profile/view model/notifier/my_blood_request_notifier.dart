@@ -24,6 +24,7 @@ class MyBloodRequestNotifier
       result.fold(
         (error) {
           log(error);
+          state = AsyncError(error, StackTrace.current);
         },
         (data) {
           state = AsyncData(data);

@@ -37,7 +37,7 @@ class AcceptedDonationImpl extends AcceptedDonationRepo {
     try {
       //inside the response
       final collection = firestore
-          .collection("blood_request")
+          .collection("blood_requests")
           .doc(donationRequestId)
           .collection("response");
 

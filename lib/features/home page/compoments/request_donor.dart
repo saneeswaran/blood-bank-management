@@ -456,7 +456,7 @@ class _RequestDonorState extends State<RequestDonor> {
       location: location!.toJson(),
       contactPhone: int.parse(mobileNumberController.text),
       urgency: priority!,
-      status: "Pending",
+      status: "pending",
       createdAt: DateTime.now().toIso8601String(),
     );
 

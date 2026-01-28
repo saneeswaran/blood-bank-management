@@ -6,6 +6,7 @@ import 'package:blood_bank/core/util/material_util.dart';
 import 'package:blood_bank/features/home%20page/widgets/request_tile.dart';
 import 'package:blood_bank/features/profile/view%20model/notifier/blood_requests_notifier.dart';
 import 'package:blood_bank/features/response/view%20model/repo/accepted_donation_impl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,6 +34,8 @@ class _AllRequestsState extends ConsumerState<AllRequests> {
         ),
       );
     }
+
+    log(FirebaseAuth.instance.currentUser!.uid);
 
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollInfo) {
